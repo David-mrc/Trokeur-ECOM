@@ -8,7 +8,6 @@
       "entities": {
         "main": "Entities",
         "tradeObject": "Trade Object",
-        "genericImage": "Generic Image",
         "trockeurUser": "Trockeur User",
         "objectCategory": "Object Category",
         "tradeOffer": "Trade Offer",
@@ -47,7 +46,15 @@
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
-      "email.placeholder": "Your email"
+      "email.placeholder": "Your email",
+      "firstName.label": "First Name",
+      "firstName.placeholder": "Your first name",
+      "lastName.label": "Last Name",
+      "lastName.placeholder": "Your last name",
+      "adress.label": "Adress",
+      "adress.placeholder": "Your adress (Number + Street + CITY)",
+      "postalCode.label": "Postal Code",
+      "postalCode.placeholder": "Your postal code"
     },
     "messages": {
       "info": {
