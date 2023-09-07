@@ -17,7 +17,16 @@
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141633_added_entity_TradeObject.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141634_added_entity_GenericImage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141635_added_entity_TrockeurUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141636_added_entity_ObjectCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141637_added_entity_TradeOffer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20230907141633_added_entity_constraints_TradeObject.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141634_added_entity_constraints_GenericImage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141635_added_entity_constraints_TrockeurUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230907141637_added_entity_constraints_TradeOffer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

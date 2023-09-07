@@ -1,0 +1,105 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-trade-offer-heading" data-cy="TradeOfferCreateUpdateHeading" jhiTranslate="trokeurApp.tradeOffer.home.createOrEditLabel">
+        Créer ou éditer un Trade Offer
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="trokeurApp.tradeOffer.date" for="field_date">Date</label>
+          <div class="input-group">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="text"
+              class="form-control"
+              name="date"
+              ngbDatepicker
+              #dateDp="ngbDatepicker"
+              formControlName="date"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          <div *ngIf="editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('date')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="trokeurApp.tradeOffer.state" for="field_state">State</label>
+          <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
+            <option [ngValue]="null">{{ 'trokeurApp.TradeOfferState.null' | translate }}</option>
+            <option *ngFor="let tradeOfferState of tradeOfferStateValues" [value]="tradeOfferState">
+              {{ 'trokeurApp.TradeOfferState.' + tradeOfferState | translate }}
+            </option>
+          </select>
+          <div *ngIf="editForm.get('state')!.invalid && (editForm.get('state')!.dirty || editForm.get('state')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('state')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label jhiTranslate="trokeurApp.tradeOffer.tradeObject" for="field_tradeObjects">Trade Object</label>
+          <select
+            class="form-control"
+            id="field_tradeObjects"
+            data-cy="tradeObject"
+            multiple
+            name="tradeObjects"
+            formControlName="tradeObjects"
+            [compareWith]="compareTradeObject"
+          >
+            <option [ngValue]="tradeObjectOption" *ngFor="let tradeObjectOption of tradeObjectsSharedCollection">
+              {{ tradeObjectOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label jhiTranslate="trokeurApp.tradeOffer.trockeurUser" for="field_trockeurUsers">Trockeur User</label>
+          <select
+            class="form-control"
+            id="field_trockeurUsers"
+            data-cy="trockeurUser"
+            multiple
+            name="trockeurUsers"
+            formControlName="trockeurUsers"
+            [compareWith]="compareTrockeurUser"
+          >
+            <option [ngValue]="trockeurUserOption" *ngFor="let trockeurUserOption of trockeurUsersSharedCollection">
+              {{ trockeurUserOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

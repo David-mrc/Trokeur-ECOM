@@ -1,0 +1,31 @@
+{
+  "trokeurApp": {
+    "tradeObject": {
+      "home": {
+        "title": "TradeObjects",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Trade Object",
+        "createOrEditLabel": "Créer ou éditer un Trade Object",
+        "notFound": "Aucun Trade Object trouvé"
+      },
+      "created": "Un nouveau Trade Object a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Trade Object avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Trade Object avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Trade Object {{ id }} ?"
+      },
+      "detail": {
+        "title": "Trade Object"
+      },
+      "id": "Id",
+      "name": "Name",
+      "description": "Description",
+      "state": "State",
+      "stock": "Stock",
+      "genericImage": "Generic Image",
+      "objectCategory": "Object Category",
+      "trockeurUser": "Trockeur User",
+      "tradeOffer": "Trade Offer"
+    }
+  }
+}

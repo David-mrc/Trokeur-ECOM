@@ -1,0 +1,31 @@
+{
+  "trokeurApp": {
+    "tradeObject": {
+      "home": {
+        "title": "Trade Objects",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Trade Object",
+        "createOrEditLabel": "Create or edit a Trade Object",
+        "notFound": "No Trade Objects found"
+      },
+      "created": "A new Trade Object is created with identifier {{ param }}",
+      "updated": "A Trade Object is updated with identifier {{ param }}",
+      "deleted": "A Trade Object is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Trade Object {{ id }}?"
+      },
+      "detail": {
+        "title": "Trade Object"
+      },
+      "id": "Id",
+      "name": "Name",
+      "description": "Description",
+      "state": "State",
+      "stock": "Stock",
+      "genericImage": "Generic Image",
+      "objectCategory": "Object Category",
+      "trockeurUser": "Trockeur User",
+      "tradeOffer": "Trade Offer"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "trokeurApp": {
+    "trockeurUser": {
+      "home": {
+        "title": "Trockeur Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Trockeur User",
+        "createOrEditLabel": "Create or edit a Trockeur User",
+        "notFound": "No Trockeur Users found"
+      },
+      "created": "A new Trockeur User is created with identifier {{ param }}",
+      "updated": "A Trockeur User is updated with identifier {{ param }}",
+      "deleted": "A Trockeur User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Trockeur User {{ id }}?"
+      },
+      "detail": {
+        "title": "Trockeur User"
+      },
+      "id": "ID",
+      "address": "Address",
+      "zipCode": "Zip Code",
+      "description": "Description",
+      "profilePicturePath": "Profile Picture Path",
+      "user": "User",
+      "tradeObject": "Trade Object",
+      "tradeOffer": "Trade Offer"
+    }
+  }
+}

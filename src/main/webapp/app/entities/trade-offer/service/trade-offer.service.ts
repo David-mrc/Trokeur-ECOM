@@ -1,0 +1,127 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
+
+import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { createRequestOption } from 'app/core/request/request-util';
+import { ITradeOffer, NewTradeOffer } from '../trade-offer.model';
+
+export type PartialUpdateTradeOffer = Partial<ITradeOffer> & Pick<ITradeOffer, 'id'>;
+
+type RestOf<T extends ITradeOffer | NewTradeOffer> = Omit<T, 'date'> & {
+  date?: string | null;
+};
+
+export type RestTradeOffer = RestOf<ITradeOffer>;
+
+export type NewRestTradeOffer = RestOf<NewTradeOffer>;
+
+export type PartialUpdateRestTradeOffer = RestOf<PartialUpdateTradeOffer>;
+
+export type EntityResponseType = HttpResponse<ITradeOffer>;
+export type EntityArrayResponseType = HttpResponse<ITradeOffer[]>;
+
+@Injectable({ providedIn: 'root' })
+export class TradeOfferService {
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/trade-offers');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  create(tradeOffer: NewTradeOffer): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(tradeOffer);
+    return this.http
+      .post<RestTradeOffer>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  update(tradeOffer: ITradeOffer): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(tradeOffer);
+    return this.http
+      .put<RestTradeOffer>(`${this.resourceUrl}/${this.getTradeOfferIdentifier(tradeOffer)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  partialUpdate(tradeOffer: PartialUpdateTradeOffer): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(tradeOffer);
+    return this.http
+      .patch<RestTradeOffer>(`${this.resourceUrl}/${this.getTradeOfferIdentifier(tradeOffer)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<RestTradeOffer>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestTradeOffer[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  getTradeOfferIdentifier(tradeOffer: Pick<ITradeOffer, 'id'>): number {
+    return tradeOffer.id;
+  }
+
+  compareTradeOffer(o1: Pick<ITradeOffer, 'id'> | null, o2: Pick<ITradeOffer, 'id'> | null): boolean {
+    return o1 && o2 ? this.getTradeOfferIdentifier(o1) === this.getTradeOfferIdentifier(o2) : o1 === o2;
+  }
+
+  addTradeOfferToCollectionIfMissing<Type extends Pick<ITradeOffer, 'id'>>(
+    tradeOfferCollection: Type[],
+    ...tradeOffersToCheck: (Type | null | undefined)[]
+  ): Type[] {
+    const tradeOffers: Type[] = tradeOffersToCheck.filter(isPresent);
+    if (tradeOffers.length > 0) {
+      const tradeOfferCollectionIdentifiers = tradeOfferCollection.map(tradeOfferItem => this.getTradeOfferIdentifier(tradeOfferItem)!);
+      const tradeOffersToAdd = tradeOffers.filter(tradeOfferItem => {
+        const tradeOfferIdentifier = this.getTradeOfferIdentifier(tradeOfferItem);
+        if (tradeOfferCollectionIdentifiers.includes(tradeOfferIdentifier)) {
+          return false;
+        }
+        tradeOfferCollectionIdentifiers.push(tradeOfferIdentifier);
+        return true;
+      });
+      return [...tradeOffersToAdd, ...tradeOfferCollection];
+    }
+    return tradeOfferCollection;
+  }
+
+  protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {
+    return {
+      ...tradeOffer,
+      date: tradeOffer.date?.format(DATE_FORMAT) ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restTradeOffer: RestTradeOffer): ITradeOffer {
+    return {
+      ...restTradeOffer,
+      date: restTradeOffer.date ? dayjs(restTradeOffer.date) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestTradeOffer>): HttpResponse<ITradeOffer> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestTradeOffer[]>): HttpResponse<ITradeOffer[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
+  }
+}

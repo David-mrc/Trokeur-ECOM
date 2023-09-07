@@ -1,0 +1,11 @@
+{
+  "trokeurApp": {
+    "TradeOfferState": {
+      "null": "",
+      "EN_COURS": "EN_COURS",
+      "ACCEPTE": "ACCEPTE",
+      "REFUSE": "REFUSE",
+      "FINALISE": "FINALISE"
+    }
+  }
+}

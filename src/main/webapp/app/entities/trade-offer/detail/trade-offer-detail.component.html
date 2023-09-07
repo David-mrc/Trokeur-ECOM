@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="tradeOffer">
+      <h2 data-cy="tradeOfferDetailsHeading"><span jhiTranslate="trokeurApp.tradeOffer.detail.title">Trade Offer</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ tradeOffer.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeOffer.date">Date</span></dt>
+        <dd>
+          <span>{{ tradeOffer.date | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeOffer.state">State</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'trokeurApp.TradeOfferState.' + tradeOffer.state }}">{{ tradeOffer.state }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeOffer.tradeObject">Trade Object</span></dt>
+        <dd>
+          <span *ngFor="let tradeObject of tradeOffer.tradeObjects; let last = last">
+            <a [routerLink]="['/trade-object', tradeObject.id, 'view']">{{ tradeObject.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeOffer.trockeurUser">Trockeur User</span></dt>
+        <dd>
+          <span *ngFor="let trockeurUser of tradeOffer.trockeurUsers; let last = last">
+            <a [routerLink]="['/trockeur-user', trockeurUser.id, 'view']">{{ trockeurUser.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/trade-offer', tradeOffer.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+{
+  "applications": ["Trokeur"],
+  "changelogDate": "20230907141636",
+  "entityTableName": "object_category",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "ObjectCategory",
+  "relationships": [
+    {
+      "otherEntityName": "tradeObject",
+      "otherEntityRelationshipName": "objectCategory",
+      "relationshipName": "tradeObject",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

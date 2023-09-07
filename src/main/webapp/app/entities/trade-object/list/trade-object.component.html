@@ -1,0 +1,132 @@
+<div>
+  <h2 id="page-heading" data-cy="TradeObjectHeading">
+    <span jhiTranslate="trokeurApp.tradeObject.home.title">TradeObjects</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="trokeurApp.tradeObject.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-trade-object"
+        [routerLink]="['/trade-object/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="trokeurApp.tradeObject.home.createLabel"> Créer un nouveau Trade Object </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="tradeObjects?.length === 0">
+    <span jhiTranslate="trokeurApp.tradeObject.home.notFound">Aucun Trade Object trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="tradeObjects && tradeObjects.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="state">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.state">State</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="stock">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.stock">Stock</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="objectCategory.id">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.objectCategory">Object Category</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="trockeurUser.id">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeObject.trockeurUser">Trockeur User</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tradeObject of tradeObjects; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/trade-object', tradeObject.id, 'view']">{{ tradeObject.id }}</a>
+          </td>
+          <td>{{ tradeObject.name }}</td>
+          <td>{{ tradeObject.description }}</td>
+          <td jhiTranslate="{{ 'trokeurApp.TradeObjectState.' + tradeObject.state }}">{{ tradeObject.state }}</td>
+          <td>{{ tradeObject.stock }}</td>
+          <td>
+            <span *ngFor="let objectCategory of tradeObject.objectCategories; let last = last">
+              <a class="form-control-static" [routerLink]="['/object-category', objectCategory.id, 'view']">{{ objectCategory.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </td>
+          <td>
+            <div *ngIf="tradeObject.trockeurUser">
+              <a [routerLink]="['/trockeur-user', tradeObject.trockeurUser.id, 'view']">{{ tradeObject.trockeurUser.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/trade-object', tradeObject.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/trade-object', tradeObject.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(tradeObject)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

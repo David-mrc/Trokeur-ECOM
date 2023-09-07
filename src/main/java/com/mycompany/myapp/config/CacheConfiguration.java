@@ -48,6 +48,19 @@ public class CacheConfiguration {
             createCache(cm, com.mycompany.myapp.domain.User.class.getName());
             createCache(cm, com.mycompany.myapp.domain.Authority.class.getName());
             createCache(cm, com.mycompany.myapp.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.mycompany.myapp.domain.TradeObject.class.getName());
+            createCache(cm, com.mycompany.myapp.domain.TradeObject.class.getName() + ".genericImages");
+            createCache(cm, com.mycompany.myapp.domain.TradeObject.class.getName() + ".objectCategories");
+            createCache(cm, com.mycompany.myapp.domain.TradeObject.class.getName() + ".tradeOffers");
+            createCache(cm, com.mycompany.myapp.domain.GenericImage.class.getName());
+            createCache(cm, com.mycompany.myapp.domain.TrockeurUser.class.getName());
+            createCache(cm, com.mycompany.myapp.domain.TrockeurUser.class.getName() + ".tradeObjects");
+            createCache(cm, com.mycompany.myapp.domain.TrockeurUser.class.getName() + ".tradeOffers");
+            createCache(cm, com.mycompany.myapp.domain.ObjectCategory.class.getName());
+            createCache(cm, com.mycompany.myapp.domain.ObjectCategory.class.getName() + ".tradeObjects");
+            createCache(cm, com.mycompany.myapp.domain.TradeOffer.class.getName());
+            createCache(cm, com.mycompany.myapp.domain.TradeOffer.class.getName() + ".tradeObjects");
+            createCache(cm, com.mycompany.myapp.domain.TradeOffer.class.getName() + ".trockeurUsers");
             // jhipster-needle-ehcache-add-entry
         };
     }

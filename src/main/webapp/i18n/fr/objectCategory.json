@@ -1,0 +1,25 @@
+{
+  "trokeurApp": {
+    "objectCategory": {
+      "home": {
+        "title": "ObjectCategories",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Object Category",
+        "createOrEditLabel": "Créer ou éditer un Object Category",
+        "notFound": "Aucun Object Category trouvé"
+      },
+      "created": "Un nouveau Object Category a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Object Category avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Object Category avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Object Category {{ id }} ?"
+      },
+      "detail": {
+        "title": "Object Category"
+      },
+      "id": "ID",
+      "name": "Name",
+      "tradeObject": "Trade Object"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "trokeurApp": {
+    "genericImage": {
+      "home": {
+        "title": "Generic Images",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Generic Image",
+        "createOrEditLabel": "Create or edit a Generic Image",
+        "notFound": "No Generic Images found"
+      },
+      "created": "A new Generic Image is created with identifier {{ param }}",
+      "updated": "A Generic Image is updated with identifier {{ param }}",
+      "deleted": "A Generic Image is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Generic Image {{ id }}?"
+      },
+      "detail": {
+        "title": "Generic Image"
+      },
+      "id": "ID",
+      "imagePath": "Image Path",
+      "tradeObject": "Trade Object"
+    }
+  }
+}

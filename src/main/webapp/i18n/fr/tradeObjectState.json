@@ -1,0 +1,11 @@
+{
+  "trokeurApp": {
+    "TradeObjectState": {
+      "null": "",
+      "Neuf": "Neuf",
+      "Bon": "Bon",
+      "Moyen": "Moyen",
+      "Mauvais": "Mauvais"
+    }
+  }
+}

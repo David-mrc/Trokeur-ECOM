@@ -1,0 +1,64 @@
+application {
+  config {
+    baseName Trokeur
+    applicationType monolith
+    packageName com.mycompany.myapp
+    authenticationType jwt
+    prodDatabaseType postgresql
+    clientFramework angular
+  }
+  entities *
+}
+
+entity TradeObject {
+	id Long
+	name String required minlength(5)
+    description TextBlob
+    state TradeObjectState required
+	stock Integer required
+
+}
+
+entity GenericImage {
+    imagePath String required
+}
+
+enum TradeObjectState {
+	Neuf, Bon, Moyen, Mauvais
+}
+
+entity TrockeurUser {
+    address String required 
+    zipCode String required minlength(5)
+    description TextBlob
+    profilePicturePath String
+}
+
+entity ObjectCategory {
+    name String required
+}
+
+entity TradeOffer {
+    date LocalDate required
+    state TradeOfferState required
+}
+
+enum TradeOfferState {
+	EN_COURS, ACCEPTE, REFUSE, FINALISE
+}
+
+relationship OneToOne {
+    TrockeurUser{user(login)} to User with builtInEntity
+}
+
+relationship OneToMany {
+    TrockeurUser to TradeObject,
+    TradeObject to GenericImage
+}
+
+relationship ManyToMany {
+    TradeObject to ObjectCategory,
+    TradeOffer to TradeObject,
+    TradeOffer to TrockeurUser
+}
+

@@ -1,0 +1,30 @@
+{
+  "trokeurApp": {
+    "trockeurUser": {
+      "home": {
+        "title": "TrockeurUsers",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Trockeur User",
+        "createOrEditLabel": "Créer ou éditer un Trockeur User",
+        "notFound": "Aucun Trockeur User trouvé"
+      },
+      "created": "Un nouveau Trockeur User a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Trockeur User avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Trockeur User avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Trockeur User {{ id }} ?"
+      },
+      "detail": {
+        "title": "Trockeur User"
+      },
+      "id": "ID",
+      "address": "Address",
+      "zipCode": "Zip Code",
+      "description": "Description",
+      "profilePicturePath": "Profile Picture Path",
+      "user": "User",
+      "tradeObject": "Trade Object",
+      "tradeOffer": "Trade Offer"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="trockeurUser">
+      <h2 data-cy="trockeurUserDetailsHeading"><span jhiTranslate="trokeurApp.trockeurUser.detail.title">Trockeur User</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ trockeurUser.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.trockeurUser.address">Address</span></dt>
+        <dd>
+          <span>{{ trockeurUser.address }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.trockeurUser.zipCode">Zip Code</span></dt>
+        <dd>
+          <span>{{ trockeurUser.zipCode }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.trockeurUser.description">Description</span></dt>
+        <dd>
+          <span>{{ trockeurUser.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.trockeurUser.profilePicturePath">Profile Picture Path</span></dt>
+        <dd>
+          <span>{{ trockeurUser.profilePicturePath }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.trockeurUser.user">User</span></dt>
+        <dd>
+          <span>{{ trockeurUser.user?.login }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/trockeur-user', trockeurUser.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>

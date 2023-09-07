@@ -1,0 +1,65 @@
+{
+  "applications": ["Trokeur"],
+  "changelogDate": "20230907141633",
+  "entityTableName": "trade_object",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "5"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "TradeObjectState",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "Neuf,Bon,Moyen,Mauvais"
+    },
+    {
+      "fieldName": "stock",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "TradeObject",
+  "relationships": [
+    {
+      "otherEntityName": "genericImage",
+      "otherEntityRelationshipName": "tradeObject",
+      "relationshipName": "genericImage",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "objectCategory",
+      "otherEntityRelationshipName": "tradeObject",
+      "relationshipName": "objectCategory",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "trockeurUser",
+      "otherEntityRelationshipName": "tradeObject",
+      "relationshipName": "trockeurUser",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "tradeOffer",
+      "otherEntityRelationshipName": "tradeObject",
+      "relationshipName": "tradeOffer",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

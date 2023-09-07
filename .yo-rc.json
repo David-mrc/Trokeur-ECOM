@@ -1,5 +1,6 @@
 {
   "generator-jhipster": {
+    "applicationIndex": 0,
     "applicationType": "monolith",
     "authenticationType": "jwt",
     "baseName": "Trokeur",
@@ -18,13 +19,14 @@
     "enableHibernateCache": true,
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
-    "entities": [],
+    "entities": ["TradeObject", "GenericImage", "TrockeurUser", "ObjectCategory", "TradeOffer"],
     "entitySuffix": "",
     "gradleEnterpriseHost": null,
     "jhiPrefix": "jhi",
     "jhipsterVersion": "8.0.0-beta.2",
     "jwtSecretKey": "MTNmZDA5ODU4ZWYzZWI3YzY0ZmFiNjE3MDI0MjAyMTM5MDUwNzFiMjY1MTAxZGUzNDc5YTkzOTZkMmYxZWY4YjU3NTFjYThiYWVmZjk0ZDUwZGNhMmU5NzdhNzY3MTQxZmQ5Yzg5NzFkOWYxNTBmOGRjNTYxZGFhN2NjMmZkMjA=",
     "languages": ["fr", "en"],
+    "lastLiquibaseTimestamp": 1694096197000,
     "messageBroker": false,
     "microfrontend": false,
     "microfrontends": [],

@@ -1,0 +1,36 @@
+{
+  "applications": ["Trokeur"],
+  "changelogDate": "20230907141637",
+  "entityTableName": "trade_offer",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "TradeOfferState",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN_COURS,ACCEPTE,REFUSE,FINALISE"
+    }
+  ],
+  "name": "TradeOffer",
+  "relationships": [
+    {
+      "otherEntityName": "tradeObject",
+      "otherEntityRelationshipName": "tradeOffer",
+      "relationshipName": "tradeObject",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "trockeurUser",
+      "otherEntityRelationshipName": "tradeOffer",
+      "relationshipName": "trockeurUser",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

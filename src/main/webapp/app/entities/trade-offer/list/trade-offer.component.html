@@ -1,0 +1,119 @@
+<div>
+  <h2 id="page-heading" data-cy="TradeOfferHeading">
+    <span jhiTranslate="trokeurApp.tradeOffer.home.title">TradeOffers</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="trokeurApp.tradeOffer.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-trade-offer"
+        [routerLink]="['/trade-offer/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="trokeurApp.tradeOffer.home.createLabel"> Créer un nouveau Trade Offer </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="tradeOffers?.length === 0">
+    <span jhiTranslate="trokeurApp.tradeOffer.home.notFound">Aucun Trade Offer trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="tradeOffers && tradeOffers.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="date">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeOffer.date">Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="state">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeOffer.state">State</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="tradeObject.id">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeOffer.tradeObject">Trade Object</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="trockeurUser.id">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeOffer.trockeurUser">Trockeur User</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tradeOffer of tradeOffers; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/trade-offer', tradeOffer.id, 'view']">{{ tradeOffer.id }}</a>
+          </td>
+          <td>{{ tradeOffer.date | formatMediumDate }}</td>
+          <td jhiTranslate="{{ 'trokeurApp.TradeOfferState.' + tradeOffer.state }}">{{ tradeOffer.state }}</td>
+          <td>
+            <span *ngFor="let tradeObject of tradeOffer.tradeObjects; let last = last">
+              <a class="form-control-static" [routerLink]="['/trade-object', tradeObject.id, 'view']">{{ tradeObject.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </td>
+          <td>
+            <span *ngFor="let trockeurUser of tradeOffer.trockeurUsers; let last = last">
+              <a class="form-control-static" [routerLink]="['/trockeur-user', trockeurUser.id, 'view']">{{ trockeurUser.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/trade-offer', tradeOffer.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/trade-offer', tradeOffer.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(tradeOffer)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+{
+  "applications": ["Trokeur"],
+  "changelogDate": "20230907141634",
+  "entityTableName": "generic_image",
+  "fields": [
+    {
+      "fieldName": "imagePath",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "GenericImage",
+  "relationships": [
+    {
+      "otherEntityName": "tradeObject",
+      "otherEntityRelationshipName": "genericImage",
+      "relationshipName": "tradeObject",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

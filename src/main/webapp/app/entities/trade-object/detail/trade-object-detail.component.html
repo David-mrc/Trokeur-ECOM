@@ -1,0 +1,57 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="tradeObject">
+      <h2 data-cy="tradeObjectDetailsHeading"><span jhiTranslate="trokeurApp.tradeObject.detail.title">Trade Object</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="trokeurApp.tradeObject.id">Id</span></dt>
+        <dd>
+          <span>{{ tradeObject.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeObject.name">Name</span></dt>
+        <dd>
+          <span>{{ tradeObject.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeObject.description">Description</span></dt>
+        <dd>
+          <span>{{ tradeObject.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeObject.state">State</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'trokeurApp.TradeObjectState.' + tradeObject.state }}">{{ tradeObject.state }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeObject.stock">Stock</span></dt>
+        <dd>
+          <span>{{ tradeObject.stock }}</span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeObject.objectCategory">Object Category</span></dt>
+        <dd>
+          <span *ngFor="let objectCategory of tradeObject.objectCategories; let last = last">
+            <a [routerLink]="['/object-category', objectCategory.id, 'view']">{{ objectCategory.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeObject.trockeurUser">Trockeur User</span></dt>
+        <dd>
+          <div *ngIf="tradeObject.trockeurUser">
+            <a [routerLink]="['/trockeur-user', tradeObject.trockeurUser.id, 'view']">{{ tradeObject.trockeurUser.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/trade-object', tradeObject.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>
