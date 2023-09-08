@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TrockeurUser;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -191,5 +192,17 @@ public class TrockeurUserResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+     /**
+     * {@code GET  /current-trockeur-user-id} : get the current (authenticated) trockeurUser id.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the trockeurUser, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/current-trockeur-user-id")
+    public ResponseEntity<Long> getCurrentTrockeurUser() {
+        log.debug("REST request to get current TrockeurUser id : {}");
+        Optional<Long> currentTrockeurUserId = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin());
+        return ResponseUtil.wrapOrNotFound(currentTrockeurUserId);
     }
 }
