@@ -11,6 +11,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -205,4 +207,17 @@ public class TradeObjectResource {
         Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findAllObjectsOfUser(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(allUserObjects);
     }
+
+    /**
+     * {@code GET  /category-trade-objects/{categoryId} : get the trade objects of the category
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/category-trade-objects/{categoryId}")
+    public ResponseEntity<Set<TradeObject>> getObjectsOfCategory(@PathVariable Optional<Long> categoryId) {
+        log.debug("REST request to get TradeObject of category");
+        Optional<Set<TradeObject>> objectsOfCategory = tradeObjectRepository.findObjectsOfCategory(categoryId);
+        return ResponseUtil.wrapOrNotFound(objectsOfCategory);
+    }
+
 }

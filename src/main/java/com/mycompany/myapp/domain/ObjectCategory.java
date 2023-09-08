@@ -28,6 +28,7 @@ public class ObjectCategory implements Serializable {
 
     @NotNull
     @Column(name = "name", nullable = false)
+    //TODO : rendre unique le nom de catégorie
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "objectCategories")
