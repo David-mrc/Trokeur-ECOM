@@ -35,7 +35,7 @@ describe('RegisterService Service', () => {
       const city = '123 Main St';
       const postalCode = '12345';
       const langKey = 'FR';
-      const registration = new Registration(login, email, password, langKey, firstName, lastName, city, postalCode);
+      const registration = new Registration(login, email, password, firstName, lastName, city, postalCode, langKey);
 
       // WHEN
       service.save(registration).subscribe();
@@ -46,7 +46,7 @@ describe('RegisterService Service', () => {
       });
 
       // THEN
-      expect(testRequest.request.body).toEqual({ email, langKey, login, password });
+      expect(testRequest.request.body).toEqual({ login, email, password, firstName, lastName, city, postalCode, langKey });
     });
   });
 });
