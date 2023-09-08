@@ -197,7 +197,7 @@ public class TradeObjectResource {
     }
 
     /**
-     * {@code GET  /current-trockeur-user-trade-objects} : get the trade objects of the current user
+     * {@code GET  /current-trockeur-user-trade-objects : get the trade objects of the current user
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
@@ -209,7 +209,7 @@ public class TradeObjectResource {
     }
 
     /**
-     * {@code GET  /category-trade-objects/{categoryId} : get the trade objects of the category
+     * {@code GET  /category-trade-objects/:categoryId} : get the trade objects of the category
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
