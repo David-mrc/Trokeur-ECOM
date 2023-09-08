@@ -1,9 +1,11 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.TrockeurUser;
 import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.MailService;
+import com.mycompany.myapp.service.TrockeurUserService;
 import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.service.dto.AdminUserDTO;
 import com.mycompany.myapp.service.dto.PasswordChangeDTO;
@@ -40,10 +42,13 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final TrockeurUserService trockeurUserService;
+
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, TrockeurUserService trockeurUserService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.trockeurUserService = trockeurUserService;
     }
 
     /**
@@ -61,7 +66,9 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        TrockeurUser trockeurUser = trockeurUserService.registerTrockeurUser(user);
+        // TODO : uncomment if needed
+        //mailService.sendActivationEmail(user);
     }
 
     /**
