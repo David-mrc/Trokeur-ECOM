@@ -37,4 +37,7 @@ public interface TrockeurUserRepository extends JpaRepository<TrockeurUser, Long
 
     @Query("select trockeurUser from TrockeurUser trockeurUser left join fetch trockeurUser.user where trockeurUser.id =:id")
     Optional<TrockeurUser> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query("select trockeurUser.id from TrockeurUser trockeurUser where trockeurUser.user.login =:login")
+    Optional<Long> findTrockeurUserIdByLogin(@Param("login") Optional<String> login);
 }
