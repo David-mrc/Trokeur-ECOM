@@ -36,9 +36,9 @@
           "required": "Your last name is required.",
           "maxlength": "Your last name cannot be longer than 50 characters."
         },
-        "address": {
-          "required": "Your address is required.",
-          "maxlength": "Your address cannot be longer than 255 characters."
+        "city": {
+          "required": "Your city is required.",
+          "maxlength": "Your city cannot be longer than 50 characters."
         },
         "postalCode": {
           "required": "Your postal code is required.",

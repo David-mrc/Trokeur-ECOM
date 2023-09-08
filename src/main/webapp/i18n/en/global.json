@@ -51,8 +51,8 @@
       "firstName.placeholder": "Your first name",
       "lastName.label": "Last Name",
       "lastName.placeholder": "Your last name",
-      "adress.label": "Adress",
-      "adress.placeholder": "Your adress (Number + Street + CITY)",
+      "city.label": "City",
+      "city.placeholder": "Your city",
       "postalCode.label": "Postal Code",
       "postalCode.placeholder": "Your postal code"
     },

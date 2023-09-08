@@ -55,9 +55,9 @@ export default class RegisterComponent implements AfterViewInit {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(50)],
     }),
-    address: new FormControl('', {
+    city: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(255)],
+      validators: [Validators.required, Validators.maxLength(50)],
     }),
     postalCode: new FormControl('', {
       nonNullable: true,
@@ -83,9 +83,9 @@ export default class RegisterComponent implements AfterViewInit {
     if (password !== confirmPassword) {
       this.doNotMatch = true;
     } else {
-      const { login, email, firstName, lastName, address, postalCode } = this.registerForm.getRawValue();
+      const { login, email, firstName, lastName, city, postalCode } = this.registerForm.getRawValue();
       this.registerService
-        .save({ login, email, password, firstName, lastName, address, postalCode, langKey: this.translateService.currentLang })
+        .save({ login, email, password, firstName, lastName, city, postalCode, langKey: this.translateService.currentLang })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }

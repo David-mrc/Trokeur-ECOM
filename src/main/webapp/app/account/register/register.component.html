@@ -127,23 +127,23 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="address">Adresse</label>
+          <label class="form-label" for="city" jhiTranslate="global.form.city.label">citye</label>
           <input
             type="text"
             class="form-control"
-            id="address"
-            name="address"
-            placeholder="{{ 'global.form.adress.placeholder' | translate }}"
-            formControlName="address"
-            data-cy="address"
+            id="city"
+            name="city"
+            placeholder="{{ 'global.form.city.placeholder' | translate }}"
+            formControlName="city"
+            data-cy="city"
           />
-          <div *ngIf="registerForm.get('address')!.invalid && (registerForm.get('address')!.dirty || registerForm.get('address')!.touched)">
+          <div *ngIf="registerForm.get('city')!.invalid && (registerForm.get('city')!.dirty || registerForm.get('city')!.touched)">
             <small
               class="form-text text-danger"
-              *ngIf="registerForm.get('address')?.errors?.required"
-              jhiTranslate="register.messages.validate.address.required"
+              *ngIf="registerForm.get('city')?.errors?.required"
+              jhiTranslate="register.messages.validate.city.required"
             >
-              Votre adresse est requise.
+              Votre ville est requise.
             </small>
           </div>
         </div>

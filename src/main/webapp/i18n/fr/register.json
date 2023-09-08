@@ -36,9 +36,9 @@
           "required": "Votre nom est requis.",
           "maxlength": "Votre nom ne doit pas comporter plus de 50 caractères."
         },
-        "address": {
-          "required": "Votre adresse est requise.",
-          "maxlength": "Votre adresse ne doit pas comporter plus de 255 caractères."
+        "city": {
+          "required": "Votre ville est requise.",
+          "maxlength": "Votre ville ne doit pas comporter plus de 50 caractères."
         },
         "postalCode": {
           "required": "Votre code postal est requis.",

@@ -32,10 +32,10 @@ describe('RegisterService Service', () => {
       const password = 'pass';
       const firstName = 'John';
       const lastName = 'Doe';
-      const address = '123 Main St';
+      const city = '123 Main St';
       const postalCode = '12345';
       const langKey = 'FR';
-      const registration = new Registration(login, email, password, langKey, firstName, lastName, address, postalCode);
+      const registration = new Registration(login, email, password, langKey, firstName, lastName, city, postalCode);
 
       // WHEN
       service.save(registration).subscribe();
