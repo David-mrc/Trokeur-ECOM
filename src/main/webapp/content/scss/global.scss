@@ -99,6 +99,7 @@ Generic styles
 
 .form-control {
   background-color: #fff;
+  border-radius: 0.5rem;
 }
 
 .readonly {
@@ -107,7 +108,13 @@ Generic styles
 }
 
 .footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: khaki;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  --bs-gutter-x: 0 !important;
+  height: 200px;
 }
 
 .hand,

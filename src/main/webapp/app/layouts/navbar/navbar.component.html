@@ -1,9 +1,13 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
+<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-white">
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
       <span class="navbar-version">{{ version }}</span>
     </a>
+    <div class="font-weight-bold">
+      Proposer un objet
+      <a href="#" class="btn btn-warning ml-3"> + </a>
+    </div>
     <a
       class="navbar-toggler d-lg-none"
       href="javascript:void(0);"
