@@ -3,9 +3,12 @@ package com.mycompany.myapp.repository;
 import com.mycompany.myapp.domain.TradeObject;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,4 +30,11 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     default Page<TradeObject> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    //TODO : trier la liste d'objets...
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login")
+    Optional<List<TradeObject>> findAllObjectsOfUser(@Param("login") Optional<String> login);
+
+    @Query("select objectCategory.tradeObjects from ObjectCategory objectCategory where objectCategory.id = :categoryId")
+    Optional<Set<TradeObject>> findObjectsOfCategory(@Param("category") Optional<Long> categoryId);
 }

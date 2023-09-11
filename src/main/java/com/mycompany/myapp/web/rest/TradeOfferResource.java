@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeOffer;
 import com.mycompany.myapp.repository.TradeOfferRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -185,5 +186,17 @@ public class TradeOfferResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /current-trockeur-user-trade-offers} : get the current user's tradeOffer(s).
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/current-trockeur-user-trade-offers")
+    public ResponseEntity<List<TradeOffer>> getMyTradeOffers() {
+        log.debug("REST request to get current user's TradeOffer");
+        Optional<List<TradeOffer>> tradeOffers = tradeOfferRepository.findAllOffersOfUser(SecurityUtils.getCurrentUserLogin());
+        return ResponseUtil.wrapOrNotFound(tradeOffers);
     }
 }
