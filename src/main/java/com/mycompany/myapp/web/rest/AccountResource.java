@@ -66,7 +66,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        TrockeurUser trockeurUser = trockeurUserService.registerTrockeurUser(user);
+        TrockeurUser trockeurUser = trockeurUserService.registerTrockeurUser(managedUserVM.getCity(), managedUserVM.getPostalCode(), user);
         // TODO : uncomment if needed
         //mailService.sendActivationEmail(user);
     }
@@ -102,16 +102,16 @@ public class AccountResource {
     /**
      * {@code POST  /account} : update the current user information.
      *
-     * @param userDTO the current user information.
+     * @param managedUserVM the managed user View Model.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
-    public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
+    public void saveAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new AccountResourceException("Current user login not found"));
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail());
         if (existingUser.isPresent() && (!existingUser.orElseThrow().getLogin().equalsIgnoreCase(userLogin))) {
             throw new EmailAlreadyUsedException();
         }
@@ -120,12 +120,21 @@ public class AccountResource {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(
-            userDTO.getFirstName(),
-            userDTO.getLastName(),
-            userDTO.getEmail(),
-            userDTO.getLangKey(),
-            userDTO.getImageUrl()
+            managedUserVM.getFirstName(),
+            managedUserVM.getLastName(),
+            managedUserVM.getEmail(),
+            managedUserVM.getLangKey(),
+            managedUserVM.getImageUrl()
         );
+        if (user.isPresent()) {
+            User actualUser = user.get();
+            trockeurUserService.updateTrockeurUser(
+                managedUserVM.getCity(),
+                managedUserVM.getPostalCode(),
+                managedUserVM.getDescription(),
+                managedUserVM.getImagePath(),
+                actualUser);
+        }
     }
 
     /**
