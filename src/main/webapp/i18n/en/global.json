@@ -9,6 +9,7 @@
         "main": "Entities",
         "tradeObject": "Trade Object",
         "trockeurUser": "Trockeur User",
+        "genericImage": "Generic Image",
         "objectCategory": "Object Category",
         "tradeOffer": "Trade Offer",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
