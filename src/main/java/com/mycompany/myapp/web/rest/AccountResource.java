@@ -115,10 +115,6 @@ public class AccountResource {
         if (existingUser.isPresent() && (!existingUser.orElseThrow().getLogin().equalsIgnoreCase(userLogin))) {
             throw new EmailAlreadyUsedException();
         }
-        Optional<User> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
-            throw new AccountResourceException("User could not be found");
-        }
         userService.updateUser(
             managedUserVM.getFirstName(),
             managedUserVM.getLastName(),
@@ -126,6 +122,10 @@ public class AccountResource {
             managedUserVM.getLangKey(),
             managedUserVM.getImageUrl()
         );
+        Optional<User> user = userRepository.findOneByLogin(userLogin);
+        if (!user.isPresent()) {
+            throw new AccountResourceException("User could not be found");
+        }
         if (user.isPresent()) {
             User actualUser = user.get();
             trockeurUserService.updateTrockeurUser(
