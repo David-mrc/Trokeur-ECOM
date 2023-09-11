@@ -1,2 +1,7 @@
-<p>state works!</p>
-<p>{{state}}</p>
+<span *ngIf="state === 'Neuf'" class="badge rounded-pill text-bg-success">{{state}}</span>
+
+<span *ngIf="state === 'Bon'" class="badge rounded-pill text-bg-info">{{state}}</span>
+
+<span *ngIf="state === 'Moyen'" class="badge rounded-pill text-bg-warning">{{state}}</span>
+
+<span *ngIf="state === 'Mauvais'" class="badge rounded-pill text-bg-danger">{{state}}</span>

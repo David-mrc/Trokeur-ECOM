@@ -1,30 +1,20 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { ApplicationConfigService } from "app/core/config/application-config.service";
+import { TradeObject } from "app/interfaces/TradeObjectInterface";
+import { Observable } from "rxjs";
 
-interface TradeObject {
-  imagePath: string;
-  title: string;
-  state: string;
-}
 @Injectable({
   providedIn: "root"
 })
 
 export class productService {
-  private _product = new BehaviorSubject<TradeObject>({
-    imagePath: '',
-    title: '',
-    state: ''
-  })
 
-  private _product$ = this._product.asObservable();
+  private resourceUrl = this.applicationConfigService.getEndpointFor('api/trade-objects');
 
-  getProduct(): Observable<TradeObject> {
-    return this._product$;
+  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+
+  getAllProducts(): Observable<TradeObject[]> {
+    return this.http.get<TradeObject[]>(this.resourceUrl);
   }
-
-  setProduct(latestValue: TradeObject): void {
-    return this._product.next(latestValue);
-  }
-
 }

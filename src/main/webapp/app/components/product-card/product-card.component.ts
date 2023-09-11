@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {  Subscription } from 'rxjs';
-import { productService } from '../product-service';
+import { Component, Input } from '@angular/core';
+import { TradeObject } from 'app/interfaces/TradeObjectInterface';
 
 @Component({
   selector: 'jhi-product-card',
@@ -8,27 +7,15 @@ import { productService } from '../product-service';
   styleUrls: ['./product-card.component.scss']
 })
 
+export class ProductCardComponent {
+  @Input() tradeObject: TradeObject | undefined;
+  @Input() isPublic = true;
 
-export class ProductCardComponent implements OnInit, OnDestroy{
-  imagePath = '';
-  title = '';
-  state = '';
-
-  subscription: Subscription = new Subscription;
-
-  constructor(private _productService: productService) {}
-
-  ngOnInit(): void {
-    this.subscription = this._productService
-      .getProduct()
-      .subscribe((product) => {
-        this.imagePath = product.imagePath;
-        this.title = product.title;
-        this.state = product.state;
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  getPathToFirstImage(): string {
+    if (this.tradeObject?.genericImages?.[0]) {
+      return this.tradeObject.genericImages[0].imagePath;
+    } else {
+      return "/content/images/logoTrokeur.png";
+    }
   }
 }

@@ -1,46 +1,15 @@
-.listProduct {
-  display: flex;
-  flex-direction: row;
-  margin-top: 5vh;
+img {
+  object-fit: contain;
 }
 
-.columnProduct {
-  display: flex;
-  flex-direction: column;
-}
-
-.productCard {
-  border: 1px solid black;
-  border-radius: 1rem;
-  width: 20%;
-  height: 30vh;
-  margin-left: 4%;
-}
-
-.productContent {
-  height: calc(30vh - 2rem);
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-right: 2rem;
-  margin-left: 2rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.productHeader {
+.card-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.title, .state {
-  font-size: 20px;
-  margin: 0px;
-}
-
-button {
-  width: 50%;
-  margin-left: 25%;
-  align-items: flex-end;
-  margin-top: auto;
+.privateActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
