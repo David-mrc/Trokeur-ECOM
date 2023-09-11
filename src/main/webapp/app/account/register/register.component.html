@@ -1,7 +1,7 @@
 <div>
   <div class="d-flex justify-content-center">
     <div class="col-md-8">
-      <h1 jhiTranslate="register.title" data-cy="registerTitle">Création de compte utilisateur</h1>
+      <h1 jhiTranslate="register.title" data-cy="registerTitle">Création de votre compte Trokeur</h1>
 
       <div class="alert alert-success" *ngIf="success" jhiTranslate="register.messages.success">
         <strong>Compte enregistré !</strong> Merci de vérifier votre email de confirmation.
@@ -47,7 +47,7 @@
               *ngIf="registerForm.get('login')?.errors?.required"
               jhiTranslate="register.messages.validate.login.required"
             >
-              Votre nom d'utilisateur est obligatoire.
+              Votre nom d'utilisateur est requis.
             </small>
 
             <small
@@ -72,6 +72,104 @@
               jhiTranslate="register.messages.validate.login.pattern"
             >
               Votre nom d'utilisateur est invalide.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="firstName" jhiTranslate="global.form.firstName.label">Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="{{ 'global.form.firstName.placeholder' | translate }}"
+            formControlName="firstName"
+            data-cy="firstName"
+          />
+          <div
+            *ngIf="
+              registerForm.get('firstName')!.invalid && (registerForm.get('firstName')!.dirty || registerForm.get('firstName')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('firstName')?.errors?.required"
+              jhiTranslate="register.messages.validate.firstName.required"
+            >
+              Votre prénom est requis.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="lastName" jhiTranslate="global.form.lastName.label">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            placeholder="{{ 'global.form.lastName.placeholder' | translate }}"
+            formControlName="lastName"
+            data-cy="lastName"
+          />
+          <div
+            *ngIf="registerForm.get('lastName')!.invalid && (registerForm.get('lastName')!.dirty || registerForm.get('lastName')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('lastName')?.errors?.required"
+              jhiTranslate="register.messages.validate.lastName.required"
+            >
+              Votre nom est requis.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="city" jhiTranslate="global.form.city.label">city</label>
+          <input
+            type="text"
+            class="form-control"
+            id="city"
+            name="city"
+            placeholder="{{ 'global.form.city.placeholder' | translate }}"
+            formControlName="city"
+            data-cy="city"
+          />
+          <div *ngIf="registerForm.get('city')!.invalid && (registerForm.get('city')!.dirty || registerForm.get('city')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('city')?.errors?.required"
+              jhiTranslate="register.messages.validate.city.required"
+            >
+              Votre ville est requise.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="postalCode" jhiTranslate="global.form.postalCode.label">Code Postal</label>
+          <input
+            type="text"
+            class="form-control"
+            id="postalCode"
+            name="postalCode"
+            placeholder="{{ 'global.form.postalCode.placeholder' | translate }}"
+            formControlName="postalCode"
+            data-cy="postalCode"
+          />
+          <div
+            *ngIf="
+              registerForm.get('postalCode')!.invalid && (registerForm.get('postalCode')!.dirty || registerForm.get('postalCode')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('postalCode')?.errors?.required"
+              jhiTranslate="register.messages.validate.postalCode.required"
+            >
+              Votre code postal est requis.
             </small>
           </div>
         </div>

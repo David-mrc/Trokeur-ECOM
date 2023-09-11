@@ -8,9 +8,41 @@
       "validate": {
         "login": {
           "required": "Your username is required.",
-          "minlength": "Your username is required to be at least 1 character.",
-          "maxlength": "Your username cannot be longer than 50 characters.",
+          "minlength": "Your username must contain more than one character.",
+          "maxlength": "Your username cannot contain more than 50 characters.",
           "pattern": "Your username is invalid."
+        },
+        "email": {
+          "required": "Your email is required.",
+          "invalid": "Your email is not valid.",
+          "minlength": "Your email must be at least 5 characters long.",
+          "maxlength": "Your email cannot be longer than 254 characters."
+        },
+        "password": {
+          "required": "Your password is required.",
+          "minlength": "Your password must be at least 4 characters long.",
+          "maxlength": "Your password cannot be longer than 50 characters."
+        },
+        "confirmPassword": {
+          "required": "Password confirmation is required.",
+          "minlength": "Password confirmation must be at least 4 characters long.",
+          "maxlength": "Password confirmation cannot be longer than 50 characters."
+        },
+        "firstName": {
+          "required": "Your first name is required.",
+          "maxlength": "Your first name cannot be longer than 50 characters."
+        },
+        "lastName": {
+          "required": "Your last name is required.",
+          "maxlength": "Your last name cannot be longer than 50 characters."
+        },
+        "city": {
+          "required": "Your city is required.",
+          "maxlength": "Your city cannot be longer than 50 characters."
+        },
+        "postalCode": {
+          "required": "Your postal code is required.",
+          "maxlength": "Your postal code cannot be longer than 10 characters."
         }
       },
       "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
