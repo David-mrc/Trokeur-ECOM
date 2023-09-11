@@ -1,3 +1,4 @@
+import { TradeObjectUpdateComponent } from './entities/trade-object/update/trade-object-update.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -41,6 +42,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'login',
           component: LoginComponent,
           title: 'login.title',
+        },
+        {
+          path: 'add-product',
+          component: TradeObjectUpdateComponent
         },
         {
           path: '',
