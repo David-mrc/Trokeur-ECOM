@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,4 +28,7 @@ public interface TradeOfferRepository extends TradeOfferRepositoryWithBagRelatio
     default Page<TradeOffer> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    @Query("select trockeurUser.tradeOffers from TrockeurUser trockeurUser where trockeurUser.user.login = :login")
+    Optional<List<TradeOffer>> findAllOffersOfUser(@Param("login") Optional<String> login);
 }
