@@ -23,6 +23,7 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { StateComponent } from './components/state/state.component';
 import { ListProductComponent } from './components/list-product/list-product.component';
+import { MyProductsComponent } from './components/my-products/my-products.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { ListProductComponent } from './components/list-product/list-product.com
   declarations: [
     ProductCardComponent,
     StateComponent,
-    ListProductComponent
+    ListProductComponent,
+    MyProductsComponent
   ],
 })
 export class AppModule {

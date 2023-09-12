@@ -11,6 +11,7 @@ import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ListProductComponent } from './components/list-product/list-product.component';
+import { MyProductsComponent } from './components/my-products/my-products.component';
 
 @NgModule({
   imports: [
@@ -51,6 +52,11 @@ import { ListProductComponent } from './components/list-product/list-product.com
           path: 'product',
           component: ListProductComponent,
           title: 'ListProductComponent.title',
+        },
+        {
+          path: 'account/my-products',
+          component: MyProductsComponent,
+          title: 'MyProductsComponent.title',
         },
         ...errorRoute,
       ],
