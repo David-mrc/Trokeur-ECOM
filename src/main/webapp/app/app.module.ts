@@ -5,7 +5,7 @@ import locale from '@angular/common/locales/fr';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,6 +35,7 @@ import { MyProductsComponent } from './components/my-products/my-products.compon
     HttpClientModule,
     MainModule,
     TranslationModule,
+    FontAwesomeModule,
   ],
   providers: [
     Title,
@@ -44,12 +45,7 @@ import { MyProductsComponent } from './components/my-products/my-products.compon
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
-  declarations: [
-    ProductCardComponent,
-    StateComponent,
-    ListProductComponent,
-    MyProductsComponent
-  ],
+  declarations: [ProductCardComponent, StateComponent, ListProductComponent, MyProductsComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
