@@ -7,15 +7,28 @@
       >
         Ajouter un objet
       </h2>
-      <div class="mb-3 col-6">
-        <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" name="titre" maxlength="255" required>
+      <div class="mb-3 mt-3">
+        <label class="form-label" for="field_name">Titre</label>
+        <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+            Ce champ est obligatoire.
+          </small>
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('name')?.errors?.minlength"
+            jhiTranslate="entity.validation.minlength"
+            [translateValues]="{ min: 5 }"
+          >
+            Ce champ doit faire au minimum 5 caractères.
+          </small>
+        </div>
       </div>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="mb-3">
+        <div class="mb-3 col-3">
           <label class="form-label" for="field_state">Etat</label>
           <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
             <option [ngValue]="null">{{ 'trokeurApp.TradeObjectState.null' | translate }}</option>
@@ -30,7 +43,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 col-6">
           <label for="field_objectCategories">Catégories</label>
           <select
             class="form-control"
@@ -42,7 +55,7 @@
             [compareWith]="compareObjectCategory"
           >
             <option [ngValue]="objectCategoryOption" *ngFor="let objectCategoryOption of objectCategoriesSharedCollection">
-              {{ objectCategoryOption.id }}
+              {{ objectCategoryOption.name }}
             </option>
           </select>
         </div>
@@ -59,19 +72,29 @@
           ></textarea>
         </div>
 
-        <div class="mb-3 col-6">
-          <label for="photos" class="form-label">Ajouter des photos</label>
-          <input type="file" class="form-control" id="photos" name="photos" accept="image/*" multiple (change)="previewImages($event)">
-        </div>
 
-        <div id="image-preview" class="mb-3">
-          <div *ngFor="let image of imagePreviews; let i = index" class="preview-container">
-            <img [src]="image" alt="Image Preview" class="preview-image">
-            <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(i)">Supprimer</button>
+          <div class="col-6">
+            <label for="photos" class="form-label">Ajouter des photos</label>
+            <input type="file" class="form-control" id="photos" name="photos" accept="image/*" multiple (change)="previewImages($event)">
+          </div>
+
+          <div id="image-preview">
+            <div *ngFor="let image of imagePreviews; let i = index" class="preview-container">
+              <div class="card shadow mt-3 ml-1 p-3">
+              <img [src]="image" alt="Image Preview" class="preview-image">
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(i)">
+                <fa-icon icon="trash" style="color: #ffffff;"></fa-icon>
+                <span class="icon-text">Supprimer</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <button type="submit" class="btn btn-warning">Valider</button>
+
+        <button type="submit" class="btn btn-warning mt-3">
+          <fa-icon icon="check" style="color: #000000;"></fa-icon>
+          <span class="icon-text">Valider</span>
+        </button>
       </div>
     </form>
   </div>
