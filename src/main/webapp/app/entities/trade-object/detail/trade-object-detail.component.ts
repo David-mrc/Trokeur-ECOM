@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ITradeObject } from '../trade-object.model';
@@ -10,10 +12,14 @@ import { DataUtils } from 'app/core/util/data-util.service';
   standalone: true,
   selector: 'jhi-trade-object-detail',
   templateUrl: './trade-object-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
+  imports: [SharedModule, RouterModule, NgbCarouselModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class TradeObjectDetailComponent {
+  // TODO 1 : afficher les vraies images de l'objet dans l'html
+  // TODO 2 : afficher le composant state pour l'état au lieu de l'afficher textuellement
+  // TODO 3 : mapper le bouton "Troker"
   @Input() tradeObject: ITradeObject | null = null;
+  images = this.tradeObject?.genericImages;
 
   constructor(protected dataUtils: DataUtils, protected activatedRoute: ActivatedRoute) {}
 
@@ -28,4 +34,5 @@ export class TradeObjectDetailComponent {
   previousState(): void {
     window.history.back();
   }
+
 }
