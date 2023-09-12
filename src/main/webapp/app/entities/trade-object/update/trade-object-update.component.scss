@@ -1,0 +1,16 @@
+.preview-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  object-fit: contain;
+}
+
+.preview-container {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.disabled-button:disabled {
+  opacity: 0.3;
+}

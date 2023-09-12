@@ -20,6 +20,9 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { StateComponent } from './components/state/state.component';
+import { ListProductComponent } from './components/list-product/list-product.component';
 
 @NgModule({
   imports: [
@@ -40,6 +43,11 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
+  declarations: [
+    ProductCardComponent,
+    StateComponent,
+    ListProductComponent
+  ],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

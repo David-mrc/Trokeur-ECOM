@@ -1,3 +1,4 @@
+import { TradeObjectUpdateComponent } from './entities/trade-object/update/trade-object-update.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -10,6 +11,7 @@ import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { ListProductComponent } from './components/list-product/list-product.component';
 
 @NgModule({
   imports: [
@@ -45,6 +47,11 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
+        },
+        {
+          path: 'product',
+          component: ListProductComponent,
+          title: 'ListProductComponent.title',
         },
         ...errorRoute,
       ],

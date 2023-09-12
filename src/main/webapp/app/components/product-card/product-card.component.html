@@ -1,0 +1,12 @@
+<div class="card mb-4" style="max-width: 25rem;">
+  <img src={{getPathToFirstImage()}} class="card-img-top" alt="Image du produit">
+  <div class="card-body card-header my-4">
+    <h6 class="card-title text-truncate" style="max-width: 90%;">{{tradeObject?.name}}</h6>
+    <jhi-state [state]="tradeObject ? tradeObject.state ? tradeObject.state : '' : ''"/>
+  </div>
+  <button *ngIf="isPublic" class="btn btn-primary" type="submit">Troker</button>
+  <div *ngIf="!isPublic" class="privateActions">
+    <button class="btn btn-primary" type="submit">Voir</button>
+    <button class="btn btn-primary" type="submit">Modifier</button>
+  </div>
+</div>
