@@ -1,0 +1,40 @@
+
+<div class="transactions-item horizontal-item card shadow p-6 col-12">
+  <div class="row">
+    <!-- Image à gauche -->
+    <img src="chemin_de_votre_image" alt="Image" class="item-image-left col-md-3">
+    
+    <div class="col-md-2">
+    <!-- Titre à gauche de l'image -->
+    <h2 class="item-title-left">Titre</h2>
+    <h3 class="item-title-left">description</h3>
+    </div>
+    <!-- Symbole au milieu -->
+    <div class="item-symbol col-md-2">Symbole</div>
+  
+    <!-- Deuxième titre à droite du symbole -->
+    <div class="col-md-2">
+      <!-- Titre à gauche de l'image -->
+      <h2 class="item-title-right">Titre</h2>
+      <h3 class="item-title-right">description</h3>
+      </div>
+  
+    <!-- Image à droite -->
+    <img src="chemin_de_votre_image" alt="Image" class="item-image-right col-md-3">
+    
+    <div class="row">
+    <!-- Transaction Proposée à quelqu'un d'autre -->
+      <button *ngIf="propose" class="item-button">Annuler Proposition</button>
+
+    <!-- Transaction Recue de quelqu'un d'autre -->
+      <!-- Bouton accepter la transaction -->
+      <button *ngIf="recues" class="item-button">Accepter Transaction</button>
+      <!-- Bouton refuser la transaction -->
+      <button *ngIf="recues" class="item-button">Refuser Transaction</button>
+    </div>
+    </div>
+
+</div>
+  
+
+  

@@ -23,6 +23,11 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { StateComponent } from './components/state/state.component';
 import { ListProductComponent } from './components/list-product/list-product.component';
+import { AffichageHistoriqueComponent } from './historique/affichage-historique/affichage-historique.component';
+import { HistoriqueTransactionsComponent } from './historique/historique-transactions/historique-transactions.component';
+import { TransactionProposeComponent } from './historique/transaction-propose/transaction-propose.component';
+import { TransactionRecueComponent } from './historique/transaction-recue/transaction-recue.component';
+
 
 @NgModule({
   imports: [
@@ -46,7 +51,11 @@ import { ListProductComponent } from './components/list-product/list-product.com
   declarations: [
     ProductCardComponent,
     StateComponent,
-    ListProductComponent
+    ListProductComponent,
+    AffichageHistoriqueComponent,
+    HistoriqueTransactionsComponent,
+    TransactionProposeComponent,
+    TransactionRecueComponent
   ],
 })
 export class AppModule {

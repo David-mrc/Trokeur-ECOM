@@ -26,7 +26,7 @@
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
             <span>
               <fa-icon icon="home"></fa-icon>
-              <span jhiTranslate="global.menu.home">Accueil</span>
+              <span >Accueil</span>
             </span>
           </a>
         </li>
@@ -42,7 +42,7 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
             <span>
               <fa-icon icon="th-list"></fa-icon>
-              <span jhiTranslate="global.menu.entities.main">Entités</span>
+              <span >Entités</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
@@ -55,7 +55,7 @@
                 (click)="collapseNavbar()"
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.tradeObject">Trade Object</span>
+                <span >Trade Object</span>
               </a>
             </li>
             <li>
@@ -67,7 +67,7 @@
                 (click)="collapseNavbar()"
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.genericImage">Generic Image</span>
+                <span >Generic Image</span>
               </a>
             </li>
             <li>
@@ -79,7 +79,7 @@
                 (click)="collapseNavbar()"
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.trockeurUser">Trockeur User</span>
+                <span >Trockeur User</span>
               </a>
             </li>
             <li>
@@ -91,7 +91,7 @@
                 (click)="collapseNavbar()"
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.objectCategory">Object Category</span>
+                <span >Object Category</span>
               </a>
             </li>
             <li>
@@ -103,7 +103,7 @@
                 (click)="collapseNavbar()"
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.tradeOffer">Trade Offer</span>
+                <span >Trade Offer</span>
               </a>
             </li>
             <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
@@ -120,71 +120,95 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
             <span>
               <fa-icon icon="users-cog"></fa-icon>
-              <span jhiTranslate="global.menu.admin.main">Administration</span>
+              <span >Administration</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
             <li>
               <a class="dropdown-item" routerLink="/admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.userManagement">Gestion des utilisateurs</span>
+                <span >Gestion des utilisateurs</span>
               </a>
             </li>
             <li>
               <a class="dropdown-item" routerLink="/admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.metrics">Métriques</span>
+                <span >Métriques</span>
               </a>
             </li>
             <li>
               <a class="dropdown-item" routerLink="/admin/health" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.health">Diagnostics</span>
+                <span >Diagnostics</span>
               </a>
             </li>
             <li>
               <a class="dropdown-item" routerLink="/admin/configuration" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
+                <span >Configuration</span>
               </a>
             </li>
             <li>
               <a class="dropdown-item" routerLink="/admin/logs" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.logs">Logs</span>
+                <span >Logs</span>
               </a>
             </li>
             <li *ngIf="openAPIEnabled">
               <a class="dropdown-item" routerLink="/admin/docs" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.apidocs">API</span>
+                <span >API</span>
               </a>
             </li>
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
             <li *ngIf="!inProduction">
               <a class="dropdown-item" href="./h2-console/" target="_tab" (click)="collapseNavbar()">
                 <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.database">Base de données</span>
+                <span >Base de données</span>
               </a>
             </li>
           </ul>
         </li>
-        <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
+        <li ngbDropdown class="dropdown dropdown pointer" display="dynamic">
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
             <span>
-              <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Langue</span>
+              <fa-icon icon="handshake"></fa-icon>
+              <span >Mes Troks</span>
             </span>
           </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
-            <li *ngFor="let language of languages">
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+            <li>
               <a
                 class="dropdown-item"
-                [jhiActiveMenu]="language"
-                href="javascript:void(0);"
-                (click)="changeLanguage(language); collapseNavbar()"
-                >{{ language | findLanguageFromKey }}</a
+                routerLink="/historique"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
               >
+                <span >Historique</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/troks-proposes"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <span >Troks Proposés</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/troks-recus"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <span >Troks Reçus</span>
+              </a>
             </li>
           </ul>
         </li>
@@ -198,7 +222,7 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
             <span *ngIf="!account?.imageUrl">
               <fa-icon icon="user"></fa-icon>
-              <span jhiTranslate="global.menu.account.main">Compte</span>
+              <span >Compte</span>
             </span>
             <span *ngIf="account?.imageUrl">
               <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
@@ -208,13 +232,25 @@
             <li *ngSwitchCase="true">
               <a
                 class="dropdown-item"
+                routerLink="/account/my-products"
+                routerLinkActive="active"
+                (click)="collapseNavbar()"
+                data-cy="settings"
+              >
+                <fa-icon icon="boxes-stacked" [fixedWidth]="true"></fa-icon>
+                <span>Mes produits</span>
+              </a>
+            </li>
+            <li *ngSwitchCase="true">
+              <a
+                class="dropdown-item"
                 routerLink="/account/settings"
                 routerLinkActive="active"
                 (click)="collapseNavbar()"
                 data-cy="settings"
               >
                 <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.settings">Profil</span>
+                <span >Profil</span>
               </a>
             </li>
             <li *ngSwitchCase="true">
@@ -226,19 +262,19 @@
                 data-cy="passwordItem"
               >
                 <fa-icon icon="lock" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.password">Mot de passe</span>
+                <span >Mot de passe</span>
               </a>
             </li>
             <li *ngSwitchCase="true">
               <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">
                 <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.logout">Déconnexion</span>
+                <span >Déconnexion</span>
               </a>
             </li>
             <li *ngSwitchCase="false">
               <a class="dropdown-item" (click)="login()" id="login" data-cy="login">
                 <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.login">S'authentifier</span>
+                <span >S'authentifier</span>
               </a>
             </li>
             <li *ngSwitchCase="false">
@@ -250,7 +286,7 @@
                 data-cy="register"
               >
                 <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.register">Créer un compte</span>
+                <span >Créer un compte</span>
               </a>
             </li>
           </ul>
