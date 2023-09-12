@@ -1,3 +1,4 @@
+import { TradeObjectUpdateComponent } from './entities/trade-object/update/trade-object-update.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 

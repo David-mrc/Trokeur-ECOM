@@ -51,7 +51,7 @@ export class TradeObjectFormService {
       state: new FormControl(tradeObjectRawValue.state, {
         validators: [Validators.required],
       }),
-      stock: new FormControl(tradeObjectRawValue.stock, {
+      stock: new FormControl(1, {
         validators: [Validators.required],
       }),
       objectCategories: new FormControl(tradeObjectRawValue.objectCategories ?? []),

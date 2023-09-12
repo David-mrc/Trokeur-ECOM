@@ -23,6 +23,7 @@ import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.m
   standalone: true,
   selector: 'jhi-trade-object-update',
   templateUrl: './trade-object-update.component.html',
+  styleUrls: ['./trade-object-update.component.scss'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class TradeObjectUpdateComponent implements OnInit {
@@ -32,6 +33,7 @@ export class TradeObjectUpdateComponent implements OnInit {
 
   objectCategoriesSharedCollection: IObjectCategory[] = [];
   trockeurUsersSharedCollection: ITrockeurUser[] = [];
+  imagePreviews: string[] = [];
 
   editForm: TradeObjectFormGroup = this.tradeObjectFormService.createTradeObjectFormGroup();
 
@@ -44,6 +46,27 @@ export class TradeObjectUpdateComponent implements OnInit {
     protected trockeurUserService: TrockeurUserService,
     protected activatedRoute: ActivatedRoute
   ) {}
+
+
+
+  previewImages(event: any):void {
+    const files = event.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.imagePreviews.push(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  deleteImage(index: number):void {
+    this.imagePreviews.splice(index, 1);
+  }
 
   compareObjectCategory = (o1: IObjectCategory | null, o2: IObjectCategory | null): boolean =>
     this.objectCategoryService.compareObjectCategory(o1, o2);
