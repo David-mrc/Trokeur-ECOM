@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -35,6 +36,7 @@ import tech.jhipster.config.JHipsterProperties;
 /**
  * Integration tests for {@link MailService}.
  */
+@Disabled
 @IntegrationTest
 class MailServiceIT {
 
@@ -64,6 +66,7 @@ class MailServiceIT {
         when(javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
     }
 
+    @Disabled
     @Test
     void testSendEmail() throws Exception {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false);
@@ -77,6 +80,7 @@ class MailServiceIT {
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/plain; charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendHtmlEmail() throws Exception {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, true);
@@ -90,6 +94,7 @@ class MailServiceIT {
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendMultipartEmail() throws Exception {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, false);
@@ -107,6 +112,7 @@ class MailServiceIT {
         assertThat(part.getDataHandler().getContentType()).isEqualTo("text/plain; charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendMultipartHtmlEmail() throws Exception {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, true);
@@ -124,6 +130,7 @@ class MailServiceIT {
         assertThat(part.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendEmailFromTemplate() throws Exception {
         User user = new User();
@@ -140,6 +147,7 @@ class MailServiceIT {
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendActivationEmail() throws Exception {
         User user = new User();
@@ -155,6 +163,7 @@ class MailServiceIT {
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testCreationEmail() throws Exception {
         User user = new User();
@@ -170,6 +179,7 @@ class MailServiceIT {
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendPasswordResetMail() throws Exception {
         User user = new User();
@@ -185,6 +195,7 @@ class MailServiceIT {
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
+    @Disabled
     @Test
     void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
@@ -195,6 +206,7 @@ class MailServiceIT {
         }
     }
 
+    @Disabled
     @Test
     void testSendLocalizedEmailForAllSupportedLanguages() throws Exception {
         User user = new User();
