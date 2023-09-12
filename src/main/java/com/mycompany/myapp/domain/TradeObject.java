@@ -60,11 +60,11 @@ public class TradeObject implements Serializable {
     @JsonIgnoreProperties(value = { "tradeObjects" }, allowSetters = true)
     private Set<ObjectCategory> objectCategories = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "user", "tradeObjects", "tradeOffers" }, allowSetters = true)
     private TrockeurUser trockeurUser;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tradeObjects")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tradeObjects")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "tradeObjects", "trockeurUsers" }, allowSetters = true)
     private Set<TradeOffer> tradeOffers = new HashSet<>();
