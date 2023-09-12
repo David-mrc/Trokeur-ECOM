@@ -14,3 +14,7 @@
 .icon-text {
   margin-left: 4px;
 }
+
+.disabled-button:disabled {
+  opacity: 0.3;
+}
