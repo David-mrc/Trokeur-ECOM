@@ -44,10 +44,6 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           title: 'login.title',
         },
         {
-          path: 'add-product',
-          component: TradeObjectUpdateComponent
-        },
-        {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
         },

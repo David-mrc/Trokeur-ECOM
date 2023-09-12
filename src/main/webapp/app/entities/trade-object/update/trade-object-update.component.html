@@ -80,7 +80,7 @@
               <img [src]="image" alt="Image Preview" class="preview-image">
               <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(i)">
                 <fa-icon icon="trash" style="color: #ffffff;"></fa-icon>
-                <span class="icon-text">Supprimer</span>
+                <span class="icon-text" style="margin-left: 4px;">Supprimer</span>
               </button>
             </div>
           </div>
@@ -89,7 +89,7 @@
 
         <button type="submit" class="btn btn-warning mt-3 disabled-button" [disabled]="!editForm.valid">
           <fa-icon icon="check" style="color: #000000;"></fa-icon>
-          <span class="icon-text">Valider</span>
+          <span class="icon-text" style="margin-left: 4px;">Valider</span>
         </button>
       </div>
     </form>
