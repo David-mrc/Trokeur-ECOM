@@ -39,17 +39,14 @@
       <div class="col-sm"> <strong>Description : </strong></div>
       <div class="col-sm mb-4"> {{ tradeObject.description }} </div>
       <div class="col-sm"> <strong>Adresse : </strong></div>
-      <div class="col-sm" *ngIf="tradeObject.trockeurUser">{{ tradeObject.trockeurUser.address }} </div>
-      <div class="col-sm" *ngIf="!tradeObject.trockeurUser"> Inconnue </div>
-      <div class="col-sm mb-4">{{tradeObject.trockeurUser?.address }}</div>
+      <div class="col-sm mb-4" *ngIf="tradeObject.trockeurUser">{{ tradeObject.trockeurUser.address }} </div>
+      <div class="col-sm mb-4" *ngIf="!tradeObject.trockeurUser"> Inconnue </div>
     </div>
 
     <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
       <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
     </button>
 
-    <button type="button" href="#" class="btn btn-primary">
-      <span>Troker</span>
-    </button>
+    <a class="btn btn-warning" href="#">Troker</a>
   </div>
 </div>
