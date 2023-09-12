@@ -48,7 +48,7 @@ import { ListProductComponent } from './components/list-product/list-product.com
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
         },
         {
-          path: 'testComponent',
+          path: 'product',
           component: ListProductComponent,
           title: 'ListProductComponent.title',
         },
