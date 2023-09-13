@@ -51,17 +51,14 @@ import { TransactionRecueComponent } from './historique/transaction-recue/transa
         {
           path: 'historique',
           component: HistoriqueTransactionsComponent,
-          title: 'historiqueTransaction.title',
         },
         {
           path: 'troks-proposes',
           component: TransactionProposeComponent,
-          title: 'transactionPropose.title',
         },
         {
           path: 'troks-recus',
           component: TransactionRecueComponent,
-          title: 'transactionsRecues.title',
         },
         {
           path: '',
@@ -74,7 +71,6 @@ import { TransactionRecueComponent } from './historique/transaction-recue/transa
         {
           path: 'account/my-products',
           component: MyProductsComponent,
-          title: 'MyProductsComponent.title',
         },
         ...errorRoute,
       ],
