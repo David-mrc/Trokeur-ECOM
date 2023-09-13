@@ -8,25 +8,73 @@
       ngbDropdownAnchor
       (focus)="myDrop.open()"
     >
-      {{selectedCategory ? selectedCategory.name : "Filtrer"}}
+      {{selectedCategory ? selectedCategory.name : "Toutes les catégories"}}
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownManual">
+      <button
+        class="notSelected"
+        (click)="resetCategory()"
+        ngbDropdownItem>
+          Toutes les catégories
+        </button>
       <div *ngFor="let category of categories">
         <button
         class="selectedButton"
         *ngIf="selectedCategory?.id == category.id"
-        (click)="filterByCategory(category)"
-        ngbDropdownItem>
+        ngbDropdownItem
+        (click)="filter(category)">
           {{category.name}}
         </button>
         <button
         class="notSelected"
         *ngIf="selectedCategory?.id != category.id"
-        (click)="filterByCategory(category)"
-        ngbDropdownItem>
+        ngbDropdownItem
+        (click)="filter(category)">
           {{category.name}}
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex align-items-center">
+  <span class="pb-4">Etat : </span>
+  <div class="d-inline-block" ngbDropdown #stateDrop="ngbDropdown">
+    <button
+      type="button"
+      class="categorySelector mb-4"
+      id="dropdownManual"
+      ngbDropdownAnchor
+      (focus)="stateDrop.open()"
+    >
+      {{selectedState ? selectedState : "Tous les états"}}
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+      <button
+        class="notSelected"
+        (click)="resetState()"
+        ngbDropdownItem>
+          Tous les états
+      </button>
+
+      <div *ngFor="let state of states">
+        <button
+        class="selectedButton"
+        *ngIf="selectedState == state"
+        ngbDropdownItem
+        (click)="filter(undefined, state)">
+          {{state}}
+        </button>
+        <button
+        class="notSelected"
+        *ngIf="selectedState != state"
+        ngbDropdownItem
+        (click)="filter(undefined, state)">
+          {{state}}
+        </button>
+      </div>
+
+
     </div>
   </div>
 </div>
