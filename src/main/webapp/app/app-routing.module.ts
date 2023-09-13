@@ -12,6 +12,7 @@ import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ListProductComponent } from './components/list-product/list-product.component';
+import { MyProductsComponent } from './components/my-products/my-products.component';
 import { HistoriqueTransactionsComponent } from './historique/historique-transactions/historique-transactions.component';
 import { TransactionProposeComponent } from './historique/transaction-propose/transaction-propose.component';
 import { TransactionRecueComponent } from './historique/transaction-recue/transaction-recue.component';
@@ -69,7 +70,11 @@ import { TransactionRecueComponent } from './historique/transaction-recue/transa
         {
           path: 'product',
           component: ListProductComponent,
-          title: 'ListProductComponent.title',
+        },
+        {
+          path: 'account/my-products',
+          component: MyProductsComponent,
+          title: 'MyProductsComponent.title',
         },
         ...errorRoute,
       ],

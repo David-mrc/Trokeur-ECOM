@@ -10,11 +10,13 @@ import { Observable } from "rxjs";
 
 export class productService {
 
-  private resourceUrl = this.applicationConfigService.getEndpointFor('api/trade-objects');
-
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   getAllProducts(): Observable<TradeObject[]> {
-    return this.http.get<TradeObject[]>(this.resourceUrl);
+    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/trade-objects'));
+  }
+
+  getMyProducts(): Observable<TradeObject[]> {
+    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
   }
 }
