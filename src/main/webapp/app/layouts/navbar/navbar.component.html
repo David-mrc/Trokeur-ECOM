@@ -20,6 +20,16 @@
     >
       <fa-icon icon="bars"></fa-icon>
     </a>
+
+    <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-white">
+      <div class="container-fluid">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Rechercher">
+          <button class="btn btn-outline-warning" type="submit">
+            <fa-icon icon="search"></fa-icon>
+          </button>
+        </form>
+
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
