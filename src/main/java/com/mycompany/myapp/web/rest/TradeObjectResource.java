@@ -233,4 +233,40 @@ public class TradeObjectResource {
         return ResponseUtil.wrapOrNotFound(objectsOfState);
     }
 
+    /**
+     * {@code GET  /trade-objects/filter} : get the trade objects filtered
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/filter")
+    public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<Long> categoryId, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
+        log.debug("REST request to get TradeObject filtered");
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
+
+
+        if (categoryId.isPresent() && categoryId.get() != -1) {
+            Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryId);
+            if (objectsFilteredByCategory.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByCategory.get());
+            }
+        }
+
+        if (state.isPresent() && state.get().toString() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByState = tradeObjectRepository.findObjectsOfState(state);
+            if (objectsFilteredByState.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByState.get());
+            }
+        }
+
+        /*if (searchInput.isPresent() && searchInput.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput);
+            if (objectsFilteredBySearchInput.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
+            }
+        }*/
+
+        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered));
+    }
+
+
 }

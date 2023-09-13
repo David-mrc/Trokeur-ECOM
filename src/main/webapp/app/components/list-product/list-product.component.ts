@@ -22,7 +22,8 @@ export class ListProductComponent implements OnInit {
   categories: ObjectCategories[] = [];
   states: TradeObjectState[] = [TradeObjectState.Neuf, TradeObjectState.Bon, TradeObjectState.Moyen, TradeObjectState.Mauvais];
   selectedCategory: ObjectCategories | undefined;
-  selectedState: string | undefined;
+  selectedState: TradeObjectState | undefined;
+  selectedSearchInput: string | undefined;
 
   constructor(
     private _productService: productService,
@@ -34,7 +35,25 @@ export class ListProductComponent implements OnInit {
     this.fetchCategories();
   }
 
-  filterByCategory(category: ObjectCategories): void {
+  filter(category?: ObjectCategories, state?: TradeObjectState, searchInput?: string): void {
+    this.selectedCategory = category ? (category === this.selectedCategory ? undefined : category) : this.selectedCategory;
+    this.selectedState = state ? (state === this.selectedState ? undefined : state) : this.selectedState;
+    this.selectedSearchInput = searchInput ? searchInput : this.selectedSearchInput;
+
+
+
+    this.tradeObjectList = [];
+    // regarder si deja selectionné pr category & state
+    this._productService.getFilteredProducts(this.selectedCategory?.id, this.selectedState?.toString(), this.selectedSearchInput).subscribe((tradeObjects) => {
+      tradeObjects.map((tradeObject: TradeObject) => {
+        this.tradeObjectList.push(tradeObject);
+      })
+    });
+  }
+
+
+
+  /* filterByCategory(category: ObjectCategories): void {
     // if user select the selected category, it unselect et display everything
     if (this.selectedCategory && category.id === this.selectedCategory.id) {
       this.fetchProduct();
@@ -65,15 +84,15 @@ export class ListProductComponent implements OnInit {
       });
     }
   }
-
+  */
   resetCategory(): void {
     this.selectedCategory = undefined;
-    this.fetchProduct();
+    this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
   }
 
   resetState(): void {
     this.selectedState = undefined;
-    this.fetchProduct();
+    this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
   }
 
   fetchCategories(): void {

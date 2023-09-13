@@ -8,7 +8,7 @@
       ngbDropdownAnchor
       (focus)="myDrop.open()"
     >
-      {{selectedCategory ? selectedCategory.name : "Filtrer"}}
+      {{selectedCategory ? selectedCategory.name : "Toutes les catégories"}}
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownManual">
       <button
@@ -21,15 +21,15 @@
         <button
         class="selectedButton"
         *ngIf="selectedCategory?.id == category.id"
-        (click)="filterByCategory(category)"
-        ngbDropdownItem>
+        ngbDropdownItem
+        (click)="filter(category)">
           {{category.name}}
         </button>
         <button
         class="notSelected"
         *ngIf="selectedCategory?.id != category.id"
-        (click)="filterByCategory(category)"
-        ngbDropdownItem>
+        ngbDropdownItem
+        (click)="filter(category)">
           {{category.name}}
         </button>
       </div>
@@ -47,7 +47,7 @@
       ngbDropdownAnchor
       (focus)="stateDrop.open()"
     >
-      {{selectedState ? selectedState : "Filtrer"}}
+      {{selectedState ? selectedState : "Tous les états"}}
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownManual">
       <button
@@ -61,15 +61,15 @@
         <button
         class="selectedButton"
         *ngIf="selectedState == state"
-        (click)="filterByState(state)"
-        ngbDropdownItem>
+        ngbDropdownItem
+        (click)="filter(undefined, state)">
           {{state}}
         </button>
         <button
         class="notSelected"
         *ngIf="selectedState != state"
-        (click)="filterByState(state)"
-        ngbDropdownItem>
+        ngbDropdownItem
+        (click)="filter(undefined, state)">
           {{state}}
         </button>
       </div>

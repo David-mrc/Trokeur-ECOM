@@ -42,4 +42,7 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
 
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.state = :state")
     Optional<Set<TradeObject>> findObjectsOfState(@Param("state") Optional<TradeObjectState> state);
+
+    @Query("select tradeObject from TradeObject tradeObject")
+    Set<TradeObject> findAllObjects();
 }
