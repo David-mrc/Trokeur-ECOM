@@ -11,6 +11,12 @@
       {{selectedCategory ? selectedCategory.name : "Filtrer"}}
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownManual">
+      <button
+        class="notSelected"
+        (click)="resetCategory()"
+        ngbDropdownItem>
+          Toutes les catégories
+        </button>
       <div *ngFor="let category of categories">
         <button
         class="selectedButton"

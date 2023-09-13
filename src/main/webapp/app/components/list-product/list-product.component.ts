@@ -27,11 +27,7 @@ export class ListProductComponent implements OnInit {
     private _categoryService: categoryService) {}
 
   ngOnInit(): void {
-    this._productService.getAllProducts().subscribe((tradeObjects) => {
-      tradeObjects.map((tradeObject: TradeObject) => {
-        this.tradeObjectList.push(tradeObject);
-      })
-    });
+    this.fetchProduct();
 
     // Pour récupérer toutes les catégories
     this._categoryService.getAllCategories().subscribe((categories) => {
@@ -43,11 +39,7 @@ export class ListProductComponent implements OnInit {
 
   filterByCategory(category: ObjectCategories): void {
     if (this.selectedCategory && category.id === this.selectedCategory.id) {
-      this._productService.getAllProducts().subscribe((tradeObjects) => {
-        tradeObjects.map((tradeObject: TradeObject) => {
-          this.tradeObjectList.push(tradeObject);
-        })
-      });
+      this.fetchProduct();
       this.selectedCategory = undefined;
     } else {
       this.selectedCategory = category;
@@ -58,5 +50,19 @@ export class ListProductComponent implements OnInit {
         })
       });
     }
+  }
+
+  resetCategory(): void {
+    this.selectedCategory = undefined;
+    this.fetchProduct();
+  }
+
+  fetchProduct(): void {
+    this.tradeObjectList = [];
+    this._productService.getAllProducts().subscribe((tradeObjects) => {
+      tradeObjects.map((tradeObject: TradeObject) => {
+        this.tradeObjectList.push(tradeObject);
+      })
+    });
   }
 }
