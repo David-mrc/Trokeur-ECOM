@@ -52,7 +52,6 @@ import { MyProductsComponent } from './components/my-products/my-products.compon
         {
           path: 'product',
           component: ListProductComponent,
-          title: 'ListProductComponent.title',
         },
         {
           path: 'account/my-products',

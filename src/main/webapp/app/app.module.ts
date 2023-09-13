@@ -5,7 +5,7 @@ import locale from '@angular/common/locales/fr';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -20,9 +20,6 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
-import { ProductCardComponent } from './components/product-card/product-card.component';
-import { StateComponent } from './components/state/state.component';
-import { MyProductsComponent } from './components/my-products/my-products.component';
 
 @NgModule({
   imports: [
@@ -34,6 +31,7 @@ import { MyProductsComponent } from './components/my-products/my-products.compon
     HttpClientModule,
     MainModule,
     TranslationModule,
+    FontAwesomeModule,
   ],
   providers: [
     Title,

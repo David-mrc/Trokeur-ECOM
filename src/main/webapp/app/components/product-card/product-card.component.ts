@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TradeObject } from 'app/interfaces/TradeObjectInterface';
 import { StateComponent } from '../state/state.component';
 
@@ -8,7 +9,7 @@ import { StateComponent } from '../state/state.component';
   selector: 'jhi-product-card',
   templateUrl: './product-card.component.html',
   standalone: true,
-  imports: [StateComponent, NgIf],
+  imports: [StateComponent, NgIf, FontAwesomeModule],
   styleUrls: ['./product-card.component.scss']
 })
 

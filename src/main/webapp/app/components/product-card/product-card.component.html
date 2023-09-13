@@ -1,12 +1,21 @@
-<div class="card mb-4" style="max-width: 25rem;">
-  <img src={{getPathToFirstImage()}} class="card-img-top" alt="Image du produit">
+<div class="card mb-4" style="max-width: 25rem">
+  <img src="{{ getPathToFirstImage() }}" class="card-img-top" alt="Image du produit" />
   <div class="card-body card-header my-4">
-    <h6 class="card-title text-truncate" style="max-width: 90%;">{{tradeObject?.name}}</h6>
-    <jhi-state [state]="tradeObject ? tradeObject.state ? tradeObject.state : '' : ''"/>
+    <h6 class="card-title text-truncate" style="max-width: 90%">{{ tradeObject?.name }}</h6>
+    <jhi-state [state]="tradeObject ? (tradeObject.state ? tradeObject.state : '') : ''" />
   </div>
-  <button *ngIf="isPublic" class="btn btn-primary" type="submit">Troker</button>
+  <button *ngIf="isPublic" class="btn btn-warning w-50 mx-auto" type="submit">
+    <fa-icon icon="plus" style="color: #000000"></fa-icon>
+    <span class="icon-text" style="margin-left: 4px">Troker</span>
+  </button>
   <div *ngIf="!isPublic" class="privateActions">
-    <button class="btn btn-primary" type="submit">Voir</button>
-    <button class="btn btn-primary" type="submit">Modifier</button>
+    <button class="btn btn-warning w-30 mx-auto" type="submit">
+      <fa-icon icon="eye" style="color: #000000"></fa-icon>
+      <span class="icon-text" style="margin-left: 4px">Voir</span>
+    </button>
+    <button class="btn btn-warning w-30 mx-auto" type="submit">
+      <fa-icon icon="pencil-alt" style="color: #000000"></fa-icon>
+      <span class="icon-text" style="margin-left: 4px">Modifier</span>
+    </button>
   </div>
 </div>
