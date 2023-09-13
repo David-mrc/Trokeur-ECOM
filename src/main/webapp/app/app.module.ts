@@ -20,6 +20,10 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
+import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-historique/affichage-historique.component';
+import { HistoriqueTransactionsComponent } from './entities/trade-offer/historique-transactions/historique-transactions.component';
+import { TransactionProposeComponent } from './entities/trade-offer/transaction-propose/transaction-propose.component';
+import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
 
 @NgModule({
   imports: [
@@ -40,7 +44,13 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     httpInterceptorProviders,
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
-  bootstrap: [MainComponent]
+  bootstrap: [MainComponent],
+  declarations: [
+    AffichageHistoriqueComponent,
+    HistoriqueTransactionsComponent,
+    TransactionProposeComponent,
+    TransactionRecueComponent
+  ]
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
