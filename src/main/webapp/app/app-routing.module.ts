@@ -14,6 +14,11 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { ListProductComponent } from './components/list-product/list-product.component';
 import { MyProductsComponent } from './components/my-products/my-products.component';
 
+import { HistoriqueTransactionsComponent } from './entities/trade-offer/historique-transactions/historique-transactions.component';
+import { TransactionProposeComponent } from './entities/trade-offer/transaction-propose/transaction-propose.component';
+import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
+import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-historique/affichage-historique.component';
+
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -57,6 +62,18 @@ import { MyProductsComponent } from './components/my-products/my-products.compon
           path: 'account/my-products',
           component: MyProductsComponent,
           title: 'MyProductsComponent.title',
+        },
+        {
+          path: 'historique',
+          component: HistoriqueTransactionsComponent,
+        },
+        {
+          path: 'troks-proposes',
+          component: TransactionProposeComponent,
+        },
+        {
+          path: 'troks-recus',
+          component: TransactionRecueComponent,
         },
         ...errorRoute,
       ],
