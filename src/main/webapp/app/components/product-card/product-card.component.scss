@@ -1,11 +1,13 @@
 img {
   object-fit: contain;
+  cursor: pointer;
 }
 
 .card-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .privateActions {
