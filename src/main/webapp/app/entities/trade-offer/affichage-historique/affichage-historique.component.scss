@@ -1,31 +1,16 @@
 .horizontal-item {
     display: flex;
     align-items: center;
-    padding: 10px;
     border: 1px solid #ccc;
   }
   
-  .item-image-left {
+  .item-image {
     width: 50px;
     height: 50px;
   }
-  
-  .item-title-left {
-    margin-right: 10px;
-  }
-  
+
   .item-symbol {
     font-size: 24px;
-    margin: 0 10px;
-  }
-  
-  .item-title-right {
-    margin-left: 10px;
-  }
-  
-  .item-image-right {
-    width: 50px;
-    height: 50px;
   }
   
   .item-button {
