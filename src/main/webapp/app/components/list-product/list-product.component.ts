@@ -7,6 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { ObjectCategories } from 'app/interfaces/ObjectCategoriesInterface';
 import { categoryService } from '../category-service';
+import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.model';
 
 @Component({
   selector: 'jhi-list-product',
@@ -19,7 +20,9 @@ import { categoryService } from '../category-service';
 export class ListProductComponent implements OnInit {
   tradeObjectList: TradeObject[] = [];
   categories: ObjectCategories[] = [];
+  states: TradeObjectState[] = [TradeObjectState.Neuf, TradeObjectState.Bon, TradeObjectState.Moyen, TradeObjectState.Mauvais];
   selectedCategory: ObjectCategories | undefined;
+  selectedState: string | undefined;
 
   constructor(
     private _productService: productService,
@@ -28,16 +31,11 @@ export class ListProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchProduct();
-
-    // Pour récupérer toutes les catégories
-    this._categoryService.getAllCategories().subscribe((categories) => {
-      categories.map((category: ObjectCategories) => {
-        this.categories.push(category);
-      })
-    })
+    this.fetchCategories();
   }
 
   filterByCategory(category: ObjectCategories): void {
+    // if user select the selected category, it unselect et display everything
     if (this.selectedCategory && category.id === this.selectedCategory.id) {
       this.fetchProduct();
       this.selectedCategory = undefined;
@@ -52,9 +50,40 @@ export class ListProductComponent implements OnInit {
     }
   }
 
+  filterByState(state: TradeObjectState): void {
+    // if user select the selected state, it unselect et display everything
+    if (this.selectedState === state) {
+      this.fetchProduct();
+      this.selectedState = undefined;
+    } else {
+      this.tradeObjectList = [];
+      this.selectedState = state;
+      this._productService.getFilteredProductsByState(state).subscribe((tradeObjects) => {
+        tradeObjects.map((tradeObject: TradeObject) => {
+          this.tradeObjectList.push(tradeObject);
+        })
+      });
+    }
+  }
+
   resetCategory(): void {
     this.selectedCategory = undefined;
     this.fetchProduct();
+  }
+
+  resetState(): void {
+    this.selectedState = undefined;
+    this.fetchProduct();
+  }
+
+  fetchCategories(): void {
+    this.categories = [];
+    // Pour récupérer toutes les catégories
+    this._categoryService.getAllCategories().subscribe((categories) => {
+      categories.map((category: ObjectCategories) => {
+        this.categories.push(category);
+      })
+    })
   }
 
   fetchProduct(): void {

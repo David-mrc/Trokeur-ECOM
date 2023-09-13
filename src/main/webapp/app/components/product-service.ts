@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ApplicationConfigService } from "app/core/config/application-config.service";
+import { TradeObjectState } from "app/entities/enumerations/trade-object-state.model";
 import { TradeObject } from "app/interfaces/TradeObjectInterface";
 import { Observable } from "rxjs";
 
@@ -22,5 +23,9 @@ export class productService {
 
   getFilteredProductsByCategory(categoryId: number): Observable<TradeObject[]> {
     return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/category-trade-objects/' + categoryId.toString()));
+  }
+
+  getFilteredProductsByState(state: TradeObjectState): Observable<TradeObject[]> {
+    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/state-trade-objects/' + state.toString()));
   }
 }

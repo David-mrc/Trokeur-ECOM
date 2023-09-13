@@ -1,6 +1,7 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
@@ -218,6 +219,18 @@ public class TradeObjectResource {
         log.debug("REST request to get TradeObject of category");
         Optional<Set<TradeObject>> objectsOfCategory = tradeObjectRepository.findObjectsOfCategory(categoryId);
         return ResponseUtil.wrapOrNotFound(objectsOfCategory);
+    }
+
+    /**
+     * {@code GET  /state-trade-objects/:state} : get the trade objects of state
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/state-trade-objects/{state}")
+    public ResponseEntity<Set<TradeObject>> getObjectsOfState(@PathVariable Optional<TradeObjectState> state) {
+        log.debug("REST request to get TradeObject of state");
+        Optional<Set<TradeObject>> objectsOfState = tradeObjectRepository.findObjectsOfState(state);
+        return ResponseUtil.wrapOrNotFound(objectsOfState);
     }
 
 }

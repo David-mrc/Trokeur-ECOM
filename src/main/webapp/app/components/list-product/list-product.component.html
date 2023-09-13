@@ -37,6 +37,48 @@
   </div>
 </div>
 
+<div class="d-flex align-items-center">
+  <span class="pb-4">Etat : </span>
+  <div class="d-inline-block" ngbDropdown #stateDrop="ngbDropdown">
+    <button
+      type="button"
+      class="categorySelector mb-4"
+      id="dropdownManual"
+      ngbDropdownAnchor
+      (focus)="stateDrop.open()"
+    >
+      {{selectedState ? selectedState : "Filtrer"}}
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+      <button
+        class="notSelected"
+        (click)="resetState()"
+        ngbDropdownItem>
+          Tous les états
+      </button>
+
+      <div *ngFor="let state of states">
+        <button
+        class="selectedButton"
+        *ngIf="selectedState == state"
+        (click)="filterByState(state)"
+        ngbDropdownItem>
+          {{state}}
+        </button>
+        <button
+        class="notSelected"
+        *ngIf="selectedState != state"
+        (click)="filterByState(state)"
+        ngbDropdownItem>
+          {{state}}
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
 
 <div class="list-product">
   <jhi-product-card

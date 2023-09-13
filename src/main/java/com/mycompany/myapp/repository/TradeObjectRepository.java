@@ -1,6 +1,8 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.enumeration.TradeObjectState;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -37,4 +39,7 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
 
     @Query("select objectCategory.tradeObjects from ObjectCategory objectCategory where objectCategory.id = :categoryId")
     Optional<Set<TradeObject>> findObjectsOfCategory(@Param("categoryId") Optional<Long> categoryId);
+
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.state = :state")
+    Optional<Set<TradeObject>> findObjectsOfState(@Param("state") Optional<TradeObjectState> state);
 }
