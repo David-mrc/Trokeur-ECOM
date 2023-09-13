@@ -1,10 +1,10 @@
-<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-white">
+<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black">
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
       <span class="navbar-version">{{ version }}</span>
     </a>
-    <div class="font-weight-bold">
+    <div class="font-weight-bold text-white">
       Proposer un objet
       <a href="/trade-object/new" class="btn btn-warning ml-3"> + </a>
     </div>
@@ -21,7 +21,7 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
 
-    <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-white">
+    <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black">
       <div class="container-fluid">
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Rechercher">
@@ -30,13 +30,13 @@
           </button>
         </form>
 
-    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
+    <div class="navbar-collapse collapse bg-black" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
             <span>
-              <fa-icon icon="home"></fa-icon>
-              <span jhiTranslate="global.menu.home">Accueil</span>
+              <fa-icon icon="home" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.home" style="color : #ffffff">Accueil</span>
             </span>
           </a>
         </li>
@@ -51,8 +51,8 @@
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
             <span>
-              <fa-icon icon="th-list"></fa-icon>
-              <span jhiTranslate="global.menu.entities.main">Entités</span>
+              <fa-icon icon="th-list" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.entities.main" style="color : #ffffff">Entités</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
@@ -129,7 +129,7 @@
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
             <span>
-              <fa-icon icon="users-cog"></fa-icon>
+              <fa-icon icon="users-cog" style="color : #ffffff"></fa-icon>
               <span jhiTranslate="global.menu.admin.main">Administration</span>
             </span>
           </a>
@@ -182,8 +182,8 @@
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
-              <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Langue</span>
+              <fa-icon icon="flag" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.language" style="color : #ffffff">Langue</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
@@ -207,8 +207,8 @@
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
             <span *ngIf="!account?.imageUrl">
-              <fa-icon icon="user"></fa-icon>
-              <span jhiTranslate="global.menu.account.main">Compte</span>
+              <fa-icon icon="user" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.account.main" style="color : #ffffff">Compte</span>
             </span>
             <span *ngIf="account?.imageUrl">
               <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
