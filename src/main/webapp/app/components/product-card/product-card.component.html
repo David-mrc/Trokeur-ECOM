@@ -1,11 +1,11 @@
-<div class="card mb-4" style="max-width: 25rem">
+<div class="card shadow border-warning mb-4" style="max-width: 25rem">
   <img src="{{ getPathToFirstImage() }}" class="card-img-top" alt="Image du produit" />
-  <div class="card-body card-header my-4">
+  <div class=" card-header my-4">
     <h6 class="card-title text-truncate" style="max-width: 90%">{{ tradeObject?.name }}</h6>
     <jhi-state [state]="tradeObject ? (tradeObject.state ? tradeObject.state : '') : ''" />
   </div>
   <button *ngIf="isPublic" class="btn btn-warning w-50 mx-auto mb-2" type="submit">
-    <fa-icon icon="plus" style="color: #000000"></fa-icon>
+    <fa-icon icon="handshake" style="color: #000000"></fa-icon>
     <span class="icon-text" style="margin-left: 4px">Troker</span>
   </button>
   <div *ngIf="!isPublic" class="privateActions">
