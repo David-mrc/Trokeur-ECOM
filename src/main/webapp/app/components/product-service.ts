@@ -19,4 +19,8 @@ export class productService {
   getMyProducts(): Observable<TradeObject[]> {
     return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
   }
+
+  getFilteredProductsByCategory(categoryId: number): Observable<TradeObject[]> {
+    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/category-trade-objects/' + categoryId.toString()));
+  }
 }

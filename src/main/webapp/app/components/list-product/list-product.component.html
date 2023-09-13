@@ -1,3 +1,37 @@
+<div class="d-flex align-items-center">
+  <span class="pb-4">Catégorie : </span>
+  <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+    <button
+      type="button"
+      class="categorySelector mb-4"
+      id="dropdownManual"
+      ngbDropdownAnchor
+      (focus)="myDrop.open()"
+    >
+      {{selectedCategory ? selectedCategory.name : "Filtrer"}}
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+      <div *ngFor="let category of categories">
+        <button
+        class="selectedButton"
+        *ngIf="selectedCategory?.id == category.id"
+        (click)="filterByCategory(category)"
+        ngbDropdownItem>
+          {{category.name}}
+        </button>
+        <button
+        class="notSelected"
+        *ngIf="selectedCategory?.id != category.id"
+        (click)="filterByCategory(category)"
+        ngbDropdownItem>
+          {{category.name}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="list-product">
   <jhi-product-card
     *ngFor="let tradeObject of tradeObjectList"
