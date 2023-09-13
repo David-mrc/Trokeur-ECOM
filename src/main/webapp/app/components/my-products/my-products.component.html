@@ -6,6 +6,10 @@
   </jhi-product-card>
 </div>
 
-<div *ngIf="myTradeObjects.length == 0">
+<div *ngIf="!isAuthenticated and myTradeObjects.length == 0">
   <p>Connectez vous pour accéder à vos produits</p>
+</div>
+
+<div *ngIf="isAuthenticated and myTradeObjects.length == 0">
+  <p>Vous n'avez aucun produit</p>
 </div>
