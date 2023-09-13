@@ -24,10 +24,10 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 import { StateComponent } from './components/state/state.component';
 import { ListProductComponent } from './components/list-product/list-product.component';
 import { MyProductsComponent } from './components/my-products/my-products.component';
-import { AffichageHistoriqueComponent } from './historique/affichage-historique/affichage-historique.component';
-import { HistoriqueTransactionsComponent } from './historique/historique-transactions/historique-transactions.component';
-import { TransactionProposeComponent } from './historique/transaction-propose/transaction-propose.component';
-import { TransactionRecueComponent } from './historique/transaction-recue/transaction-recue.component';
+import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-historique/affichage-historique.component';
+import { HistoriqueTransactionsComponent } from './entities/trade-offer/historique-transaction/historique-transactions.component';
+import { TransactionProposeComponent } from './entities/trade-offer/transaction-propose/transaction-propose.component';
+import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
 
 
 @NgModule({
@@ -51,10 +51,7 @@ import { TransactionRecueComponent } from './historique/transaction-recue/transa
   ],
   bootstrap: [MainComponent],
   declarations: [ProductCardComponent, StateComponent, ListProductComponent,
-    AffichageHistoriqueComponent,
-    HistoriqueTransactionsComponent,
-    TransactionProposeComponent,
-    TransactionRecueComponent, MyProductsComponent],
+    TransactionRecueComponent, MyProductsComponent, HistoriqueTransactionsComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
