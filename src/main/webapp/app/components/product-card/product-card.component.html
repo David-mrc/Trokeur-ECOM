@@ -8,8 +8,8 @@
     <fa-icon icon="handshake" style="color: #000000"></fa-icon>
     <span class="icon-text" style="margin-left: 4px">Troker</span>
   </button>
-  <div *ngIf="!isPublic" class="privateActions">
-    <button class="btn btn-warning w-30 mx-auto" type="submit">
+  <div *ngIf="!isPublic" class="privateActions mb-2">
+    <button class="btn btn-warning w-30 mx-auto" type="submit" [routerLink]="['/trade-object/', tradeObject?.id, 'view']" routerLinkActive="router-link-active">
       <fa-icon icon="eye" style="color: #000000"></fa-icon>
       <span class="icon-text" style="margin-left: 4px">Voir</span>
     </button>
