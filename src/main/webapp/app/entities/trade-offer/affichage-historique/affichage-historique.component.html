@@ -2,41 +2,59 @@
   @import url('https://fonts.googleapis.com/css2?family=Days+One&display=swap');
 </style>
 
-<div class="transactions-item horizontal-item card shadow p-10 col-12">
-  <div class="row">
+
+
+<div class="transactions-item horizontal-item card shadow border-warning mb-4 p-10 col-12">
+  <div class="row justify-content-center my-4">
     <!-- Image à gauche -->
     <img src="chemin_de_votre_image" alt="Image" class="item-image col-md-3 mr-2">
     
     <div class="col-md-2">
     <!-- Titre à gauche de l'image -->
     <h2 class="mr-10">Titre</h2>
+    </div>
+    <div class="col-md-2">
+      <!-- Titre à gauche de l'image -->
     <h3 class="mr-10">description</h3>
     </div>
+
     <!-- Symbole au milieu -->
-    <div class="item-symbol col-md-2 m-10">Symbole</div>
-  
+    <img src="/content/images/swap.png" alt="Image" class="item-image col-md-3 mr-2">
+ 
+    <!-- Image à droite -->
+    <img src="chemin_de_votre_image" alt="Image" class="item-image col-md-3 ml-2">
+    
     <!-- Deuxième titre à droite du symbole -->
     <div class="col-md-2">
       <!-- Titre à gauche de l'image -->
       <h2 class="mr-10">Titre</h2>
-      <h3 class="mr-10">description</h3>
-      </div>
-  
-    <!-- Image à droite -->
-    <img src="chemin_de_votre_image" alt="Image" class="item-image col-md-3 ml-2">
-    
-    <div class="row">
+    </div>
+    <div class="col-md-2">
+      <!-- Titre à gauche de l'image -->
+    <h3 class="mr-10">description</h3>
+    </div>
+
+    <div class="row justify-content-center my-4">
     <!-- Transaction Proposée à quelqu'un d'autre -->
-      <button *ngIf="propose" class="item-button">Annuler Proposition</button>
+      <button *ngIf="propose" class="btn btn-danger text-white ml-2 mr-2" type="submit"> 
+        <fa-icon icon="handshake-alt-slash" style="color: #ffffff"></fa-icon> 
+        <span class="icon-text" style="margin-left: 4px">Annuler Proposition</span>
+      </button>
 
+      
     <!-- Transaction Recue de quelqu'un d'autre -->
-      <!-- Bouton accepter la transaction -->
-      <button *ngIf="recues" class="item-button">Accepter Transaction</button>
-      <!-- Bouton refuser la transaction -->
-      <button *ngIf="recues" class="item-button">Refuser Transaction</button>
+      <div *ngIf="recues" class="btn-group ml-2 mr-2 " role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary btn-danger text-white"> 
+          <fa-icon icon="thumbs-down" style="color: #ffffff"></fa-icon> 
+          Refuser Transaction
+        </button>
+        <button type="button" class="btn btn-primary btn-success text-white">
+          <fa-icon icon="thumbs-up" syle="color: #ffffff"></fa-icon> 
+          Accepter Transaction
+        </button>
+      </div>
     </div>
-    </div>
-
+  </div>
 </div>
   
 

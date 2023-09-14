@@ -13,6 +13,7 @@ import {
   faEye,
   faFlag,
   faHandshake,
+  faHandshakeAltSlash,
   faHeart,
   faHome,
   faList,
@@ -31,6 +32,8 @@ import {
   faTachometerAlt,
   faTasks,
   faThList,
+  faThumbsUp,
+  faThumbsDown,
   faTimes,
   faTrash,
   faTrashAlt,
@@ -40,6 +43,7 @@ import {
   faUsersCog,
   faWrench,
   faBoxesStacked,
+  faHandshakeSlash,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -58,6 +62,7 @@ export const fontAwesomeIcons = [
   faEye,
   faFlag,
   faHandshake,
+  faHandshakeAltSlash,
   faHeart,
   faHome,
   faList,
@@ -76,6 +81,8 @@ export const fontAwesomeIcons = [
   faTachometerAlt,
   faTasks,
   faThList,
+  faThumbsUp,
+  faThumbsDown,
   faTimes,
   faTrash,
   faTrashAlt,
