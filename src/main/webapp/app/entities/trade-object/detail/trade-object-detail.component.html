@@ -47,6 +47,27 @@
       <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
     </button>
 
-    <a class="btn btn-warning" href="#">Troker</a>
+    <a *ngIf="!authenticatedUser || !getUserLogin() || !loginOfUserOfObject || (getUserLogin() != loginOfUserOfObject)" class="btn btn-warning">
+    <fa-icon icon="handshake" style="color: #000000"></fa-icon>
+    Troker
+    </a>
+
+    <span *ngIf="getUserLogin() && loginOfUserOfObject && getUserLogin() == loginOfUserOfObject">
+      <button
+      type="submit"
+      [routerLink]="['/trade-object', tradeObject.id, 'edit']"
+      class="btn btn-warning"
+      data-cy="entityEditButton">
+      <fa-icon icon="pencil-alt"></fa-icon>
+      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+
+      <button type="submit" (click)="delete(tradeObject)" class="btn btn-danger" data-cy="entityDeleteButton">
+        <fa-icon icon="times"></fa-icon>
+        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+      </button>
+    </span>
+
+
   </div>
 </div>
