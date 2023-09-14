@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TradeObject } from 'app/interfaces/TradeObjectInterface';
 import { productService } from '../product-service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +8,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 import { ObjectCategories } from 'app/interfaces/ObjectCategoriesInterface';
 import { categoryService } from '../category-service';
 import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.model';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-list-product',
@@ -17,7 +18,7 @@ import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.m
   styleUrls: ['./list-product.component.scss']
 })
 
-export class ListProductComponent implements OnInit {
+export class ListProductComponent implements OnInit, OnChanges {
   tradeObjectList: TradeObject[] = [];
   categories: ObjectCategories[] = [];
   states: TradeObjectState[] = [TradeObjectState.Neuf, TradeObjectState.Bon, TradeObjectState.Moyen, TradeObjectState.Mauvais];
@@ -28,11 +29,17 @@ export class ListProductComponent implements OnInit {
   constructor(
     private _productService: productService,
     protected http: HttpClient,
-    private _categoryService: categoryService) {}
+    private _categoryService: categoryService,
+    private route: ActivatedRoute){}
+
 
   ngOnInit(): void {
     this.fetchProduct();
     this.fetchCategories();
+    this.route.queryParams.subscribe((params) => {
+      this.selectedSearchInput = params.searchInput;
+    })
+    console.log("bien joué : ", this.selectedSearchInput);
   }
 
   filter(category?: ObjectCategories, state?: TradeObjectState, searchInput?: string): void {
