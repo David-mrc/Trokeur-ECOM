@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3ClientConfig {
 
-    @Value("${aws.accessKey}")
+    @Value("accessKey")
     private String accessKey;
 
-    @Value("${aws.secretKey}")
+    @Value("secretKey")
     private String secretKey;
 
     @Bean
