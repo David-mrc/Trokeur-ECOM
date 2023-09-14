@@ -24,8 +24,8 @@
     <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black">
       <div class="container-fluid">
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Rechercher">
-          <button class="btn btn-outline-warning" type="submit">
+          <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Rechercher" [(ngModel)]="searchInput" name="searchInput">
+          <button [disabled]="searchInput===''" [routerLink]="['/product']" [queryParams]="{ searchInput: searchInput }" class="btn btn-outline-warning" type="submit">
             <fa-icon icon="search"></fa-icon>
           </button>
         </form>
