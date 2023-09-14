@@ -210,14 +210,14 @@ public class TradeObjectResource {
     }
 
     /**
-     * {@code GET  /category-trade-objects/:categoryId} : get the trade objects of the category
+     * {@code GET  /category-trade-objects/:categoryName} : get the trade objects of the category
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @GetMapping("/category-trade-objects/{categoryId}")
-    public ResponseEntity<Set<TradeObject>> getObjectsOfCategory(@PathVariable Optional<Long> categoryId) {
+    @GetMapping("/category-trade-objects/{categoryName}")
+    public ResponseEntity<Set<TradeObject>> getObjectsOfCategory(@PathVariable Optional<String> categoryName) {
         log.debug("REST request to get TradeObject of category");
-        Optional<Set<TradeObject>> objectsOfCategory = tradeObjectRepository.findObjectsOfCategory(categoryId);
+        Optional<Set<TradeObject>> objectsOfCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
         return ResponseUtil.wrapOrNotFound(objectsOfCategory);
     }
 
@@ -239,13 +239,13 @@ public class TradeObjectResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @GetMapping("/trade-objects/filter")
-    public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<Long> categoryId, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
+    public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
         log.debug("REST request to get TradeObject filtered");
         Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
 
 
-        if (categoryId.isPresent() && categoryId.get() != -1) {
-            Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryId);
+        if (categoryName.isPresent() && categoryName.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
             if (objectsFilteredByCategory.isPresent()) {
                 objectsFiltered.retainAll(objectsFilteredByCategory.get());
             }
@@ -258,12 +258,12 @@ public class TradeObjectResource {
             }
         }
 
-        /*if (searchInput.isPresent() && searchInput.get() != "") {
-            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput);
+        if (searchInput.isPresent() && searchInput.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput.get().toLowerCase());
             if (objectsFilteredBySearchInput.isPresent()) {
                 objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
             }
-        }*/
+        }
 
         return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered));
     }
