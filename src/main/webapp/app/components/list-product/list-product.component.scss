@@ -2,3 +2,33 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+.keyword {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.categorySelector {
+  color : black;
+  border: none;
+  background-color: white;
+}
+
+.selectedButton {
+  background-color: #ffc107;
+}
+
+.notSelected:hover {
+  background-color: #ffc107;
+  color: black;
+}
+
+.selectedButton:hover {
+  opacity: 0.5;
+  color: black;
+}
+
+.selectedButton:active {
+  background-color: #ffd24b;
+  color: black;
+}

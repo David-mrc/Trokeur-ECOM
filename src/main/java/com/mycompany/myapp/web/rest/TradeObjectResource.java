@@ -1,13 +1,17 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 import com.mycompany.myapp.repository.TradeObjectRepository;
+import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,6 +20,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +45,12 @@ public class TradeObjectResource {
     private String applicationName;
 
     private final TradeObjectRepository tradeObjectRepository;
+    private final TrockeurUserRepository trockeurUserRepository;
 
-    public TradeObjectResource(TradeObjectRepository tradeObjectRepository) {
+
+    public TradeObjectResource(TradeObjectRepository tradeObjectRepository, TrockeurUserRepository trockeurUserRepository) {
         this.tradeObjectRepository = tradeObjectRepository;
+        this.trockeurUserRepository = trockeurUserRepository;
     }
 
     /**
@@ -55,6 +65,13 @@ public class TradeObjectResource {
         log.debug("REST request to save TradeObject : {}", tradeObject);
         if (tradeObject.getId() != null) {
             throw new BadRequestAlertException("A new tradeObject cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Optional<Long> userId = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin());
+        if (userId.isPresent()) {
+            Optional<TrockeurUser> trockeurUser = trockeurUserRepository.findById(userId.get());
+            if (trockeurUser.isPresent()) {
+                tradeObject.setTrockeurUser(trockeurUser.get());
+            }
         }
         TradeObject result = tradeObjectRepository.save(tradeObject);
         return ResponseEntity
@@ -209,15 +226,128 @@ public class TradeObjectResource {
     }
 
     /**
-     * {@code GET  /category-trade-objects/:categoryId} : get the trade objects of the category
+     * {@code GET  /category-trade-objects/:categoryName} : get the trade objects of the category
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @GetMapping("/category-trade-objects/{categoryId}")
-    public ResponseEntity<Set<TradeObject>> getObjectsOfCategory(@PathVariable Optional<Long> categoryId) {
+    @GetMapping("/category-trade-objects/{categoryName}")
+    public ResponseEntity<Set<TradeObject>> getObjectsOfCategory(@PathVariable Optional<String> categoryName) {
         log.debug("REST request to get TradeObject of category");
-        Optional<Set<TradeObject>> objectsOfCategory = tradeObjectRepository.findObjectsOfCategory(categoryId);
+        Optional<Set<TradeObject>> objectsOfCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
         return ResponseUtil.wrapOrNotFound(objectsOfCategory);
     }
+
+    /**
+     * {@code GET  /state-trade-objects/:state} : get the trade objects of state
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/state-trade-objects/{state}")
+    public ResponseEntity<Set<TradeObject>> getObjectsOfState(@PathVariable Optional<TradeObjectState> state) {
+        log.debug("REST request to get TradeObject of state");
+        Optional<Set<TradeObject>> objectsOfState = tradeObjectRepository.findObjectsOfState(state);
+        return ResponseUtil.wrapOrNotFound(objectsOfState);
+    }
+
+    /**
+     * {@code GET  /trade-objects/filter} : get the trade objects filtered
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/filter")
+    public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput, @RequestParam Optional<Integer> pageNumber) {
+        log.debug("REST request to get TradeObject filtered");
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
+        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
+
+
+        if (categoryName.isPresent() && categoryName.get() != "") {
+            Page<Long> page = tradeObjectRepository.findIdOfObjectsOfCategoryFromPage(categoryName, pageable);
+            Optional<Set<Long>> idOfObjectsFilteredByCategory = Optional.of(new HashSet<Long>(page.getContent()));
+            Set<TradeObject> objectsFilteredByCategory = new HashSet<>();
+            for(Long idObject : idOfObjectsFilteredByCategory.get()) {
+                objectsFilteredByCategory.add(tradeObjectRepository.findById(idObject).get());
+            }
+            objectsFiltered.retainAll(objectsFilteredByCategory);
+        }
+
+        if (state.isPresent() && state.get().toString() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByState = tradeObjectRepository.findObjectsOfState(state);
+            if (objectsFilteredByState.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByState.get());
+            }
+        }
+
+        if (searchInput.isPresent() && searchInput.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput.get().toLowerCase());
+            if (objectsFilteredBySearchInput.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
+            }
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered));
+    }
+
+    /**
+     * {@code GET  /trade-objects/page/:pageNumber} : get the trade objects of state
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/page{pageNumber}")
+    public ResponseEntity<Set<TradeObject>> getObjectsFromPage(@RequestParam  Optional<Integer> pageNumber) {
+        log.debug("REST request to get TradeObject of state");
+        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
+        Page<TradeObject> page = tradeObjectRepository.findAllWithEagerRelationships(pageable);
+        Optional<Set<TradeObject>> objectsOfState = Optional.of(new HashSet<TradeObject>(page.getContent()));
+        return ResponseUtil.wrapOrNotFound(objectsOfState);
+    }
+
+    /**
+     * {@code GET  /trade-objects/count} : count the trade objects
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/count")
+    public ResponseEntity<Integer> countObjects() {
+        log.debug("REST request to get TradeObject of state");
+        Optional<Integer> numberOfObjects = tradeObjectRepository.countAllObjects();
+        return ResponseUtil.wrapOrNotFound(numberOfObjects);
+    }
+
+    /**
+     * {@code GET  /trade-objects/filter/count} : count the trade objects filtered
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/filter/count")
+    public ResponseEntity<Integer> countObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
+        log.debug("REST request to get TradeObject filtered");
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
+
+        if (categoryName.isPresent() && categoryName.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
+            if (objectsFilteredByCategory.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByCategory.get());
+            }
+        }
+
+        if (state.isPresent() && state.get().toString() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByState = tradeObjectRepository.findObjectsOfState(state);
+            if (objectsFilteredByState.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByState.get());
+            }
+        }
+
+        if (searchInput.isPresent() && searchInput.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput.get().toLowerCase());
+            if (objectsFilteredBySearchInput.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
+            }
+        }
+
+        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered.size()));
+    }
+
+
 
 }

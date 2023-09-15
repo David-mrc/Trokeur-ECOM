@@ -5,7 +5,7 @@ import locale from '@angular/common/locales/fr';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -20,9 +20,10 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
-import { ProductCardComponent } from './components/product-card/product-card.component';
-import { StateComponent } from './components/state/state.component';
-import { ListProductComponent } from './components/list-product/list-product.component';
+import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-historique/affichage-historique.component';
+import { HistoriqueTransactionsComponent } from './entities/trade-offer/historique-transactions/historique-transactions.component';
+import { TransactionProposeComponent } from './entities/trade-offer/transaction-propose/transaction-propose.component';
+import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { ListProductComponent } from './components/list-product/list-product.com
     HttpClientModule,
     MainModule,
     TranslationModule,
+    FontAwesomeModule,
   ],
   providers: [
     Title,
@@ -44,10 +46,11 @@ import { ListProductComponent } from './components/list-product/list-product.com
   ],
   bootstrap: [MainComponent],
   declarations: [
-    ProductCardComponent,
-    StateComponent,
-    ListProductComponent
-  ],
+    AffichageHistoriqueComponent,
+    HistoriqueTransactionsComponent,
+    TransactionProposeComponent,
+    TransactionRecueComponent
+  ]
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

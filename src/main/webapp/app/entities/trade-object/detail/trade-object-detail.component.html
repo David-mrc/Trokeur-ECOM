@@ -1,57 +1,73 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="tradeObject">
-      <h2 data-cy="tradeObjectDetailsHeading"><span jhiTranslate="trokeurApp.tradeObject.detail.title">Trade Object</span></h2>
+<div class="container" style="width: 70rem;justify-content: center;">
+  <div *ngIf="tradeObject">
+    <ngb-carousel style="display: block;">
+      <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+          <img src="/content/images/logoTrokeur.png" alt="Random first slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+          <img src="/content/images/logo-jhipster.png" alt="Random second slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+          <img src="/content/images/logoTrokeur.png" alt="Random third slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+        </div>
+      </ng-template>
+    </ngb-carousel>
 
-      <hr />
+    <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+    <jhi-alert-error></jhi-alert-error>
 
-      <jhi-alert></jhi-alert>
+    <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="trokeurApp.tradeObject.id">Id</span></dt>
-        <dd>
-          <span>{{ tradeObject.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="trokeurApp.tradeObject.name">Name</span></dt>
-        <dd>
-          <span>{{ tradeObject.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="trokeurApp.tradeObject.description">Description</span></dt>
-        <dd>
-          <span>{{ tradeObject.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="trokeurApp.tradeObject.state">State</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'trokeurApp.TradeObjectState.' + tradeObject.state }}">{{ tradeObject.state }}</span>
-        </dd>
-        <dt><span jhiTranslate="trokeurApp.tradeObject.stock">Stock</span></dt>
-        <dd>
-          <span>{{ tradeObject.stock }}</span>
-        </dd>
-        <dt><span jhiTranslate="trokeurApp.tradeObject.objectCategory">Object Category</span></dt>
-        <dd>
-          <span *ngFor="let objectCategory of tradeObject.objectCategories; let last = last">
-            <a [routerLink]="['/object-category', objectCategory.id, 'view']">{{ objectCategory.id }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-        <dt><span jhiTranslate="trokeurApp.tradeObject.trockeurUser">Trockeur User</span></dt>
-        <dd>
-          <div *ngIf="tradeObject.trockeurUser">
-            <a [routerLink]="['/trockeur-user', tradeObject.trockeurUser.id, 'view']">{{ tradeObject.trockeurUser.id }}</a>
-          </div>
-        </dd>
-      </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/trade-object', tradeObject.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-sm">
+          <strong>Titre : </strong>
+          {{ tradeObject.name }}
+        </div>
+        <div class="col-sm">
+          <strong>Etat : </strong>
+          {{ tradeObject.state }}
+        </div>
+      </div>
+      <div class="col-sm"> <strong>Description : </strong></div>
+      <div class="col-sm mb-4"> {{ tradeObject.description }} </div>
+      <div class="col-sm"> <strong>Adresse : </strong></div>
+      <div class="col-sm mb-4" *ngIf="tradeObject.trockeurUser">{{ tradeObject.trockeurUser.address }} </div>
+      <div class="col-sm mb-4" *ngIf="!tradeObject.trockeurUser"> Inconnue </div>
     </div>
+
+    <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+    </button>
+
+    <a *ngIf="!authenticatedUser || !getUserLogin() || !loginOfUserOfObject || (getUserLogin() != loginOfUserOfObject)" class="btn btn-warning">
+    <fa-icon icon="handshake" style="color: #000000"></fa-icon>
+    Troker
+    </a>
+
+    <span *ngIf="getUserLogin() && loginOfUserOfObject && getUserLogin() == loginOfUserOfObject">
+      <button
+      type="submit"
+      [routerLink]="['/trade-object', tradeObject.id, 'edit']"
+      class="btn btn-warning"
+      data-cy="entityEditButton">
+      <fa-icon icon="pencil-alt"></fa-icon>
+      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+
+      <button type="submit" (click)="delete(tradeObject)" class="btn btn-danger" data-cy="entityDeleteButton">
+        <fa-icon icon="times"></fa-icon>
+        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+      </button>
+    </span>
+
+
   </div>
 </div>

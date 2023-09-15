@@ -1,0 +1,15 @@
+<div *ngIf="myTradeObjects.length > 0" class="my-products">
+  <jhi-product-card
+    *ngFor="let tradeObject of myTradeObjects"
+    [tradeObject] = "tradeObject"
+    [isPublic]="false">
+  </jhi-product-card>
+</div>
+
+<div *ngIf="!isAuthenticated && myTradeObjects.length == 0">
+  <p>Connectez vous pour accéder à vos produits</p>
+</div>
+
+<div *ngIf="isAuthenticated && myTradeObjects.length == 0">
+  <p>Vous n'avez aucun produit</p>
+</div>

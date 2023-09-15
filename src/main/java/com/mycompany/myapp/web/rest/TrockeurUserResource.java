@@ -1,6 +1,7 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
@@ -205,4 +206,18 @@ public class TrockeurUserResource {
         Optional<Long> currentTrockeurUserId = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(currentTrockeurUserId);
     }
+
+    /**
+    * {@code GET  /current-trockeur-user-id/:id} : get the user of a trockeur user id.
+    *
+    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the trockeurUser, or with status {@code 404 (Not Found)}.
+    */
+   @GetMapping("/user-of-trockeur-user-id/{id}")
+   public ResponseEntity<User> getUserOfTrockeurUserId(@PathVariable Long id) {
+       log.debug("REST request to get user of TrockeurUser id : {}");
+       Optional<User> user = trockeurUserRepository.findUserByTrockeurUserId(id);
+       return ResponseUtil.wrapOrNotFound(user);
+   }
+
+
 }

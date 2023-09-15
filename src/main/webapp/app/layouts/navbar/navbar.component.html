@@ -1,10 +1,10 @@
-<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-white">
+<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black">
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
       <span class="navbar-version">{{ version }}</span>
     </a>
-    <div class="font-weight-bold">
+    <div class="font-weight-bold text-white">
       Proposer un objet
       <a href="/trade-object/new" class="btn btn-warning ml-3"> + </a>
     </div>
@@ -20,13 +20,23 @@
     >
       <fa-icon icon="bars"></fa-icon>
     </a>
-    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
+
+    <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black">
+      <div class="container-fluid">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Rechercher..." aria-label="Rechercher" [(ngModel)]="searchInput" name="searchInput">
+          <button [disabled]="searchInput===''" [routerLink]="['/product']" [queryParams]="{ searchInput: searchInput }" class="btn btn-outline-warning" type="submit">
+            <fa-icon icon="search"></fa-icon>
+          </button>
+        </form>
+
+    <div class="navbar-collapse collapse bg-black" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
             <span>
-              <fa-icon icon="home"></fa-icon>
-              <span jhiTranslate="global.menu.home">Accueil</span>
+              <fa-icon icon="home" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.home" style="color : #ffffff">Accueil</span>
             </span>
           </a>
         </li>
@@ -41,8 +51,8 @@
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
             <span>
-              <fa-icon icon="th-list"></fa-icon>
-              <span jhiTranslate="global.menu.entities.main">Entités</span>
+              <fa-icon icon="th-list" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.entities.main" style="color : #ffffff">Entités</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
@@ -119,8 +129,8 @@
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
             <span>
-              <fa-icon icon="users-cog"></fa-icon>
-              <span jhiTranslate="global.menu.admin.main">Administration</span>
+              <fa-icon icon="users-cog" style="color : #ffffff"></fa-icon>
+              <span style="color : #ffffff" jhiTranslate="global.menu.admin.main">Administration</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
@@ -169,22 +179,46 @@
             </li>
           </ul>
         </li>
-        <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
+        <li ngbDropdown class="dropdown dropdown pointer" display="dynamic">
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
             <span>
-              <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Langue</span>
+              <fa-icon icon="handshake" style="color : #ffffff"></fa-icon>
+              <span style="color : #ffffff" >Mes Troks</span>
             </span>
           </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
-            <li *ngFor="let language of languages">
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+            <li>
               <a
                 class="dropdown-item"
-                [jhiActiveMenu]="language"
-                href="javascript:void(0);"
-                (click)="changeLanguage(language); collapseNavbar()"
-                >{{ language | findLanguageFromKey }}</a
+                routerLink="/historique"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
               >
+                <span >Historique</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/troks-proposes"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <span >Troks Proposés</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/troks-recus"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <span >Troks Reçus</span>
+              </a>
             </li>
           </ul>
         </li>
@@ -197,14 +231,26 @@
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
             <span *ngIf="!account?.imageUrl">
-              <fa-icon icon="user"></fa-icon>
-              <span jhiTranslate="global.menu.account.main">Compte</span>
+              <fa-icon icon="user" style="color : #ffffff"></fa-icon>
+              <span jhiTranslate="global.menu.account.main" style="color : #ffffff">Compte</span>
             </span>
             <span *ngIf="account?.imageUrl">
               <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
+            <li *ngSwitchCase="true">
+              <a
+                class="dropdown-item"
+                routerLink="/account/my-products"
+                routerLinkActive="active"
+                (click)="collapseNavbar()"
+                data-cy="settings"
+              >
+                <fa-icon icon="boxes-stacked" [fixedWidth]="true"></fa-icon>
+                <span>Mes produits</span>
+              </a>
+            </li>
             <li *ngSwitchCase="true">
               <a
                 class="dropdown-item"

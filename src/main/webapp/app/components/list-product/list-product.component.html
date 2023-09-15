@@ -1,7 +1,105 @@
-<div class="list-product">
+<div class="d-flex">
+  <div class="d-flex align-items-center" style="margin-right: 1.5rem">
+    <span>Catégorie : </span>
+    <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+      <button
+        type="button"
+        class="categorySelector"
+        id="dropdownManual"
+        ngbDropdownAnchor
+        (focus)="myDrop.open()"
+      >
+        {{selectedCategory ? selectedCategory : "Toutes les catégories"}}
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownManual">
+        <button
+          [routerLink]="['/product']" [queryParams]="{ categoryName: undefined, state: selectedState, searchInput: selectedSearchInput }"
+          class="notSelected"
+          ngbDropdownItem>
+            Toutes les catégories
+          </button>
+        <div *ngFor="let category of categories">
+          <button
+          [routerLink]="['/product']" [queryParams]="{ categoryName: category, state: selectedState, searchInput: selectedSearchInput }"
+          class="selectedButton"
+          *ngIf="selectedCategory == category"
+          ngbDropdownItem
+          (click)="filter(category)">
+            {{category}}
+          </button>
+          <button
+          [routerLink]="['/product']" [queryParams]="{ categoryName: category, state: selectedState, searchInput: selectedSearchInput }"
+          class="notSelected"
+          *ngIf="selectedCategory != category"
+          ngbDropdownItem
+          (click)="filter(category)">
+            {{category}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center">
+    <span>Etat : </span>
+    <div class="d-inline-block" ngbDropdown #stateDrop="ngbDropdown">
+      <button
+        type="button"
+        class="categorySelector"
+        id="dropdownManual"
+        ngbDropdownAnchor
+        (focus)="stateDrop.open()"
+      >
+        {{selectedState ? selectedState : "Tous les états"}}
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownManual">
+        <button
+          [routerLink]="['/product']" [queryParams]="{ categoryName: selectedCategory, state: undefined, searchInput: selectedSearchInput }"
+          class="notSelected"
+          ngbDropdownItem>
+            Tous les états
+        </button>
+
+        <div *ngFor="let state of states">
+          <button
+          [routerLink]="['/product']" [queryParams]="{ categoryName: selectedCategory, state: state, searchInput: selectedSearchInput }"
+          class="selectedButton"
+          *ngIf="selectedState == state"
+          ngbDropdownItem
+          (click)="filter(undefined, state)">
+            {{state}}
+          </button>
+          <button
+          [routerLink]="['/product']" [queryParams]="{ categoryName: selectedCategory, state: state, searchInput: selectedSearchInput }"
+          class="notSelected"
+          *ngIf="selectedState != state"
+          ngbDropdownItem
+          (click)="filter(undefined, state)">
+            {{state}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<span
+  *ngIf="selectedSearchInput != undefined">
+  {{totalNumberOfObjects}} {{totalNumberOfObjects === 1 ? 'résultat' : 'résultats'}} pour <span class="keyword text-warning">{{selectedSearchInput}}</span>
+</span>
+
+<div class="list-product" style="margin-top: 2.5rem">
   <jhi-product-card
     *ngFor="let tradeObject of tradeObjectList"
     [tradeObject] = "tradeObject"
     [isPublic]="true">
   </jhi-product-card>
 </div>
+
+<div class="m-auto d-flex align-items-center justify-content-center">
+  <button class="btn btn-warning" style="font-weight: bold"(click)="previousPage()">{{"<"}}</button>
+  <span class="mx-4" style="font-weight: bold; font-size: 20px">{{this.selectedPageNumber}}</span>
+  <button class="btn btn-warning" style="font-weight: bold"(click)="nextPage()">{{">"}}</button>
+</div>
+
+{{totalNumberOfObjects}} nb objets

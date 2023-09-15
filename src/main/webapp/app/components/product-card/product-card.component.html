@@ -1,12 +1,46 @@
-<div class="card mb-4" style="max-width: 25rem;">
-  <img src={{getPathToFirstImage()}} class="card-img-top" alt="Image du produit">
-  <div class="card-body card-header my-4">
-    <h6 class="card-title text-truncate" style="max-width: 90%;">{{tradeObject?.name}}</h6>
-    <jhi-state [state]="tradeObject ? tradeObject.state ? tradeObject.state : '' : ''"/>
+<div class="card shadow border-warning mb-4" style="max-width: 25rem">
+  <img src="{{ getPathToFirstImage() }}" class="card-img-top" alt="Image du produit" (click)="openCarousel(carousel)"/>
+  <div class=" card-header my-4" [routerLink]="['/trade-object/', tradeObject?.id, 'view']" routerLinkActive="router-link-active">
+    <h6 class="card-title text-truncate" style="max-width: 90%">{{ tradeObject?.name }}</h6>
+    <jhi-state [state]="tradeObject ? (tradeObject.state ? tradeObject.state : '') : ''" />
   </div>
-  <button *ngIf="isPublic" class="btn btn-primary" type="submit">Troker</button>
-  <div *ngIf="!isPublic" class="privateActions">
-    <button class="btn btn-primary" type="submit">Voir</button>
-    <button class="btn btn-primary" type="submit">Modifier</button>
+  <button *ngIf="isPublic" class="btn btn-warning w-50 mx-auto mb-2" type="submit">
+    <fa-icon icon="handshake" style="color: #000000"></fa-icon>
+    <span class="icon-text" style="margin-left: 4px">Troker</span>
+  </button>
+  <div *ngIf="!isPublic" class="privateActions mb-2">
+    <button class="btn btn-warning w-30 mx-auto" type="submit" [routerLink]="['/trade-object/', tradeObject?.id, 'view']" routerLinkActive="router-link-active">
+      <fa-icon icon="eye" style="color: #000000"></fa-icon>
+      <span class="icon-text" style="margin-left: 4px">Voir</span>
+    </button>
+    <button class="btn btn-warning w-30 mx-auto" type="submit">
+      <fa-icon icon="pencil-alt" style="color: #000000"></fa-icon>
+      <span class="icon-text" style="margin-left: 4px">Modifier</span>
+    </button>
   </div>
 </div>
+
+<ng-template #carousel>
+  <div class="modal-body">
+    <button type="button" class="close close-button" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+      <ngb-carousel style="display: block;">
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img src="/content/images/logoTrokeur.png" alt="Random first slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img src="/content/images/logo-jhipster.png" alt="Random second slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img src="/content/images/logoTrokeur.png" alt="Random third slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+  </div>
+</ng-template>

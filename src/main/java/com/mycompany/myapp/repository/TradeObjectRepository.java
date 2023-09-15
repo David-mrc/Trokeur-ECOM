@@ -1,6 +1,8 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.enumeration.TradeObjectState;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +37,33 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login")
     Optional<List<TradeObject>> findAllObjectsOfUser(@Param("login") Optional<String> login);
 
-    @Query("select objectCategory.tradeObjects from ObjectCategory objectCategory where objectCategory.id = :categoryId")
-    Optional<Set<TradeObject>> findObjectsOfCategory(@Param("category") Optional<Long> categoryId);
+    @Query("select objectCategory.tradeObjects from ObjectCategory objectCategory where objectCategory.name = :categoryName")
+    Optional<Set<TradeObject>> findObjectsOfCategory(@Param("categoryName") Optional<String> categoryName);
+
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.state = :state")
+    Optional<Set<TradeObject>> findObjectsOfState(@Param("state") Optional<TradeObjectState> state);
+
+    @Query("select tradeObject from TradeObject tradeObject where LOWER(tradeObject.name) LIKE %:searchInput%")
+    Optional<Set<TradeObject>> findObjectsOfSearchInput(@Param("searchInput") String searchInput);
+
+    @Query("select tradeObject from TradeObject tradeObject")
+    Set<TradeObject> findAllObjects();
+
+    @Query("select count(tradeObject) from TradeObject tradeObject")
+    Optional<Integer> countAllObjects();
+
+    @Query(
+        value = "select tro.id " +
+        "from trade_object tro " +
+        "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
+        "join object_category obc on rel.object_category_id = obc.id " +
+        "where obc.name = :categoryName",
+        countQuery = "select count(tro.id) " +
+        "from trade_object tro " +
+        "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
+        "join object_category obc on rel.object_category_id = obc.id " +
+        "where obc.name = :categoryName",
+        nativeQuery = true)
+    Page<Long> findIdOfObjectsOfCategoryFromPage(@Param("categoryName") Optional<String> categoryName, Pageable pageable);
+
 }
