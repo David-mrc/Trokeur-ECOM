@@ -50,6 +50,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="ownerID">
+            <div class="d-flex">
+              <span jhiTranslate="trokeurApp.tradeOffer.ownerID">Owner ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="tradeObject.id">
             <div class="d-flex">
               <span jhiTranslate="trokeurApp.tradeOffer.tradeObject">Trade Object</span>
@@ -72,6 +78,7 @@
           </td>
           <td>{{ tradeOffer.date | formatMediumDate }}</td>
           <td jhiTranslate="{{ 'trokeurApp.TradeOfferState.' + tradeOffer.state }}">{{ tradeOffer.state }}</td>
+          <td>{{ tradeOffer.ownerID }}</td>
           <td>
             <span *ngFor="let tradeObject of tradeOffer.tradeObjects; let last = last">
               <a class="form-control-static" [routerLink]="['/trade-object', tradeObject.id, 'view']">{{ tradeObject.id }}</a

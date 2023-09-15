@@ -46,6 +46,9 @@ class TradeOfferResourceIT {
     private static final TradeOfferState DEFAULT_STATE = TradeOfferState.EN_COURS;
     private static final TradeOfferState UPDATED_STATE = TradeOfferState.ACCEPTE;
 
+    private static final Long DEFAULT_OWNER_ID = 1L;
+    private static final Long UPDATED_OWNER_ID = 2L;
+
     private static final String ENTITY_API_URL = "/api/trade-offers";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -73,7 +76,7 @@ class TradeOfferResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TradeOffer createEntity(EntityManager em) {
-        TradeOffer tradeOffer = new TradeOffer().date(DEFAULT_DATE).state(DEFAULT_STATE);
+        TradeOffer tradeOffer = new TradeOffer().date(DEFAULT_DATE).state(DEFAULT_STATE).ownerID(DEFAULT_OWNER_ID);
         return tradeOffer;
     }
 
@@ -84,7 +87,7 @@ class TradeOfferResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TradeOffer createUpdatedEntity(EntityManager em) {
-        TradeOffer tradeOffer = new TradeOffer().date(UPDATED_DATE).state(UPDATED_STATE);
+        TradeOffer tradeOffer = new TradeOffer().date(UPDATED_DATE).state(UPDATED_STATE).ownerID(UPDATED_OWNER_ID);
         return tradeOffer;
     }
 
@@ -108,6 +111,7 @@ class TradeOfferResourceIT {
         TradeOffer testTradeOffer = tradeOfferList.get(tradeOfferList.size() - 1);
         assertThat(testTradeOffer.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testTradeOffer.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testTradeOffer.getOwnerID()).isEqualTo(DEFAULT_OWNER_ID);
     }
 
     @Test
@@ -175,7 +179,8 @@ class TradeOfferResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tradeOffer.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].ownerID").value(hasItem(DEFAULT_OWNER_ID.intValue())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -208,7 +213,8 @@ class TradeOfferResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tradeOffer.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.ownerID").value(DEFAULT_OWNER_ID.intValue()));
     }
 
     @Test
@@ -230,7 +236,7 @@ class TradeOfferResourceIT {
         TradeOffer updatedTradeOffer = tradeOfferRepository.findById(tradeOffer.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedTradeOffer are not directly saved in db
         em.detach(updatedTradeOffer);
-        updatedTradeOffer.date(UPDATED_DATE).state(UPDATED_STATE);
+        updatedTradeOffer.date(UPDATED_DATE).state(UPDATED_STATE).ownerID(UPDATED_OWNER_ID);
 
         restTradeOfferMockMvc
             .perform(
@@ -246,6 +252,7 @@ class TradeOfferResourceIT {
         TradeOffer testTradeOffer = tradeOfferList.get(tradeOfferList.size() - 1);
         assertThat(testTradeOffer.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testTradeOffer.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testTradeOffer.getOwnerID()).isEqualTo(UPDATED_OWNER_ID);
     }
 
     @Test
@@ -316,6 +323,8 @@ class TradeOfferResourceIT {
         TradeOffer partialUpdatedTradeOffer = new TradeOffer();
         partialUpdatedTradeOffer.setId(tradeOffer.getId());
 
+        partialUpdatedTradeOffer.ownerID(UPDATED_OWNER_ID);
+
         restTradeOfferMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTradeOffer.getId())
@@ -330,6 +339,7 @@ class TradeOfferResourceIT {
         TradeOffer testTradeOffer = tradeOfferList.get(tradeOfferList.size() - 1);
         assertThat(testTradeOffer.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testTradeOffer.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testTradeOffer.getOwnerID()).isEqualTo(UPDATED_OWNER_ID);
     }
 
     @Test
@@ -344,7 +354,7 @@ class TradeOfferResourceIT {
         TradeOffer partialUpdatedTradeOffer = new TradeOffer();
         partialUpdatedTradeOffer.setId(tradeOffer.getId());
 
-        partialUpdatedTradeOffer.date(UPDATED_DATE).state(UPDATED_STATE);
+        partialUpdatedTradeOffer.date(UPDATED_DATE).state(UPDATED_STATE).ownerID(UPDATED_OWNER_ID);
 
         restTradeOfferMockMvc
             .perform(
@@ -360,6 +370,7 @@ class TradeOfferResourceIT {
         TradeOffer testTradeOffer = tradeOfferList.get(tradeOfferList.size() - 1);
         assertThat(testTradeOffer.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testTradeOffer.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testTradeOffer.getOwnerID()).isEqualTo(UPDATED_OWNER_ID);
     }
 
     @Test

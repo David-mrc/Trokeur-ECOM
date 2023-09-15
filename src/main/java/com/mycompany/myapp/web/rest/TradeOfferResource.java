@@ -132,6 +132,9 @@ public class TradeOfferResource {
                 if (tradeOffer.getState() != null) {
                     existingTradeOffer.setState(tradeOffer.getState());
                 }
+                if (tradeOffer.getOwnerID() != null) {
+                    existingTradeOffer.setOwnerID(tradeOffer.getOwnerID());
+                }
 
                 return existingTradeOffer;
             })

@@ -15,7 +15,7 @@ describe('TradeOffer e2e test', () => {
   const tradeOfferPageUrlPattern = new RegExp('/trade-offer(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const tradeOfferSample = { date: '2023-09-07', state: 'ACCEPTE' };
+  const tradeOfferSample = { date: '2023-09-07', state: 'EN_COURS' };
 
   let tradeOffer;
 
@@ -157,11 +157,14 @@ describe('TradeOffer e2e test', () => {
     });
 
     it('should create an instance of TradeOffer', () => {
-      cy.get(`[data-cy="date"]`).type('2023-09-06');
+      cy.get(`[data-cy="date"]`).type('2023-09-07');
       cy.get(`[data-cy="date"]`).blur();
-      cy.get(`[data-cy="date"]`).should('have.value', '2023-09-06');
+      cy.get(`[data-cy="date"]`).should('have.value', '2023-09-07');
 
       cy.get(`[data-cy="state"]`).select('ACCEPTE');
+
+      cy.get(`[data-cy="ownerID"]`).type('19190');
+      cy.get(`[data-cy="ownerID"]`).should('have.value', '19190');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

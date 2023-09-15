@@ -13,6 +13,10 @@
       "fieldType": "TradeOfferState",
       "fieldValidateRules": ["required"],
       "fieldValues": "EN_COURS,ACCEPTE,REFUSE,FINALISE"
+    },
+    {
+      "fieldName": "ownerID",
+      "fieldType": "Long"
     }
   ],
   "name": "TradeOffer",
