@@ -24,6 +24,11 @@ export class ProductCardComponent {
   constructor(public modalService: NgbModal){
   }
 
+  ngOnInit(): void {
+    // eslint-disable-next-line no-console
+    console.log(this.tradeObject?.trockeurUser?.user);
+  }
+
   getPathToFirstImage(): string {
     if (this.tradeObject?.genericImages?.[0]) {
       return this.tradeObject.genericImages[0].imagePath;

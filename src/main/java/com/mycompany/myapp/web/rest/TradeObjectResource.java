@@ -1,8 +1,10 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.TrockeurUser;
 import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 import com.mycompany.myapp.repository.TradeObjectRepository;
+import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -43,9 +45,12 @@ public class TradeObjectResource {
     private String applicationName;
 
     private final TradeObjectRepository tradeObjectRepository;
+    private final TrockeurUserRepository trockeurUserRepository;
 
-    public TradeObjectResource(TradeObjectRepository tradeObjectRepository) {
+
+    public TradeObjectResource(TradeObjectRepository tradeObjectRepository, TrockeurUserRepository trockeurUserRepository) {
         this.tradeObjectRepository = tradeObjectRepository;
+        this.trockeurUserRepository = trockeurUserRepository;
     }
 
     /**
@@ -60,6 +65,13 @@ public class TradeObjectResource {
         log.debug("REST request to save TradeObject : {}", tradeObject);
         if (tradeObject.getId() != null) {
             throw new BadRequestAlertException("A new tradeObject cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Optional<Long> userId = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin());
+        if (userId.isPresent()) {
+            Optional<TrockeurUser> trockeurUser = trockeurUserRepository.findById(userId.get());
+            if (trockeurUser.isPresent()) {
+                tradeObject.setTrockeurUser(trockeurUser.get());
+            }
         }
         TradeObject result = tradeObjectRepository.save(tradeObject);
         return ResponseEntity

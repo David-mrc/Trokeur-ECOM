@@ -42,7 +42,7 @@ public class TrockeurUser implements Serializable {
     @Column(name = "profile_picture_path")
     private String profilePicturePath;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private User user;
 

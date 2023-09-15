@@ -1,6 +1,8 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.User;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -40,4 +42,7 @@ public interface TrockeurUserRepository extends JpaRepository<TrockeurUser, Long
 
     @Query("select trockeurUser.id from TrockeurUser trockeurUser where trockeurUser.user.login =:login")
     Optional<Long> findTrockeurUserIdByLogin(@Param("login") Optional<String> login);
+
+    @Query("select trockeurUser.user from TrockeurUser trockeurUser where trockeurUser.id = :id")
+    Optional<User> findUserByTrockeurUserId(@Param("id") Long id);
 }

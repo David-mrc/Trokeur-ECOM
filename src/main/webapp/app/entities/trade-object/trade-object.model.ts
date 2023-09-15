@@ -12,7 +12,7 @@ export interface ITradeObject {
   stock?: number | null;
   genericImages?: Set<GenericImage> | null;
   objectCategories?: Pick<IObjectCategory, 'id'>[] | null;
-  trockeurUser?: Pick<ITrockeurUser, 'id' | 'address'> | null;
+  trockeurUser?: Pick<ITrockeurUser, 'id' | 'address' | 'user'> | null;
   tradeOffers?: Pick<ITradeOffer, 'id'>[] | null;
 }
 

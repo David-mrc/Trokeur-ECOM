@@ -1,3 +1,4 @@
+import { IUser } from './../../user/user.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -36,6 +37,10 @@ export class TrockeurUserService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<ITrockeurUser>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findUserOfTrockeurUserId(id: number): Observable<IUser> {
+    return this.http.get<IUser>(this.applicationConfigService.getEndpointFor('api/user-of-trockeur-user-id/' + id.toString()));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
