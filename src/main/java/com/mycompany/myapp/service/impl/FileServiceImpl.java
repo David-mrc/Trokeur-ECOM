@@ -63,16 +63,26 @@ public class FileServiceImpl implements FileService {
         if (bucketIsEmpty()) {
             throw new FileDownloadException("Requested bucket does not exist or is empty");
         }
+
+        String downloadDirectory = "media";
+
+        File directory = new File(downloadDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String filePath = Paths.get(downloadDirectory, fileName).toString();
+
         S3Object object = s3Client.getObject(bucketName, fileName);
         try (S3ObjectInputStream s3is = object.getObjectContent()) {
-            try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
                 byte[] read_buf = new byte[1024];
                 int read_len = 0;
                 while ((read_len = s3is.read(read_buf)) > 0) {
                     fileOutputStream.write(read_buf, 0, read_len);
                 }
             }
-            Path pathObject = Paths.get(fileName);
+            Path pathObject = Paths.get(filePath);
             Resource resource = new UrlResource(pathObject.toUri());
 
             if (resource.exists() || resource.isReadable()) {

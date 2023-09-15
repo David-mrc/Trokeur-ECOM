@@ -5,21 +5,22 @@ import { TradeOfferState } from 'app/entities/enumerations/trade-offer-state.mod
 import { ITradeOffer, NewTradeOffer } from './trade-offer.model';
 
 export const sampleWithRequiredData: ITradeOffer = {
-  id: 21917,
-  date: dayjs('2023-09-06'),
+  id: 5534,
+  date: dayjs('2023-09-07'),
   state: 'FINALISE',
 };
 
 export const sampleWithPartialData: ITradeOffer = {
-  id: 21760,
+  id: 12891,
   date: dayjs('2023-09-07'),
   state: 'EN_COURS',
 };
 
 export const sampleWithFullData: ITradeOffer = {
-  id: 24614,
+  id: 29169,
   date: dayjs('2023-09-07'),
   state: 'REFUSE',
+  ownerID: 24747,
 };
 
 export const sampleWithNewData: NewTradeOffer = {

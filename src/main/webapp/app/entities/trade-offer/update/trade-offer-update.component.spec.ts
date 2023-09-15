@@ -54,10 +54,10 @@ describe('TradeOffer Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call TradeObject query and add missing value', () => {
       const tradeOffer: ITradeOffer = { id: 456 };
-      const tradeObjects: ITradeObject[] = [{ id: 7416 }];
+      const tradeObjects: ITradeObject[] = [{ id: 27885 }];
       tradeOffer.tradeObjects = tradeObjects;
 
-      const tradeObjectCollection: ITradeObject[] = [{ id: 17955 }];
+      const tradeObjectCollection: ITradeObject[] = [{ id: 8868 }];
       jest.spyOn(tradeObjectService, 'query').mockReturnValue(of(new HttpResponse({ body: tradeObjectCollection })));
       const additionalTradeObjects = [...tradeObjects];
       const expectedCollection: ITradeObject[] = [...additionalTradeObjects, ...tradeObjectCollection];
@@ -76,10 +76,10 @@ describe('TradeOffer Management Update Component', () => {
 
     it('Should call TrockeurUser query and add missing value', () => {
       const tradeOffer: ITradeOffer = { id: 456 };
-      const trockeurUsers: ITrockeurUser[] = [{ id: 5531 }];
+      const trockeurUsers: ITrockeurUser[] = [{ id: 18648 }];
       tradeOffer.trockeurUsers = trockeurUsers;
 
-      const trockeurUserCollection: ITrockeurUser[] = [{ id: 22538 }];
+      const trockeurUserCollection: ITrockeurUser[] = [{ id: 2402 }];
       jest.spyOn(trockeurUserService, 'query').mockReturnValue(of(new HttpResponse({ body: trockeurUserCollection })));
       const additionalTrockeurUsers = [...trockeurUsers];
       const expectedCollection: ITrockeurUser[] = [...additionalTrockeurUsers, ...trockeurUserCollection];
@@ -98,9 +98,9 @@ describe('TradeOffer Management Update Component', () => {
 
     it('Should update editForm', () => {
       const tradeOffer: ITradeOffer = { id: 456 };
-      const tradeObject: ITradeObject = { id: 26093 };
+      const tradeObject: ITradeObject = { id: 21564 };
       tradeOffer.tradeObjects = [tradeObject];
-      const trockeurUser: ITrockeurUser = { id: 9324 };
+      const trockeurUser: ITrockeurUser = { id: 19820 };
       tradeOffer.trockeurUsers = [trockeurUser];
 
       activatedRoute.data = of({ tradeOffer });

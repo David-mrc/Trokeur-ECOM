@@ -22,6 +22,10 @@
         <dd>
           <span jhiTranslate="{{ 'trokeurApp.TradeOfferState.' + tradeOffer.state }}">{{ tradeOffer.state }}</span>
         </dd>
+        <dt><span jhiTranslate="trokeurApp.tradeOffer.ownerID">Owner ID</span></dt>
+        <dd>
+          <span>{{ tradeOffer.ownerID }}</span>
+        </dd>
         <dt><span jhiTranslate="trokeurApp.tradeOffer.tradeObject">Trade Object</span></dt>
         <dd>
           <span *ngFor="let tradeObject of tradeOffer.tradeObjects; let last = last">

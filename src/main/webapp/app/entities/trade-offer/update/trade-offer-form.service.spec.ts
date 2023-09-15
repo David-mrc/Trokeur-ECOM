@@ -22,6 +22,7 @@ describe('TradeOffer Form Service', () => {
             id: expect.any(Object),
             date: expect.any(Object),
             state: expect.any(Object),
+            ownerID: expect.any(Object),
             tradeObjects: expect.any(Object),
             trockeurUsers: expect.any(Object),
           })
@@ -36,6 +37,7 @@ describe('TradeOffer Form Service', () => {
             id: expect.any(Object),
             date: expect.any(Object),
             state: expect.any(Object),
+            ownerID: expect.any(Object),
             tradeObjects: expect.any(Object),
             trockeurUsers: expect.any(Object),
           })

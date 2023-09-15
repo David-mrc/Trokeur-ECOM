@@ -7,6 +7,7 @@ export interface ITradeOffer {
   id: number;
   date?: dayjs.Dayjs | null;
   state?: keyof typeof TradeOfferState | null;
+  ownerID?: number | null;
   tradeObjects?: Pick<ITradeObject, 'id'>[] | null;
   trockeurUsers?: Pick<ITrockeurUser, 'id'>[] | null;
 }

@@ -37,6 +37,9 @@ public class TradeOffer implements Serializable {
     @Column(name = "state", nullable = false)
     private TradeOfferState state;
 
+    @Column(name = "owner_id")
+    private Long ownerID;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_trade_offer__trade_object",
@@ -96,6 +99,19 @@ public class TradeOffer implements Serializable {
 
     public void setState(TradeOfferState state) {
         this.state = state;
+    }
+
+    public Long getOwnerID() {
+        return this.ownerID;
+    }
+
+    public TradeOffer ownerID(Long ownerID) {
+        this.setOwnerID(ownerID);
+        return this;
+    }
+
+    public void setOwnerID(Long ownerID) {
+        this.ownerID = ownerID;
     }
 
     public Set<TradeObject> getTradeObjects() {
@@ -174,6 +190,7 @@ public class TradeOffer implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", state='" + getState() + "'" +
+            ", ownerID=" + getOwnerID() +
             "}";
     }
 }

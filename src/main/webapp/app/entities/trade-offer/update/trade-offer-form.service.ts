@@ -20,6 +20,7 @@ type TradeOfferFormGroupContent = {
   id: FormControl<ITradeOffer['id'] | NewTradeOffer['id']>;
   date: FormControl<ITradeOffer['date']>;
   state: FormControl<ITradeOffer['state']>;
+  ownerID: FormControl<ITradeOffer['ownerID']>;
   tradeObjects: FormControl<ITradeOffer['tradeObjects']>;
   trockeurUsers: FormControl<ITradeOffer['trockeurUsers']>;
 };
@@ -47,6 +48,7 @@ export class TradeOfferFormService {
       state: new FormControl(tradeOfferRawValue.state, {
         validators: [Validators.required],
       }),
+      ownerID: new FormControl(tradeOfferRawValue.ownerID),
       tradeObjects: new FormControl(tradeOfferRawValue.tradeObjects ?? []),
       trockeurUsers: new FormControl(tradeOfferRawValue.trockeurUsers ?? []),
     });
