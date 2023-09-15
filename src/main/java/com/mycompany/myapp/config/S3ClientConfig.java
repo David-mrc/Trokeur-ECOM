@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3ClientConfig {
 
-    @Value("${amazonProperties.accessKey}")
+    @Value("temp")
     private String accessKey;
 
-    @Value("${amazonProperties.secretKey}")
+    @Value("temp")
     private String secretKey;
 
     @Bean
