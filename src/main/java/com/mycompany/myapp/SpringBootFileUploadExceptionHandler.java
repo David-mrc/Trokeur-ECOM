@@ -65,8 +65,7 @@ public class SpringBootFileUploadExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler(value = { Exception.class })
     protected ResponseEntity<Object> handleUnExpectedException(Exception ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
-        log.info("Exception ==> ", ex);
-        log.info("Fatal exception ===> {}", bodyOfResponse);
+        System.out.println(bodyOfResponse);
         return handleExceptionInternal(
             ex,
             "We apologize. Something is not right",

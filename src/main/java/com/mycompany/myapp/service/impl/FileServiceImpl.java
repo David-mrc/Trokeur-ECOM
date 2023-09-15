@@ -1,8 +1,9 @@
-package com.mycompany.myapp.service;
+package com.mycompany.myapp.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.mycompany.myapp.exceptions.FileDownloadException;
+import com.mycompany.myapp.service.FileService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,22 +11,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class FileServiceImpl implements FileService {
 
-    @Value("${aws.bucket.name}")
-    private String bucketName;
+    private String bucketName = "trokeur-bucket";
 
     private final AmazonS3 s3Client;
+
+    @Autowired
+    public FileServiceImpl(AmazonS3 s3Client) {
+        this.s3Client = s3Client;
+    }
 
     @Override
     public String uploadFile(MultipartFile multipartFile) throws IOException {
