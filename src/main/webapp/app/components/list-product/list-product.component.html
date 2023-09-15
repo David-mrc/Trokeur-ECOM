@@ -85,7 +85,7 @@
 <hr>
 <span
   *ngIf="selectedSearchInput != undefined">
-  {{tradeObjectList.length}} {{tradeObjectList.length === 1 ? 'résultat' : 'résultats'}} pour <span class="keyword text-warning">{{selectedSearchInput}}</span>
+  {{totalNumberOfObjects}} {{totalNumberOfObjects === 1 ? 'résultat' : 'résultats'}} pour <span class="keyword text-warning">{{selectedSearchInput}}</span>
 </span>
 
 <div class="list-product" style="margin-top: 2.5rem">
@@ -95,3 +95,11 @@
     [isPublic]="true">
   </jhi-product-card>
 </div>
+
+<div class="m-auto d-flex align-items-center justify-content-center">
+  <button class="btn btn-warning" style="font-weight: bold"(click)="previousPage()">{{"<"}}</button>
+  <span class="mx-4" style="font-weight: bold; font-size: 20px">{{this.selectedPageNumber}}</span>
+  <button class="btn btn-warning" style="font-weight: bold"(click)="nextPage()">{{">"}}</button>
+</div>
+
+{{totalNumberOfObjects}} nb objets
