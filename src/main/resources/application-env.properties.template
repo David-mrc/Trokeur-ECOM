@@ -1,0 +1,3 @@
+aws.bucket.name=<YOUR S3 BUCKET NAME>
+aws.accessKey=<YOUR IAM User ACCESS KEY>
+aws.secretKey=<YOUR IAM User SECRET KEY>
