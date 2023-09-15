@@ -25,6 +25,8 @@ export class ListProductComponent implements OnInit {
   selectedCategory: string | undefined;
   selectedState: TradeObjectState | undefined;
   selectedSearchInput: string | undefined;
+  selectedPageNumber = 0;
+  totalNumberOfObjects = 0;
 
   constructor(
     private _productService: productService,
@@ -46,10 +48,12 @@ export class ListProductComponent implements OnInit {
 
   filter(category?: string, state?: string, searchInput?: string): void {
     if (category === undefined && state === undefined && searchInput === undefined) {
-      this.fetchProduct();
+      this.fetchProduct(this.selectedPageNumber);
+      this.fetchNumberOfProduct();
     } else {
-      this._productService.getFilteredProducts(this.selectedCategory, this.selectedState, this.selectedSearchInput).subscribe((tradeObjects) => {
+      this._productService.getFilteredProducts(this.selectedCategory, this.selectedState, this.selectedSearchInput, this.selectedPageNumber).subscribe((tradeObjects) => {
         this.tradeObjectList = tradeObjects;
+        this.fetchNumberOfProductFiltered();
       });
     }
   }
@@ -64,12 +68,39 @@ export class ListProductComponent implements OnInit {
     })
   }
 
-  fetchProduct(): void {
+  fetchProduct(pageNumber: number): void {
     this.tradeObjectList = [];
-    this._productService.getAllProducts().subscribe((tradeObjects) => {
+    this._productService.getAllProductsFromPage(pageNumber).subscribe((tradeObjects) => {
       tradeObjects.map((tradeObject: TradeObject) => {
         this.tradeObjectList.push(tradeObject);
       })
     });
+  }
+
+  fetchNumberOfProduct(): void {
+    this._productService.countAllProduct().subscribe((numberOfObjects) => {
+      this.totalNumberOfObjects = numberOfObjects;
+    })
+  }
+
+  fetchNumberOfProductFiltered(): void {
+    this._productService.countAllProductFiltered().subscribe((numberOfObjectsFiltered) => {
+      this.totalNumberOfObjects = numberOfObjectsFiltered;
+    })
+  }
+
+  nextPage(): void {
+    const threshold = parseInt((this.totalNumberOfObjects / 8).toFixed(0), 10);
+    if (this.selectedPageNumber +1 <= threshold -1) {
+      this.selectedPageNumber += 1;
+      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
+    }
+  }
+
+  previousPage(): void {
+    if (this.selectedPageNumber -1 >= 0) {
+      this.selectedPageNumber -= 1;
+      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
+    }
   }
 }

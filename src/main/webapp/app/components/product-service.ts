@@ -13,6 +13,12 @@ export class productService {
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
+  getAllProductsFromPage(pageNumber: number): Observable<TradeObject[]> {
+    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/trade-objects/page'),
+    {params: new HttpParams()
+    .set("pageNumber", pageNumber)});
+  }
+
   getAllProducts(): Observable<TradeObject[]> {
     return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/trade-objects'));
   }
@@ -21,12 +27,25 @@ export class productService {
     return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
   }
 
-  getFilteredProducts(categoryName?: string, state?: TradeObjectState, searchInput?: string): Observable<TradeObject[]> {
+  getFilteredProducts(categoryName?: string, state?: TradeObjectState, searchInput?: string, pageNumber?: number): Observable<TradeObject[]> {
     return this.http.get<TradeObject[]>(
       this.applicationConfigService.getEndpointFor('api/trade-objects/filter'),
       {params: new HttpParams()
         .set("categoryName", categoryName ? categoryName : "")
         .set("state", state ? state : "")
-        .set("searchInput", searchInput ? searchInput : "")});
+        .set("searchInput", searchInput ? searchInput : "")
+        .set("pageNumber", pageNumber ? pageNumber : 0)});
+  }
+
+  countAllProduct(): Observable<number> {
+    return this.http.get<number>(this.applicationConfigService.getEndpointFor('api/trade-objects/count'));
+  }
+
+  countAllProductFiltered(categoryName?: string, state?: TradeObjectState, searchInput?: string): Observable<number> {
+    return this.http.get<number>(this.applicationConfigService.getEndpointFor('api/trade-objects/filter/count'),
+    {params: new HttpParams()
+      .set("categoryName", categoryName ? categoryName : "")
+      .set("state", state ? state : "")
+      .set("searchInput", searchInput ? searchInput : "")});
   }
 }
