@@ -52,7 +52,7 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select count(tradeObject) from TradeObject tradeObject")
     Optional<Integer> countAllObjects();
 
-    @Query(
+    /*@Query(
         value = "select tro.id " +
         "from trade_object tro " +
         "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
@@ -66,4 +66,24 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
         nativeQuery = true)
     Page<Long> findIdOfObjectsOfCategoryFromPage(@Param("categoryName") Optional<String> categoryName, Pageable pageable);
 
+    @Query(
+        value = "select tro.id " +
+        "from trade_object tro " +
+        "where tro.state = :state",
+        countQuery = "select count(tro.id) " +
+        "from trade_object tro " +
+        "where tro.state = :state",
+        nativeQuery = true)
+    Page<Long> findIdOfObjectsOfStateFromPage(@Param("state") Optional<String> state, Pageable pageable);
+
+    @Query(
+        value = "select tro.id " +
+        "from trade_object tro " +
+        "where lower(tro.name) LIKE %:searchInput%",
+        countQuery = "select count(tro.id) " +
+        "from trade_object tro " +
+        "where lower(tro.name) LIKE %:searchInput%",
+        nativeQuery = true)
+    Page<Long> findIdOfObjectsOfSearchInputFromPage(@Param("searchInput") Optional<String> searchInput, Pageable pageable);
+    */
 }
