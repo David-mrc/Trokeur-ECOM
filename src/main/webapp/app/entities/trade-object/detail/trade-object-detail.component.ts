@@ -10,6 +10,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 
 @Component({
   standalone: true,
+  styleUrls: ['./trade-object-detail.component.scss'],
   selector: 'jhi-trade-object-detail',
   templateUrl: './trade-object-detail.component.html',
   imports: [SharedModule, RouterModule, NgbCarouselModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],

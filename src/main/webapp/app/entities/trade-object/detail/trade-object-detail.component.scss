@@ -1,0 +1,14 @@
+::ng-deep .carousel-control-prev-icon{
+  filter: invert(1);
+  opacity: inherit;
+}
+
+::ng-deep .carousel-control-next-icon{
+  filter: invert(1);
+  opacity: inherit;
+}
+
+::ng-deep .carousel-indicators{
+  filter: invert(1);
+  opacity: 50%;
+}
