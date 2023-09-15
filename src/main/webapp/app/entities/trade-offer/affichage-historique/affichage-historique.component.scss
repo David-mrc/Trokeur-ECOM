@@ -10,6 +10,10 @@
     height: 15rem;
   }
 
+  text {
+    text-overflow:ellipsis;
+  }
+
   .item-symbol {
     font-size: 24px;
   }
