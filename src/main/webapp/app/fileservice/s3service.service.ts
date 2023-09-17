@@ -17,7 +17,7 @@ export class S3serviceService {
       'Content-Type': 'application/octet-stream',
     });
 
-    return this.http.get(`/api/v1/file/download?fileName=${fileName}`, {
+    return this.http.get(`https://s3.eu-west-3.amazonaws.com/trokeur-bucket/${fileName}`, {
       responseType: 'blob',
       headers,
     });
