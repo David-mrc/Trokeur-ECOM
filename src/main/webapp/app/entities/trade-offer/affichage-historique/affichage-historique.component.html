@@ -2,7 +2,7 @@
   <div class="row justify-content-center align-items-center my-4">
     <!-- Objet de gauche -->
     <div class="card shadow border-warning mb-4" style="padding:0.5em;max-width: 20rem;align-items: center;display: flex;">
-      <h6 class="mr-10"> Propriétaire : {{proposedObject?.trockeurUser?.user?.login}}</h6>
+      <h6 class="mr-10"> Propriétaire : {{proposingUser?.login}}</h6>
       <img src="/content/images/oiseau.png" class="card-img-top" alt="Image du produit"/>
       <h5 class="card-title text-truncate" style="max-width: 19rem;"> {{proposedObject?.name}} </h5>
       <h6 class="mr-10 text-truncate rows-4" style="max-width: 19rem; max-height: 10rem;"> {{proposedObject?.description}} </h6>
@@ -14,7 +14,7 @@
 
     <!-- Objet de droite -->
     <div class="card border-warning mb-4" style="padding:0.5em;max-width: 20rem;align-items: center;display: flex;">
-      <h6 class="mr-10"> Propriétaire : {{wantedObject?.trockeurUser?.user?.login}}</h6>
+      <h6 class="mr-10"> Propriétaire : {{offeringUser?.login}}</h6>
       <img src="/content/images/miroir.png" class="card-img-top " alt="Image du produit"/>
       <h5 class="card-title text-truncate" style="max-width: 19rem;"> {{wantedObject?.name}} </h5>
       <h6 class="mr-10 text-truncate" style="max-width: 19rem; max-height: 10rem;"> {{wantedObject?.description}} </h6>

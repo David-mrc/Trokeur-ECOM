@@ -1,6 +1,7 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 
 import java.util.List;
@@ -66,4 +67,6 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
         nativeQuery = true)
     Page<Long> findIdOfObjectsOfCategoryFromPage(@Param("categoryName") Optional<String> categoryName, Pageable pageable);
 
+    @Query("select tradeObject.trockeurUser.user from TradeObject tradeObject where tradeObject.id = :id")
+    Optional<User> findUsernameOfTradeObject(@Param ("id") Long id);
 }

@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
@@ -349,5 +350,17 @@ public class TradeObjectResource {
     }
 
 
+
+    /**
+     * {@code GET  /username-of-trade-object/:id} : get the username of the trade object
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("username-of-trade-object/{id}")
+    public ResponseEntity<User> getUsernameOfTradeObject(@PathVariable Long id) {
+        log.debug("REST request to get username of TradeObject");
+        Optional<User> username = tradeObjectRepository.findUsernameOfTradeObject(id);
+        return ResponseUtil.wrapOrNotFound(username);
+    }
 
 }
