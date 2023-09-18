@@ -249,49 +249,6 @@ public class TradeObjectResource {
         return ResponseUtil.wrapOrNotFound(objectsOfState);
     }
 
-    /**
-     * {@code GET  /trade-objects/filter} : get the trade objects filtered
-     *
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    /*@GetMapping("/trade-objects/filter")
-    public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput, @RequestParam Optional<Integer> pageNumber) {
-        log.debug("REST request to get TradeObject filtered");
-        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
-        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
-
-        if (categoryName.isPresent() && categoryName.get() != "") {
-            Page<Long> page = tradeObjectRepository.findIdOfObjectsOfCategoryFromPage(categoryName, pageable);
-            Optional<Set<Long>> idOfObjectsFilteredByCategory = Optional.of(new HashSet<Long>(page.getContent()));
-            Set<TradeObject> objectsFilteredByCategory = new HashSet<>();
-            for(Long idObject : idOfObjectsFilteredByCategory.get()) {
-                objectsFilteredByCategory.add(tradeObjectRepository.findById(idObject).get());
-            }
-            objectsFiltered.retainAll(objectsFilteredByCategory);
-        }
-
-        if (state.isPresent() && state.get().toString() != "") {
-            Page<Long> page = tradeObjectRepository.findIdOfObjectsOfStateFromPage(Optional.of(state.get().toString()), pageable);
-            Optional<Set<Long>> idOfObjectsFilteredByState = Optional.of(new HashSet<Long>(page.getContent()));
-            Set<TradeObject> objectsFilteredByState = new HashSet<>();
-            for(Long idObject : idOfObjectsFilteredByState.get()) {
-                objectsFilteredByState.add(tradeObjectRepository.findById(idObject).get());
-            }
-            objectsFiltered.retainAll(objectsFilteredByState);
-        }
-
-        if (searchInput.isPresent() && searchInput.get() != "") {
-            Page<Long> page = tradeObjectRepository.findIdOfObjectsOfSearchInputFromPage(searchInput, pageable);
-            Optional<Set<Long>> idOfObjectsFilteredBySearchInput = Optional.of(new HashSet<Long>(page.getContent()));
-            Set<TradeObject> objectsFilteredBySearchInput = new HashSet<>();
-            for(Long idObject : idOfObjectsFilteredBySearchInput.get()) {
-                objectsFilteredBySearchInput.add(tradeObjectRepository.findById(idObject).get());
-            }
-            objectsFiltered.retainAll(objectsFilteredBySearchInput);
-        }
-
-        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered));
-    }*/
 
     /**
      * {@code GET  /trade-objects/filter} : get the trade objects filtered
