@@ -249,6 +249,7 @@ public class TradeObjectResource {
         return ResponseUtil.wrapOrNotFound(objectsOfState);
     }
 
+
     /**
      * {@code GET  /trade-objects/filter} : get the trade objects filtered
      *
@@ -256,19 +257,14 @@ public class TradeObjectResource {
      */
     @GetMapping("/trade-objects/filter")
     public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput, @RequestParam Optional<Integer> pageNumber) {
-        log.debug("REST request to get TradeObject filtered");
+        log.debug("REST request to count TradeObject filtered");
         Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
-        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
-
 
         if (categoryName.isPresent() && categoryName.get() != "") {
-            Page<Long> page = tradeObjectRepository.findIdOfObjectsOfCategoryFromPage(categoryName, pageable);
-            Optional<Set<Long>> idOfObjectsFilteredByCategory = Optional.of(new HashSet<Long>(page.getContent()));
-            Set<TradeObject> objectsFilteredByCategory = new HashSet<>();
-            for(Long idObject : idOfObjectsFilteredByCategory.get()) {
-                objectsFilteredByCategory.add(tradeObjectRepository.findById(idObject).get());
+            Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
+            if (objectsFilteredByCategory.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByCategory.get());
             }
-            objectsFiltered.retainAll(objectsFilteredByCategory);
         }
 
         if (state.isPresent() && state.get().toString() != "") {
@@ -284,8 +280,16 @@ public class TradeObjectResource {
                 objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
             }
         }
+        Set<TradeObject> result = new HashSet<>();
+        int i = 0;
+        for (TradeObject tradeObject: objectsFiltered) {
+            if (i >= (pageNumber.get() * 8) && i < (pageNumber.get() * 8) + 8) {
+                result.add(tradeObject);
+            }
+            i++;
+        }
 
-        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered));
+        return ResponseUtil.wrapOrNotFound(Optional.of(result));
     }
 
     /**
@@ -321,7 +325,7 @@ public class TradeObjectResource {
      */
     @GetMapping("/trade-objects/filter/count")
     public ResponseEntity<Integer> countObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
-        log.debug("REST request to get TradeObject filtered");
+        log.debug("REST request to count TradeObject filtered");
         Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
 
         if (categoryName.isPresent() && categoryName.get() != "") {
@@ -344,8 +348,9 @@ public class TradeObjectResource {
                 objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
             }
         }
+        Optional<Integer> numberOfObjects = Optional.of(objectsFiltered.size());
 
-        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered.size()));
+        return ResponseUtil.wrapOrNotFound(numberOfObjects);
     }
 
 
