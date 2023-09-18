@@ -9,6 +9,7 @@ import { S3serviceService } from 'app/fileservice/s3service.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { GenericImage } from 'app/interfaces/GenericImageInterface';
 
 @Component({
   selector: 'jhi-product-card',
@@ -20,8 +21,9 @@ import { CommonModule } from '@angular/common';
 export class ProductCardComponent {
   @Input() tradeObject: TradeObject | undefined;
   @Input() isPublic = true;
+  images: GenericImage[] = [];
   imageUrl: Observable<SafeUrl> | undefined;
-
+  urlArray: Observable<SafeUrl>[] = [];
   private modalRef!: NgbModalRef;
 
   constructor(public modalService: NgbModal, private config: S3serviceService, private sanitizer: DomSanitizer) {}
@@ -30,6 +32,13 @@ export class ProductCardComponent {
     // eslint-disable-next-line no-console
     console.log(this.tradeObject?.trockeurUser?.user);
     this.imageUrl = this.getPathToFirstImage();
+    if (this.tradeObject) {
+      for (const img of this.tradeObject.genericImages ?? []) {
+        this.images.push(img);
+      }
+    }
+
+    this.initUrlArray();
   }
 
   getPathToFirstImage(): Observable<SafeUrl> {
@@ -40,6 +49,25 @@ export class ProductCardComponent {
       url = 'default.png';
     }
     return this.config.getImage(url).pipe(
+      map((blob: any) => {
+        const objectURL = URL.createObjectURL(blob);
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      })
+    );
+  }
+
+  initUrlArray(): void {
+    for (const img of this.images) {
+      if (img.imagePath) {
+        this.urlArray.push(this.getSafeUrl(img.imagePath.toString()));
+      } else {
+        this.urlArray.push(this.getSafeUrl('default.png'));
+      }
+    }
+  }
+
+  getSafeUrl(path: string): Observable<SafeUrl> {
+    return this.config.getImage(path).pipe(
       map((blob: any) => {
         const objectURL = URL.createObjectURL(blob);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
