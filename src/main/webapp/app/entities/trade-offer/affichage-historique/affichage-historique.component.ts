@@ -93,6 +93,10 @@ export class AffichageHistoriqueComponent implements OnInit {
       }
     })
   }
+
+  CancelTransaction() {
+    this._tradeOfferService.cancelTradeOffer(this.tradeOffer?.id).subscribe(() => {});
+  }
 }
 
 

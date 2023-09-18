@@ -302,5 +302,21 @@ public class TradeOfferResource {
         return null;
     }
 
+    /**
+     * {@code DELETE  /trade-offers/cancel/:id} : cancel the "id" tradeOffer.
+     *
+     * @param id the id of the tradeOffer to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/trade-offers/cancel/{id}")
+    public ResponseEntity<Void> cancelTradeOffer(@PathVariable Long id) {
+        log.debug("REST request to cancel TradeOffer : {}", id);
+        tradeOfferRepository.deleteTradeOffer(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
 
 }

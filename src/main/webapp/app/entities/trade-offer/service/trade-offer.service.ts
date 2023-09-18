@@ -124,6 +124,10 @@ export class TradeOfferService {
     return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/pending-received-by-user'));
   }
 
+  cancelTradeOffer(id: number | undefined): Observable<{}> {
+    return this.http.delete(this.applicationConfigService.getEndpointFor('api/trade-offers/cancel/' + id));
+  }
+
   protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {
     return {
       ...tradeOffer,

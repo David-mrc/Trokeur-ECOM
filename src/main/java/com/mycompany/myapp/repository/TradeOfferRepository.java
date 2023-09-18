@@ -2,6 +2,8 @@ package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
+
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,4 +67,9 @@ public interface TradeOfferRepository extends TradeOfferRepositoryWithBagRelatio
 
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.id != :ownerID")
     Optional<TradeObject> findWantedTradeObject(@Param("ownerID") Long ownerID);
+
+    // TODO : lock
+    @Modifying
+    @Query("delete from TradeOffer tradeOffer where tradeOffer.id = :id")
+    void deleteTradeOffer(@Param("id") Long id);
 }
