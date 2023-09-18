@@ -1,0 +1,75 @@
+<div class="container d-flex align-items-center justify-content-center">
+  <div class="askedProduct">
+    <div class="card shadow border-warning mb-4" style="max-width: 25rem">
+      <img src="{{ getPathToFirstImage() }}" class="card-img-top" alt="Image du produit" (click)="openCarousel(carousel)"/>
+      <div class=" card-header my-4" [routerLink]="['/trade-object/', askedProduct?.id, 'view']" routerLinkActive="router-link-active">
+        <h6 class="card-title text-truncate" style="max-width: 90%">{{ askedProduct?.name }}</h6>
+        <jhi-state [state]="askedProduct ? (askedProduct.state ? askedProduct.state : '') : ''" />
+      </div>
+    </div>
+  </div>
+  <!-- Symbole au milieu -->
+  <img src="/content/images/swap.png" alt="Image"style="width:3rem; height:3rem;padding:0px;margin:0.3em"   class="item-image col-md-10 mr-2">
+
+
+  <div *ngIf="myTradeObjects && myTradeObjects.length > 0" class="my-products">
+    <div class="tradeObject"
+    *ngFor="let tradeObject of myTradeObjects">
+      <div *ngIf="this.selectedTradeObject?.id === tradeObject.id" class="selected card shadow border-warning mb-4" style="max-width: 25rem">
+        <img src="{{ getPathToFirstImage() }}" class="card-img-top" alt="Image du produit"/>
+        <div class=" card-header my-4" [routerLink]="['/trade-object/', tradeObject?.id, 'view']" routerLinkActive="router-link-active">
+          <h6 class="card-title text-truncate" style="max-width: 90%">{{ tradeObject?.name }}</h6>
+          <jhi-state [state]="tradeObject ? (tradeObject.state ? tradeObject.state : '') : ''" />
+        </div>
+        <button class="btn btn-warning w-50 mx-auto mb-2" type="submit" (click)="select(tradeObject)">
+          <span class="icon-text" style="margin-left: 4px" >Sélectionner</span>
+        </button>
+      </div>
+
+      <div *ngIf="this.selectedTradeObject?.id !== tradeObject.id" class="unselected card shadow border-warning mb-4" style="max-width: 25rem">
+        <img src="{{ getPathToFirstImage() }}" class="card-img-top" alt="Image du produit"/>
+        <div class=" card-header my-4" [routerLink]="['/trade-object/', tradeObject?.id, 'view']" routerLinkActive="router-link-active">
+          <h6 class="card-title text-truncate" style="max-width: 90%">{{ tradeObject?.name }}</h6>
+          <jhi-state [state]="tradeObject ? (tradeObject.state ? tradeObject.state : '') : ''" />
+        </div>
+        <button class="btn btn-warning w-50 mx-auto mb-2" type="submit" (click)="select(tradeObject)">
+          <span class="icon-text" style="margin-left: 4px" >Sélectionner</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button *ngIf="this.selectedTradeObject" class="btn btn-warning w-50 mx-auto mb-2" type="submit" (click)="createTradeOffer()">
+    <span class="icon-text" style="margin-left: 4px" >Proposer Trok</span>
+  </button>
+
+</div>
+
+
+
+
+
+<ng-template #carousel>
+  <div class="modal-body">
+    <button type="button" class="close close-button" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+      <ngb-carousel style="display: block;">
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img src="/content/images/logoTrokeur.png" alt="Random first slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img src="/content/images/logo-jhipster.png" alt="Random second slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img src="/content/images/logoTrokeur.png" alt="Random third slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+  </div>
+</ng-template>
