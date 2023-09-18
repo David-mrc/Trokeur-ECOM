@@ -13,6 +13,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -220,8 +222,15 @@ public class TradeOfferResource {
     public ResponseEntity<TradeObject> getProposedTradeObject(@PathVariable Long id) {
         log.debug("REST request to get proposed trade object");
         Optional<TradeOffer> tradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
-        Optional<TradeObject> tradeOffers = tradeOfferRepository.findProposedTradeObject(tradeOffer.get().getOwnerID());
-        return ResponseUtil.wrapOrNotFound(tradeOffers);
+        if (tradeOffer != null) {
+            Set<TradeObject> tradeObjects = tradeOffer.get().getTradeObjects();
+            for (TradeObject tradeObject : tradeObjects) {
+                if (tradeObject.getTrockeurUser().getId() == tradeOffer.get().getOwnerID()) {
+                    return ResponseUtil.wrapOrNotFound(Optional.of(tradeObject));
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -231,10 +240,17 @@ public class TradeOfferResource {
      */
     @GetMapping("/trade-offer-wanted-object/{id}")
     public ResponseEntity<TradeObject> getWantedTradeObject(@PathVariable Long id) {
-        log.debug("REST request to get proposed trade object");
+        log.debug("REST request to get wanted trade object");
         Optional<TradeOffer> tradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
-        Optional<TradeObject> tradeOffers = tradeOfferRepository.findWantedTradeObject(tradeOffer.get().getOwnerID());
-        return ResponseUtil.wrapOrNotFound(tradeOffers);
+        if (tradeOffer != null) {
+            Set<TradeObject> tradeObjects = tradeOffer.get().getTradeObjects();
+            for (TradeObject tradeObject : tradeObjects) {
+                if (tradeObject.getTrockeurUser().getId() != tradeOffer.get().getOwnerID()) {
+                    return ResponseUtil.wrapOrNotFound(Optional.of(tradeObject));
+                }
+            }
+        }
+        return null;
     }
 
 

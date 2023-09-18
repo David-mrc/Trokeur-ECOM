@@ -13,36 +13,35 @@ export class AffichageHistoriqueComponent implements OnInit {
   @Input() tradeOffer: ITradeOffer | undefined;
   @Input() recues: boolean = false;
   @Input() propose: boolean = false;
-  private idTrokeurUserCreateur: number | null | undefined;
+  proposedObject: ITradeObject | undefined;
+  wantedObject: ITradeObject | undefined;
 
   constructor(private _tradeOfferService: TradeOfferService) {}
 
   ngOnInit(): void {
-    this.idTrokeurUserCreateur = this.tradeOffer?.ownerID;
+    this.loadProposedObject();
+    this.loadWantedObject();
   }
 
-  getProposedObject(): ITradeObject | undefined {
-    if (this.idTrokeurUserCreateur) {
-      this._tradeOfferService.getProposedTradeObject(this.idTrokeurUserCreateur).subscribe((tradeObject: ITradeObject | null) => {
+  loadProposedObject(): void {
+    if (this.tradeOffer) {
+      this._tradeOfferService.getProposedTradeObject(this.tradeOffer.id).subscribe((tradeObject: ITradeObject | null) => {
         if (tradeObject) {
-          return tradeObject;
+          this.proposedObject = tradeObject;
+          console.log(this.proposedObject);
         }
-        return undefined;
       })
     }
-    return undefined;
   }
 
-  getWantedObject(): ITradeObject | undefined {
-    if (this.idTrokeurUserCreateur) {
-      this._tradeOfferService.getWantedTradeObject(this.idTrokeurUserCreateur).subscribe((tradeObject: ITradeObject | null) => {
+  loadWantedObject(): void {
+    if (this.tradeOffer) {
+      this._tradeOfferService.getWantedTradeObject(this.tradeOffer.id).subscribe((tradeObject: ITradeObject | null) => {
         if (tradeObject) {
-          return tradeObject;
+          this.wantedObject = tradeObject;
         }
-        return undefined;
       })
     }
-    return undefined;
   }
 }
 

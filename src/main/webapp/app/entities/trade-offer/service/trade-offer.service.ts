@@ -101,11 +101,11 @@ export class TradeOfferService {
   }
 
   getProposedTradeObject(id: number): Observable<ITradeObject> {
-    return this.http.get<ITradeObject>(this.applicationConfigService.getEndpointFor('api/trade-offer-proposed-object/' + id.toString()));
+    return this.http.get<ITradeObject>(`${this.applicationConfigService.getEndpointFor('api/trade-offer-proposed-object')}/${id}`);
   }
 
   getWantedTradeObject(id: number): Observable<ITradeObject> {
-    return this.http.get<ITradeObject>(this.applicationConfigService.getEndpointFor('api/trade-offer-wanted-object/' + id.toString()));
+    return this.http.get<ITradeObject>(`${this.applicationConfigService.getEndpointFor('api/trade-offer-wanted-object')}/${id}`);
   }
 
   getAllOffersOfUser(): Observable<ITradeOffer[]> {
