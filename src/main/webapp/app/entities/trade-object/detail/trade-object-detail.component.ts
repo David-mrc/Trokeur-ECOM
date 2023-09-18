@@ -74,12 +74,16 @@ export class TradeObjectDetailComponent implements OnInit {
   }
 
   initUrlArray(): void {
-    for (const img of this.images) {
-      if (img.imagePath) {
-        this.urlArray.push(this.getSafeUrl(img.imagePath.toString()));
-      } else {
-        this.urlArray.push(this.getSafeUrl('default.png'));
+    if (this.images.length > 0) {
+      for (const img of this.images) {
+        if (img.imagePath) {
+          this.urlArray.push(this.getSafeUrl(img.imagePath.toString()));
+        } else {
+          this.urlArray.push(this.getSafeUrl('default.png'));
+        }
       }
+    } else {
+      this.urlArray.push(this.getSafeUrl('default.png'));
     }
   }
 
