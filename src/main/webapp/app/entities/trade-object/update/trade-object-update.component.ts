@@ -18,6 +18,9 @@ import { ObjectCategoryService } from 'app/entities/object-category/service/obje
 import { ITrockeurUser } from 'app/entities/trockeur-user/trockeur-user.model';
 import { TrockeurUserService } from 'app/entities/trockeur-user/service/trockeur-user.service';
 import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.model';
+import { S3serviceService } from 'app/fileservice/s3service.service';
+import { GenericImageService } from 'app/entities/generic-image/service/generic-image.service';
+import { NewGenericImage } from 'app/entities/generic-image/generic-image.model';
 
 @Component({
   standalone: true,
@@ -28,6 +31,7 @@ import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.m
 })
 export class TradeObjectUpdateComponent implements OnInit {
   isSaving = false;
+  formData: FormData | undefined;
   tradeObject: ITradeObject | null = null;
   tradeObjectStateValues = Object.keys(TradeObjectState);
 
@@ -44,12 +48,12 @@ export class TradeObjectUpdateComponent implements OnInit {
     protected tradeObjectFormService: TradeObjectFormService,
     protected objectCategoryService: ObjectCategoryService,
     protected trockeurUserService: TrockeurUserService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    private config: S3serviceService,
+    private genericImageService: GenericImageService
   ) {}
 
-
-
-  previewImages(event: any):void {
+  previewImages(event: any): void {
     const files = event.target.files;
 
     for (let i = 0; i < files.length; i++) {
@@ -64,7 +68,7 @@ export class TradeObjectUpdateComponent implements OnInit {
     }
   }
 
-  deleteImage(index: number):void {
+  deleteImage(index: number): void {
     this.imagePreviews.splice(index, 1);
   }
 
@@ -104,6 +108,29 @@ export class TradeObjectUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  onFileChange(event: any): void {
+    for (const file of event.target.files) {
+      this.formData = new FormData();
+      this.formData.append('file', file);
+      this.config.uploadFile(this.formData).subscribe(response => console.log('file uploaded successfully', response));
+    }
+  }
+
+  createGenericImages(tradeObject: ITradeObject): void {
+    for (const path of this.imagePreviews) {
+      const newGenericImage: NewGenericImage = {
+        id: null,
+        imagePath: path,
+        tradeObject: { id: tradeObject.id },
+      };
+      console.log('ID TRADE OBJECT :', tradeObject.id);
+
+      this.genericImageService.create(newGenericImage).subscribe(response => {
+        console.log('New GenericImage created:', response.body);
+      });
+    }
+  }
+
   save(): void {
     this.isSaving = true;
     const tradeObject = this.tradeObjectFormService.getTradeObject(this.editForm);
@@ -116,7 +143,13 @@ export class TradeObjectUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITradeObject>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => {
+        const createdTradeObject = response.body;
+        if (createdTradeObject) {
+          this.createGenericImages(createdTradeObject);
+        }
+        this.onSaveSuccess();
+      },
       error: () => this.onSaveError(),
     });
   }
