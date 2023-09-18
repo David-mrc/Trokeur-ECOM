@@ -1,10 +1,25 @@
-import { Component } from '@angular/core';
+import { ITradeObject } from 'app/entities/trade-object/trade-object.model';
+import { ITradeOffer } from 'app/entities/trade-offer/trade-offer.model';
+import { Component, OnInit } from '@angular/core';
 import { AffichageHistoriqueComponent } from '../affichage-historique/affichage-historique.component';
+import { TradeOfferService } from '../service/trade-offer.service';
+
 @Component({
   selector: 'jhi-historique-transactions',
   templateUrl: './historique-transactions.component.html',
   styleUrls: ['./historique-transactions.component.scss']
 })
-export class HistoriqueTransactionsComponent {
+export class HistoriqueTransactionsComponent implements OnInit {
+  tradeOffers: ITradeOffer[] = [];
 
+  constructor(private _tradeOfferService: TradeOfferService) {}
+
+  ngOnInit(): void {
+    this._tradeOfferService.getAllOffersOfUser().subscribe((allTradeOffers: ITradeOffer[] | null) => {
+      if (allTradeOffers != null) {
+        console.log(this.tradeOffers);
+        this.tradeOffers = allTradeOffers;
+      }
+    });
+  }
 }

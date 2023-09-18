@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
 import com.mycompany.myapp.repository.TradeOfferRepository;
+import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -36,9 +38,11 @@ public class TradeOfferResource {
     private String applicationName;
 
     private final TradeOfferRepository tradeOfferRepository;
+    private final TrockeurUserRepository trockeurUserRepository;
 
-    public TradeOfferResource(TradeOfferRepository tradeOfferRepository) {
+    public TradeOfferResource(TradeOfferRepository tradeOfferRepository, TrockeurUserRepository trockeurUserRepository) {
         this.tradeOfferRepository = tradeOfferRepository;
+        this.trockeurUserRepository = trockeurUserRepository;
     }
 
     /**
@@ -53,6 +57,10 @@ public class TradeOfferResource {
         log.debug("REST request to save TradeOffer : {}", tradeOffer);
         if (tradeOffer.getId() != null) {
             throw new BadRequestAlertException("A new tradeOffer cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Optional<Long> userId = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin());
+        if (userId.isPresent()) {
+            tradeOffer.setOwnerID(userId.get());
         }
         TradeOffer result = tradeOfferRepository.save(tradeOffer);
         return ResponseEntity
@@ -202,4 +210,32 @@ public class TradeOfferResource {
         Optional<List<TradeOffer>> tradeOffers = tradeOfferRepository.findAllOffersOfUser(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(tradeOffers);
     }
+
+    /**
+     * {@code GET  /trade-offer-proposed-object/:id} : get the proposed trade object
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/trade-offer-proposed-object/{id}")
+    public ResponseEntity<TradeObject> getProposedTradeObject(@PathVariable Long id) {
+        log.debug("REST request to get proposed trade object");
+        Optional<TradeOffer> tradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
+        Optional<TradeObject> tradeOffers = tradeOfferRepository.findProposedTradeObject(tradeOffer.get().getOwnerID());
+        return ResponseUtil.wrapOrNotFound(tradeOffers);
+    }
+
+    /**
+     * {@code GET  /trade-offer-wanted-object/:id} : get the proposed trade object
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/trade-offer-wanted-object/{id}")
+    public ResponseEntity<TradeObject> getWantedTradeObject(@PathVariable Long id) {
+        log.debug("REST request to get proposed trade object");
+        Optional<TradeOffer> tradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
+        Optional<TradeObject> tradeOffers = tradeOfferRepository.findWantedTradeObject(tradeOffer.get().getOwnerID());
+        return ResponseUtil.wrapOrNotFound(tradeOffers);
+    }
+
+
 }

@@ -1,3 +1,4 @@
+import { ITradeObject } from 'app/entities/trade-object/trade-object.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -97,6 +98,18 @@ export class TradeOfferService {
       return [...tradeOffersToAdd, ...tradeOfferCollection];
     }
     return tradeOfferCollection;
+  }
+
+  getProposedTradeObject(id: number): Observable<ITradeObject> {
+    return this.http.get<ITradeObject>(this.applicationConfigService.getEndpointFor('api/trade-offer-proposed-object/' + id.toString()));
+  }
+
+  getWantedTradeObject(id: number): Observable<ITradeObject> {
+    return this.http.get<ITradeObject>(this.applicationConfigService.getEndpointFor('api/trade-offer-wanted-object/' + id.toString()));
+  }
+
+  getAllOffersOfUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-offers'));
   }
 
   protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {
