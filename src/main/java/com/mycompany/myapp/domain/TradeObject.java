@@ -45,7 +45,7 @@ public class TradeObject implements Serializable {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tradeObject")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tradeObject")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "tradeObject" }, allowSetters = true)
     private Set<GenericImage> genericImages = new HashSet<>();

@@ -21,6 +21,7 @@ export class ProductCardComponent {
   @Input() tradeObject: TradeObject | undefined;
   @Input() isPublic = true;
   imageUrl: Observable<SafeUrl> | undefined;
+
   private modalRef!: NgbModalRef;
 
   constructor(public modalService: NgbModal, private config: S3serviceService, private sanitizer: DomSanitizer) {}
@@ -32,20 +33,19 @@ export class ProductCardComponent {
   }
 
   getPathToFirstImage(): Observable<SafeUrl> {
-    return this.config.getImage('1694778502441-img1.jpg').pipe(
+    let url: string;
+    if (this.tradeObject?.genericImages?.[0]) {
+      url = this.tradeObject.genericImages[0].imagePath;
+    } else {
+      url = 'default.png';
+    }
+    return this.config.getImage(url).pipe(
       map((blob: any) => {
         const objectURL = URL.createObjectURL(blob);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
       })
     );
   }
-
-  //   if (this.tradeObject?.genericImages?.[0]) {
-  //     return this.tradeObject.genericImages[0].imagePath;
-  //   } else {
-  //     return "/content/images/logoTrokeur.png";
-  //   }
-  // }
 
   openCarousel(content: any): void {
     this.modalRef = this.modalService.open(content, { centered: true });

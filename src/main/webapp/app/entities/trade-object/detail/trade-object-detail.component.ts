@@ -14,27 +14,38 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { ITradeObject } from '../trade-object.model';
 import { DataUtils } from 'app/core/util/data-util.service';
 
+import { S3serviceService } from 'app/fileservice/s3service.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Observable, map } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { GenericImage } from 'app/interfaces/GenericImageInterface';
+
 @Component({
   standalone: true,
   styleUrls: ['./trade-object-detail.component.scss'],
   selector: 'jhi-trade-object-detail',
   templateUrl: './trade-object-detail.component.html',
-  imports: [SharedModule, RouterModule, NgbCarouselModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
+  imports: [SharedModule, RouterModule, NgbCarouselModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, CommonModule],
 })
 export class TradeObjectDetailComponent implements OnInit {
   // TODO 1 : afficher les vraies images de l'objet dans l'html
   // TODO 2 : afficher le composant state pour l'état au lieu de l'afficher textuellement
   // TODO 3 : mapper le bouton "Troker"
   @Input() tradeObject: ITradeObject | null = null;
-  images = this.tradeObject?.genericImages;
+  images: GenericImage[] = [];
+  urlArray: Observable<SafeUrl>[] = [];
   authenticatedUser: Account | undefined;
   loginOfUserOfObject: string | undefined;
 
-  constructor(private _accountService: AccountService,
+  constructor(
+    private _accountService: AccountService,
     private _trockeurUserService: TrockeurUserService,
     private _tradeObjectService: TradeObjectService,
     protected dataUtils: DataUtils,
-    protected activatedRoute: ActivatedRoute,) {}
+    protected activatedRoute: ActivatedRoute,
+    private config: S3serviceService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this._accountService.identity().subscribe((user: Account | null) => {
@@ -53,7 +64,33 @@ export class TradeObjectDetailComponent implements OnInit {
         }
       });
     }
-}
+    if (this.tradeObject) {
+      for (const img of this.tradeObject.genericImages ?? []) {
+        this.images.push(img);
+      }
+    }
+
+    this.initUrlArray();
+  }
+
+  initUrlArray(): void {
+    for (const img of this.images) {
+      if (img.imagePath) {
+        this.urlArray.push(this.getSafeUrl(img.imagePath.toString()));
+      } else {
+        this.urlArray.push(this.getSafeUrl('default.png'));
+      }
+    }
+  }
+
+  getSafeUrl(path: string): Observable<SafeUrl> {
+    return this.config.getImage(path).pipe(
+      map((blob: any) => {
+        const objectURL = URL.createObjectURL(blob);
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      })
+    );
+  }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
@@ -81,7 +118,4 @@ export class TradeObjectDetailComponent implements OnInit {
     //TODO : Corriger la suppression (ineffective pour l'instant)
     this._tradeObjectService.delete(tradeObject.id);
   }
-
 }
-
-
