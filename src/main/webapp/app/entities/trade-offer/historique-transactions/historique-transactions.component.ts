@@ -15,7 +15,7 @@ export class HistoriqueTransactionsComponent implements OnInit {
   constructor(private _tradeOfferService: TradeOfferService) {}
 
   ngOnInit(): void {
-    this._tradeOfferService.getAllOffersOfUser().subscribe((allTradeOffers: ITradeOffer[] | null) => {
+    this._tradeOfferService.getAllNonPendingOffersOfUser().subscribe((allTradeOffers: ITradeOffer[] | null) => {
       console.log(allTradeOffers);
       if (allTradeOffers != null) {
         this.tradeOffers = allTradeOffers;

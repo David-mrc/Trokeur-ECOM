@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -211,6 +212,54 @@ public class TradeOfferResource {
         log.debug("REST request to get current user's TradeOffer");
         Optional<List<TradeOffer>> tradeOffers = tradeOfferRepository.findAllOffersOfUser(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(tradeOffers);
+    }
+
+    /**
+     * {@code GET  /trade-offer/non-pending-of-user} : get the current user's non pending tradeOffer(s).
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("trade-offer/non-pending-of-user")
+    public ResponseEntity<Set<TradeOffer>> getAllNonPendingOffersOfUser() {
+        log.debug("REST request to get current user's non pending TradeOffers");
+        Optional<Set<Long>> tradeOffersIds = tradeOfferRepository.findAllNonPendingOffersOfUser(trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin()));
+        Set<TradeOffer> tradeOffers = new HashSet<>();
+        for(Long id : tradeOffersIds.get()) {
+            tradeOffers.add(tradeOfferRepository.findById(id).get());
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.of(tradeOffers));
+    }
+
+    /**
+     * {@code GET  /trade-offer/pending-offered-by-user} : get the current user's non pending tradeOffer(s).
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("trade-offer/pending-offered-by-user")
+    public ResponseEntity<Set<TradeOffer>> getAllPendingOffersFromUser() {
+        log.debug("REST request to get current user's pending offered TradeOffers");
+        Optional<Set<Long>> tradeOffersIds = tradeOfferRepository.findAllPendingOffersFromUser(trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin()));
+        Set<TradeOffer> tradeOffers = new HashSet<>();
+        for(Long id : tradeOffersIds.get()) {
+            tradeOffers.add(tradeOfferRepository.findById(id).get());
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.of(tradeOffers));
+    }
+
+    /**
+     * {@code GET  /trade-offer/pending-received-by-user} : get the current user's non pending tradeOffer(s).
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("trade-offer/pending-received-by-user")
+    public ResponseEntity<Set<TradeOffer>> getAllPendingOffersToUser() {
+        log.debug("REST request to get current user's pending received TradeOffers");
+        Optional<Set<Long>> tradeOffersIds = tradeOfferRepository.findAllPendingOffersToUser(trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin()));
+        Set<TradeOffer> tradeOffers = new HashSet<>();
+        for(Long id : tradeOffersIds.get()) {
+            tradeOffers.add(tradeOfferRepository.findById(id).get());
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.of(tradeOffers));
     }
 
     /**

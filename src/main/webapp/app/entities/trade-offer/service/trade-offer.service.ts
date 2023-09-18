@@ -112,6 +112,18 @@ export class TradeOfferService {
     return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-offers'));
   }
 
+  getAllNonPendingOffersOfUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/non-pending-of-user'));
+  }
+
+  getAllPendingOffersFromUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/pending-offered-by-user'));
+  }
+
+  getAllPendingOffersToUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/pending-received-by-user'));
+  }
+
   protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {
     return {
       ...tradeOffer,
