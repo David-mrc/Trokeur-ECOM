@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
@@ -38,6 +39,7 @@ export class TradeObjectUpdateComponent implements OnInit {
   objectCategoriesSharedCollection: IObjectCategory[] = [];
   trockeurUsersSharedCollection: ITrockeurUser[] = [];
   imagePreviews: string[] = [];
+  imageUrls: string[] = [];
 
   editForm: TradeObjectFormGroup = this.tradeObjectFormService.createTradeObjectFormGroup();
 
@@ -70,6 +72,7 @@ export class TradeObjectUpdateComponent implements OnInit {
 
   deleteImage(index: number): void {
     this.imagePreviews.splice(index, 1);
+    this.imageUrls.splice(index, 1);
   }
 
   compareObjectCategory = (o1: IObjectCategory | null, o2: IObjectCategory | null): boolean =>
@@ -112,18 +115,20 @@ export class TradeObjectUpdateComponent implements OnInit {
     for (const file of event.target.files) {
       this.formData = new FormData();
       this.formData.append('file', file);
-      this.config.uploadFile(this.formData).subscribe(response => console.log('file uploaded successfully', response));
+      this.config.uploadFile(this.formData).subscribe(response => {
+        console.log('file uploaded successfully', response);
+        this.imageUrls.push(response.data);
+      });
     }
   }
 
-  createGenericImages(tradeObject: ITradeObject): void {
-    for (const path of this.imagePreviews) {
+  createGenericImages(tradeObjectID: number): void {
+    for (const path of this.imageUrls) {
       const newGenericImage: NewGenericImage = {
         id: null,
         imagePath: path,
-        tradeObject: { id: tradeObject.id },
+        tradeObject: { id: tradeObjectID },
       };
-      console.log('ID TRADE OBJECT :', tradeObject.id);
 
       this.genericImageService.create(newGenericImage).subscribe(response => {
         console.log('New GenericImage created:', response.body);
@@ -145,8 +150,8 @@ export class TradeObjectUpdateComponent implements OnInit {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: response => {
         const createdTradeObject = response.body;
-        if (createdTradeObject) {
-          this.createGenericImages(createdTradeObject);
+        if (createdTradeObject?.id) {
+          this.createGenericImages(createdTradeObject.id);
         }
         this.onSaveSuccess();
       },
