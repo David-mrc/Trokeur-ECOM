@@ -53,3 +53,13 @@ img {
 .selected {
   border: 0.5rem solid;
 }
+
+.division-fixe {
+  height: 650px; /* Remplacez 200px par la taille de votre choix */
+}
+
+.my-products {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+

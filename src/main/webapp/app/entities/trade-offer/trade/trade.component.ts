@@ -56,7 +56,11 @@ export class TradeComponent implements OnInit {
   }
 
   select(tradeObject: ITradeObject): void {
-    this.selectedTradeObject = tradeObject;
+    if (tradeObject.id === this.selectedTradeObject?.id) {
+      this.selectedTradeObject = undefined;
+    } else {
+      this.selectedTradeObject = tradeObject;
+    }
   }
 
   createTradeOffer(): void {
