@@ -39,7 +39,7 @@ export class TradeComponent implements OnInit {
         this.askedProduct = tradeObject.body;
       })
     })
-    this._productService.getMyTradeObjects().subscribe((myTradeObject) => {
+    this._productService.getMyTradeObjectsAvailable().subscribe((myTradeObject) => {
       this.myTradeObjects = myTradeObject;
     });
   }

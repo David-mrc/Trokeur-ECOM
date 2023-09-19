@@ -1,6 +1,7 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 
 import java.util.List;
@@ -37,6 +38,9 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login")
     Optional<List<TradeObject>> findAllObjectsOfUser(@Param("login") Optional<String> login);
 
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login and tradeObject.stock >= 1")
+    Optional<List<TradeObject>> findMyAvailableProduct(@Param("login") Optional<String> login);
+
     @Query("select objectCategory.tradeObjects from ObjectCategory objectCategory where objectCategory.name = :categoryName")
     Optional<Set<TradeObject>> findObjectsOfCategory(@Param("categoryName") Optional<String> categoryName);
 
@@ -46,9 +50,31 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select tradeObject from TradeObject tradeObject where LOWER(tradeObject.name) LIKE %:searchInput%")
     Optional<Set<TradeObject>> findObjectsOfSearchInput(@Param("searchInput") String searchInput);
 
-    @Query("select tradeObject from TradeObject tradeObject")
-    Set<TradeObject> findAllObjects();
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
+    Set<TradeObject> findAllObjects(@Param("login") Optional<String> login);
 
-    @Query("select count(tradeObject) from TradeObject tradeObject")
-    Optional<Integer> countAllObjects();
+    @Query("select count(tradeObject) from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
+    Optional<Integer> countAllObjects(@Param("login") Optional<String> login);
+
+
+    @Query(
+        value = "select tro.id " +
+        "from trade_object tro " +
+        "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
+        "join object_category obc on rel.object_category_id = obc.id " +
+        "where obc.name = :categoryName",
+        countQuery = "select count(tro.id) " +
+        "from trade_object tro " +
+        "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
+        "join object_category obc on rel.object_category_id = obc.id " +
+        "where obc.name = :categoryName",
+        nativeQuery = true)
+    Page<Long> findIdOfObjectsOfCategoryFromPage(@Param("categoryName") Optional<String> categoryName, Pageable pageable);
+
+    @Query("select tradeObject.trockeurUser.user from TradeObject tradeObject where tradeObject.id = :id")
+    Optional<User> findUsernameOfTradeObject(@Param ("id") Long id);
+
+    @Query(value = "select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
+    Page<TradeObject> findAllObjectsFromPage(@Param("pageable") Pageable page, @Param("login") Optional<String> login);
+
 }

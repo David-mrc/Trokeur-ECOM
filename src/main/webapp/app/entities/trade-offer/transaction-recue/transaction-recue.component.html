@@ -2,8 +2,8 @@
 <div class="transactionsRecue">
     <div class="transactionsRecueContent">
         <h1>Transactions recues</h1>
-
-     <app-affichage-historique [recues]="true"></app-affichage-historique>
-
+        <div *ngFor="let tradeOffer of tradeOffers">
+            <app-affichage-historique [recues]="true" [tradeOffer]="tradeOffer"></app-affichage-historique>
+        </div>
     </div>
 </div>

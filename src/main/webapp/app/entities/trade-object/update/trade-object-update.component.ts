@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +19,9 @@ import { ObjectCategoryService } from 'app/entities/object-category/service/obje
 import { ITrockeurUser } from 'app/entities/trockeur-user/trockeur-user.model';
 import { TrockeurUserService } from 'app/entities/trockeur-user/service/trockeur-user.service';
 import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.model';
+import { S3serviceService } from 'app/fileservice/s3service.service';
+import { GenericImageService } from 'app/entities/generic-image/service/generic-image.service';
+import { IGenericImage, NewGenericImage } from 'app/entities/generic-image/generic-image.model';
 
 @Component({
   standalone: true,
@@ -28,12 +32,16 @@ import { TradeObjectState } from 'app/entities/enumerations/trade-object-state.m
 })
 export class TradeObjectUpdateComponent implements OnInit {
   isSaving = false;
+  formData: FormData | undefined;
   tradeObject: ITradeObject | null = null;
   tradeObjectStateValues = Object.keys(TradeObjectState);
 
   objectCategoriesSharedCollection: IObjectCategory[] = [];
   trockeurUsersSharedCollection: ITrockeurUser[] = [];
   imagePreviews: string[] = [];
+  imageUrls: string[] = [];
+  objectId = 0;
+  index = 0;
 
   editForm: TradeObjectFormGroup = this.tradeObjectFormService.createTradeObjectFormGroup();
 
@@ -44,12 +52,12 @@ export class TradeObjectUpdateComponent implements OnInit {
     protected tradeObjectFormService: TradeObjectFormService,
     protected objectCategoryService: ObjectCategoryService,
     protected trockeurUserService: TrockeurUserService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    private config: S3serviceService,
+    private genericImageService: GenericImageService
   ) {}
 
-
-
-  previewImages(event: any):void {
+  previewImages(event: any): void {
     const files = event.target.files;
 
     for (let i = 0; i < files.length; i++) {
@@ -64,8 +72,9 @@ export class TradeObjectUpdateComponent implements OnInit {
     }
   }
 
-  deleteImage(index: number):void {
+  deleteImage(index: number): void {
     this.imagePreviews.splice(index, 1);
+    this.imageUrls.splice(index, 1);
   }
 
   compareObjectCategory = (o1: IObjectCategory | null, o2: IObjectCategory | null): boolean =>
@@ -104,6 +113,31 @@ export class TradeObjectUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  onFileChange(event: any): void {
+    for (const file of event.target.files) {
+      this.formData = new FormData();
+      this.formData.append('file', file);
+      this.config.uploadFile(this.formData).subscribe(response => {
+        console.log('file uploaded successfully', response);
+        this.imageUrls.push(response.data);
+      });
+    }
+  }
+
+  createGenericImages(tradeObjectID: number): void {
+    if (this.index < this.imageUrls.length) {
+      const newGenericImage: NewGenericImage = {
+        id: null,
+        imagePath: this.imageUrls[this.index],
+        tradeObject: { id: tradeObjectID },
+      };
+      this.index += 1;
+      this.subscribeToSaveResponseImg(this.genericImageService.create(newGenericImage));
+    } else {
+      this.previousState();
+    }
+  }
+
   save(): void {
     this.isSaving = true;
     const tradeObject = this.tradeObjectFormService.getTradeObject(this.editForm);
@@ -116,13 +150,30 @@ export class TradeObjectUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITradeObject>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => {
+        const createdTradeObject = response.body;
+        if (createdTradeObject?.id) {
+          this.objectId = createdTradeObject.id;
+        }
+        this.onSaveSuccess();
+      },
+      error: () => this.onSaveError(),
+    });
+  }
+
+  protected subscribeToSaveResponseImg(result: Observable<HttpResponse<IGenericImage>>): void {
+    result.pipe(finalize(() => this.onSaveFinalizeImg())).subscribe({
+      next: () => this.onSaveSuccessImg(),
       error: () => this.onSaveError(),
     });
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    console.log('tradeObject save success');
+  }
+
+  protected onSaveSuccessImg(): void {
+    console.log('Saved image');
   }
 
   protected onSaveError(): void {
@@ -131,6 +182,12 @@ export class TradeObjectUpdateComponent implements OnInit {
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
+    this.createGenericImages(this.objectId);
+  }
+
+  protected onSaveFinalizeImg(): void {
+    console.log('finalized');
+    this.createGenericImages(this.objectId);
   }
 
   protected updateForm(tradeObject: ITradeObject): void {
