@@ -2,7 +2,7 @@ package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
-
+import com.mycompany.myapp.domain.enumeration.TradeOfferState;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,8 +68,11 @@ public interface TradeOfferRepository extends TradeOfferRepositoryWithBagRelatio
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.id != :ownerID")
     Optional<TradeObject> findWantedTradeObject(@Param("ownerID") Long ownerID);
 
-    // TODO : lock
     @Modifying
     @Query("delete from TradeOffer tradeOffer where tradeOffer.id = :id")
     void deleteTradeOffer(@Param("id") Long id);
+
+    @Modifying
+    @Query("update TradeOffer tradeOffer set tradeOffer.state = :state where tradeOffer.id = :id")
+    void updateTradeOfferState(@Param("id") Long id, @Param("state") TradeOfferState state);
 }

@@ -15,7 +15,6 @@ export class TransactionProposeComponent implements OnInit {
 
   ngOnInit(): void {
     this._tradeOfferService.getAllPendingOffersFromUser().subscribe((allTradeOffers: ITradeOffer[] | null) => {
-      console.log(allTradeOffers);
       if (allTradeOffers != null) {
         this.tradeOffers = allTradeOffers;
       }

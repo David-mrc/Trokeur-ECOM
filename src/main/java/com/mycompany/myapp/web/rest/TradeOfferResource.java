@@ -2,10 +2,13 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
+import com.mycompany.myapp.domain.enumeration.TradeOfferState;
 import com.mycompany.myapp.repository.TradeOfferRepository;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
+
+import jakarta.persistence.LockModeType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -19,6 +22,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -309,9 +313,30 @@ public class TradeOfferResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/trade-offers/cancel/{id}")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public ResponseEntity<Void> cancelTradeOffer(@PathVariable Long id) {
         log.debug("REST request to cancel TradeOffer : {}", id);
         tradeOfferRepository.deleteTradeOffer(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    
+
+    /**
+     * {@code PUT  /trade-offers/:id} : Updates tradeOffer state from EN_COURS to REFUSE.
+     *
+     * @param id the id of the tradeOffer to save.
+     * @param tradeOffer the tradeOffer to update.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PutMapping("/trade-offers/update/{id}")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ResponseEntity<Void> refuseTradeOffer(@PathVariable Long id) {
+        log.debug("REST request to refuse TradeOffer : {}", id);
+        tradeOfferRepository.updateTradeOfferState(id, TradeOfferState.REFUSE);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

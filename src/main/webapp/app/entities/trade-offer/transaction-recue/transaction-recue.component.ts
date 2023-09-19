@@ -16,7 +16,6 @@ export class TransactionRecueComponent implements OnInit {
 
   ngOnInit(): void {
     this._tradeOfferService.getAllPendingOffersToUser().subscribe((allTradeOffers: ITradeOffer[] | null) => {
-      console.log(allTradeOffers);
       if (allTradeOffers != null) {
         this.tradeOffers = allTradeOffers;
       }

@@ -6,17 +6,20 @@ import { TradeObjectService } from 'app/entities/trade-object/service/trade-obje
 import { IUser } from 'app/entities/user/user.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-affichage-historique',
   templateUrl: './affichage-historique.component.html',
-  styleUrls: ['./affichage-historique.component.scss']
+  styleUrls: ['./affichage-historique.component.scss'],
 })
 
 export class AffichageHistoriqueComponent implements OnInit {
   @Input() tradeOffer: ITradeOffer | undefined;
   @Input() recues: boolean = false;
   @Input() propose: boolean = false;
+  @Input() refresh: (() => void) | undefined;
+
   proposedObject: ITradeObject | undefined;
   wantedObject: ITradeObject | undefined;
   proposingUser: IUser | undefined;
@@ -26,7 +29,7 @@ export class AffichageHistoriqueComponent implements OnInit {
   leftUser: IUser | undefined;
   rightUser: IUser | undefined;
 
-  constructor(private _tradeOfferService: TradeOfferService, private _tradeObjectService: TradeObjectService, private _accountService: AccountService) {}
+  constructor(private router: Router, private _tradeOfferService: TradeOfferService, private _tradeObjectService: TradeObjectService, private _accountService: AccountService) {}
 
   ngOnInit(): void {
     this.loadObjects();
@@ -95,7 +98,19 @@ export class AffichageHistoriqueComponent implements OnInit {
   }
 
   CancelTransaction() {
-    this._tradeOfferService.cancelTradeOffer(this.tradeOffer?.id).subscribe(() => {});
+    this._tradeOfferService.cancelTradeOffer(this.tradeOffer?.id).subscribe(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/troks-proposes']);
+      }); 
+    });
+  }
+
+  RefuseTranscation() {
+    this._tradeOfferService.refuseTradeOffer(this.tradeOffer?.id).subscribe(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/troks-recus']);
+      }); 
+    });
   }
 }
 
