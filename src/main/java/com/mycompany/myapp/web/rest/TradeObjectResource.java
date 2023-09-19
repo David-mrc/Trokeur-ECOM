@@ -227,6 +227,18 @@ public class TradeObjectResource {
     }
 
     /**
+     * {@code GET  /current-trockeur-user-trade-objects : get the trade objects of the current user
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/current-trockeur-user-trade-objects-available")
+    public ResponseEntity<List<TradeObject>> getMyTradeObjectsAvailable() {
+        log.debug("REST request to get my TradeObject");
+        Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findMyAvailableProduct(SecurityUtils.getCurrentUserLogin());
+        return ResponseUtil.wrapOrNotFound(allUserObjects);
+    }
+
+    /**
      * {@code GET  /category-trade-objects/:categoryName} : get the trade objects of the category
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.

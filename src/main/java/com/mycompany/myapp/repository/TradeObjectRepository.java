@@ -38,6 +38,9 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login")
     Optional<List<TradeObject>> findAllObjectsOfUser(@Param("login") Optional<String> login);
 
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login and tradeObject.stock >= 1")
+    Optional<List<TradeObject>> findMyAvailableProduct(@Param("login") Optional<String> login);
+
     @Query("select objectCategory.tradeObjects from ObjectCategory objectCategory where objectCategory.name = :categoryName")
     Optional<Set<TradeObject>> findObjectsOfCategory(@Param("categoryName") Optional<String> categoryName);
 
