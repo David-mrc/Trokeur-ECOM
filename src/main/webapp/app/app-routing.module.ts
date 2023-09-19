@@ -19,6 +19,7 @@ import { TransactionProposeComponent } from './entities/trade-offer/transaction-
 import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
 import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-historique/affichage-historique.component';
 import { TradeComponent } from './entities/trade-offer/trade/trade.component';
+import { TradeDoneComponent } from './components/trade-done/trade-done.component';
 
 @NgModule({
   imports: [
@@ -79,6 +80,10 @@ import { TradeComponent } from './entities/trade-offer/trade/trade.component';
         {
           path: 'trade',
           component: TradeComponent,
+        },
+        {
+          path: 'trade-done',
+          component: TradeDoneComponent,
         },
         ...errorRoute,
       ],

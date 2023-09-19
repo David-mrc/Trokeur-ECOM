@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TradeObjectService } from 'app/entities/trade-object/service/trade-object.service';
 import { ITradeObject } from 'app/entities/trade-object/trade-object.model';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -30,7 +30,8 @@ export class TradeComponent implements OnInit {
     private tradeObjectService: TradeObjectService,
     public modalService: NgbModal,
     private _productService: productService,
-    private _tradeOfferService: TradeOfferService) {}
+    private _tradeOfferService: TradeOfferService,
+    private router: Router) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -66,6 +67,7 @@ export class TradeComponent implements OnInit {
   createTradeOffer(): void {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     this._tradeOfferService.createTradeOffer(this.askedProduct?.id ? this.askedProduct.id : 0, this.selectedTradeObject?.id ? this.selectedTradeObject.id : 0).subscribe(()=> {});
+    this.router.navigate(['/trade-done'], {});
   }
 
 
