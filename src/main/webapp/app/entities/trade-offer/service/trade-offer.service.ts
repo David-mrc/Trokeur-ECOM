@@ -1,6 +1,6 @@
 import { ITradeObject } from 'app/entities/trade-object/trade-object.model';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
@@ -134,6 +134,12 @@ export class TradeOfferService {
 
   acceptTradeOffer(id: number | undefined): Observable<boolean | undefined> {
     return this.http.put<boolean>(this.applicationConfigService.getEndpointFor('api/trade-offers/accept/' + id), id);
+
+  createTradeOffer(askedProductId: number, selectedProductId: number): Observable<{}> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('api/trade-offers/trade'),
+    {params: new HttpParams()
+      .set("askedProductId", askedProductId)
+      .set("selectedProductId", selectedProductId)});
   }
 
   protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {

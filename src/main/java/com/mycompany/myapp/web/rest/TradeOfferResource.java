@@ -2,6 +2,10 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
+
+import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.TradeObject;
+
 import com.mycompany.myapp.domain.enumeration.TradeOfferState;
 import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.repository.TradeOfferRepository;
@@ -14,6 +18,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import java.time.LocalDate;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -371,5 +378,35 @@ public class TradeOfferResource {
             return ResponseUtil.wrapOrNotFound(Optional.of(true));
         }
         return ResponseUtil.wrapOrNotFound(Optional.of(false));
+    }
+}
+     * {@code GET  /trade-offers/trade} : create tradeOffer.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/trade-offers/trade")
+    public void createTradeOffer(@RequestParam Long askedProductId, @RequestParam Long selectedProductId) {
+        log.debug("REST request to create TradeOffer");
+        TradeOffer tradeOffer = new TradeOffer();
+        tradeOffer.setDate(LocalDate.now());
+        tradeOffer.setState(TradeOfferState.EN_COURS);
+        Long ownerID = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        tradeOffer.setOwnerID(ownerID);
+
+        Set<TradeObject> tradeObjects = new HashSet<>();
+        TradeObject askedProduct = tradeObjectRepository.findOneWithEagerRelationships(askedProductId).get();
+        tradeObjects.add(askedProduct);
+        TradeObject selectedProduct = tradeObjectRepository.findOneWithEagerRelationships(selectedProductId).get();
+        tradeObjects.add(selectedProduct);
+        tradeOffer.setTradeObjects(tradeObjects);
+
+        Set<TrockeurUser> trockeurUsers = new HashSet<>();
+        TrockeurUser owner = trockeurUserRepository.findById(ownerID).get();
+        trockeurUsers.add(owner);
+        TrockeurUser receiver = trockeurUserRepository.findTrockeurUserByTradeObject(askedProduct.getId()).get();
+        trockeurUsers.add(receiver);
+        tradeOffer.setTrockeurUsers(trockeurUsers);
+
+        tradeOfferRepository.save(tradeOffer);
     }
 }

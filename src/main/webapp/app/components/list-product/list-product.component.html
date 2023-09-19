@@ -1,3 +1,5 @@
+
+<h1>Produits à l'échange</h1>
 <div class="d-flex">
   <div class="d-flex align-items-center" style="margin-right: 1.5rem">
     <span>Catégorie : </span>
@@ -24,7 +26,7 @@
           class="selectedButton"
           *ngIf="selectedCategory == category"
           ngbDropdownItem
-          (click)="filter(category)">
+          (click)="filter(category, undefined, undefined, true)">
             {{category}}
           </button>
           <button
@@ -32,7 +34,7 @@
           class="notSelected"
           *ngIf="selectedCategory != category"
           ngbDropdownItem
-          (click)="filter(category)">
+          (click)="filter(category, undefined, undefined, true)">
             {{category}}
           </button>
         </div>
@@ -66,7 +68,7 @@
           class="selectedButton"
           *ngIf="selectedState == state"
           ngbDropdownItem
-          (click)="filter(undefined, state)">
+          (click)="filter(undefined, state, undefined, true)">
             {{state}}
           </button>
           <button
@@ -74,7 +76,7 @@
           class="notSelected"
           *ngIf="selectedState != state"
           ngbDropdownItem
-          (click)="filter(undefined, state)">
+          (click)="filter(undefined, state, undefined, true)">
             {{state}}
           </button>
         </div>
@@ -98,8 +100,6 @@
 
 <div class="m-auto d-flex align-items-center justify-content-center">
   <button class="btn btn-warning" style="font-weight: bold"(click)="previousPage()">{{"<"}}</button>
-  <span class="mx-4" style="font-weight: bold; font-size: 20px">{{this.selectedPageNumber}}</span>
+  <span class="mx-4" style="font-weight: bold; font-size: 20px">{{this.selectedPageNumber + 1}}</span>
   <button class="btn btn-warning" style="font-weight: bold"(click)="nextPage()">{{">"}}</button>
 </div>
-
-{{totalNumberOfObjects}} nb objets

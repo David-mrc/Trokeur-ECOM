@@ -42,15 +42,18 @@ export class ListProductComponent implements OnInit {
       this.selectedSearchInput = params.searchInput;
       this.selectedCategory = params.categoryName;
       this.selectedState = params.state;
-      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
+      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput, false);
     })
   }
 
-  filter(category?: string, state?: string, searchInput?: string): void {
+  filter(category?: string, state?: string, searchInput?: string, filterSelected?: boolean): void {
     if (category === undefined && state === undefined && searchInput === undefined) {
       this.fetchProduct(this.selectedPageNumber);
       this.fetchNumberOfProduct();
     } else {
+      if (filterSelected) {
+        this.selectedPageNumber = 0;
+      }
       this._productService.getFilteredProducts(this.selectedCategory, this.selectedState, this.selectedSearchInput, this.selectedPageNumber).subscribe((tradeObjects) => {
         this.tradeObjectList = tradeObjects;
         this.fetchNumberOfProductFiltered();
@@ -84,23 +87,22 @@ export class ListProductComponent implements OnInit {
   }
 
   fetchNumberOfProductFiltered(): void {
-    this._productService.countAllProductFiltered().subscribe((numberOfObjectsFiltered) => {
+    this._productService.countAllProductFiltered(this.selectedCategory, this.selectedState, this.selectedSearchInput).subscribe((numberOfObjectsFiltered) => {
       this.totalNumberOfObjects = numberOfObjectsFiltered;
     })
   }
 
   nextPage(): void {
-    const threshold = parseInt((this.totalNumberOfObjects / 8).toFixed(0), 10);
-    if (this.selectedPageNumber +1 <= threshold -1) {
+    if ((this.selectedPageNumber +1)*8 < this.totalNumberOfObjects) {
       this.selectedPageNumber += 1;
-      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
+      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput, false);
     }
   }
 
   previousPage(): void {
     if (this.selectedPageNumber -1 >= 0) {
       this.selectedPageNumber -= 1;
-      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput);
+      this.filter(this.selectedCategory, this.selectedState, this.selectedSearchInput, false);
     }
   }
 }

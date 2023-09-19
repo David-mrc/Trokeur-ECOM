@@ -45,4 +45,7 @@ public interface TrockeurUserRepository extends JpaRepository<TrockeurUser, Long
 
     @Query("select trockeurUser.user from TrockeurUser trockeurUser where trockeurUser.id = :id")
     Optional<User> findUserByTrockeurUserId(@Param("id") Long id);
+
+    @Query("select tradeObject.trockeurUser from TradeObject tradeObject where tradeObject.id = :tradeObjectId")
+    Optional<TrockeurUser> findTrockeurUserByTradeObject(@Param("tradeObjectId") Long tradeObjectId);
 }
