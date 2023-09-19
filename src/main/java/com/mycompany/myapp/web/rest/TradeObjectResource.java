@@ -258,7 +258,7 @@ public class TradeObjectResource {
     @GetMapping("/trade-objects/filter")
     public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput, @RequestParam Optional<Integer> pageNumber) {
         log.debug("REST request to count TradeObject filtered");
-        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects(SecurityUtils.getCurrentUserLogin());
 
         if (categoryName.isPresent() && categoryName.get() != "") {
             Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
@@ -301,7 +301,7 @@ public class TradeObjectResource {
     public ResponseEntity<Set<TradeObject>> getObjectsFromPage(@RequestParam  Optional<Integer> pageNumber) {
         log.debug("REST request to get TradeObject of state");
         Pageable pageable = PageRequest.of(pageNumber.get(), 8);
-        Page<TradeObject> page = tradeObjectRepository.findAllWithEagerRelationships(pageable);
+        Page<TradeObject> page = tradeObjectRepository.findAllObjectsFromPage(pageable, SecurityUtils.getCurrentUserLogin());
         Optional<Set<TradeObject>> objectsOfState = Optional.of(new HashSet<TradeObject>(page.getContent()));
         return ResponseUtil.wrapOrNotFound(objectsOfState);
     }
@@ -326,7 +326,7 @@ public class TradeObjectResource {
     @GetMapping("/trade-objects/filter/count")
     public ResponseEntity<Integer> countObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
         log.debug("REST request to count TradeObject filtered");
-        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects(SecurityUtils.getCurrentUserLogin());
 
         if (categoryName.isPresent() && categoryName.get() != "") {
             Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
