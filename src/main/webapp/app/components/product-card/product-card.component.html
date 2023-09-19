@@ -29,7 +29,7 @@
       <fa-icon icon="eye" style="color: #000000"></fa-icon>
       <span class="icon-text" style="margin-left: 4px">Voir</span>
     </button>
-    <button class="btn btn-warning w-30 mx-auto" type="submit">
+    <button class="btn btn-warning w-30 mx-auto" type="submit" [routerLink]="['/trade-object', tradeObject?.id, 'edit']">
       <fa-icon icon="pencil-alt" style="color: #000000"></fa-icon>
       <span class="icon-text" style="margin-left: 4px">Modifier</span>
     </button>

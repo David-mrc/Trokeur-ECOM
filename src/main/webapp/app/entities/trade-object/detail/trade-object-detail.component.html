@@ -39,6 +39,7 @@
     <a
       *ngIf="!authenticatedUser || !getUserLogin() || !loginOfUserOfObject || getUserLogin() != loginOfUserOfObject"
       class="btn btn-warning"
+      [routerLink]="['/trade']" [queryParams]="{ askedProductId: tradeObject.id }"
     >
       <fa-icon icon="handshake" style="color: #000000"></fa-icon>
       Troker
