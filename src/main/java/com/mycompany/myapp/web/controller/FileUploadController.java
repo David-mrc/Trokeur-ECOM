@@ -48,6 +48,7 @@ public class FileUploadController {
                 .message("file uploaded successfully. File unique name =>" + fileName)
                 .isSuccessful(true)
                 .statusCode(200)
+                .data(fileName)
                 .build();
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         } else {

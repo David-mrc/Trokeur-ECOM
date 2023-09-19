@@ -1,19 +1,9 @@
-<div class="container" style="width: 70rem;justify-content: center;">
+<div class="container" style="width: 70rem; justify-content: center">
   <div *ngIf="tradeObject">
-    <ngb-carousel style="display: block;">
-      <ng-template ngbSlide>
+    <ngb-carousel style="display: block">
+      <ng-template *ngFor="let imageUrl of urlArray" ngbSlide>
         <div class="picsum-img-wrapper">
-          <img src="/content/images/logoTrokeur.png" alt="Random first slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
-        </div>
-      </ng-template>
-      <ng-template ngbSlide>
-        <div class="picsum-img-wrapper">
-          <img src="/content/images/logo-jhipster.png" alt="Random second slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
-        </div>
-      </ng-template>
-      <ng-template ngbSlide>
-        <div class="picsum-img-wrapper">
-          <img src="/content/images/logoTrokeur.png" alt="Random third slide" style="width: 100%;object-fit: contain;height: 25rem;"/>
+          <img [src]="imageUrl | async" alt="Random first slide" style="width: 100%; object-fit: contain; height: 25rem" />
         </div>
       </ng-template>
     </ngb-carousel>
@@ -23,7 +13,6 @@
     <jhi-alert-error></jhi-alert-error>
 
     <jhi-alert></jhi-alert>
-
 
     <div class="container">
       <div class="row mb-4">
@@ -36,30 +25,29 @@
           {{ tradeObject.state }}
         </div>
       </div>
-      <div class="col-sm"> <strong>Description : </strong></div>
-      <div class="col-sm mb-4"> {{ tradeObject.description }} </div>
-      <div class="col-sm"> <strong>Adresse : </strong></div>
-      <div class="col-sm mb-4" *ngIf="tradeObject.trockeurUser">{{ tradeObject.trockeurUser.address }} </div>
-      <div class="col-sm mb-4" *ngIf="!tradeObject.trockeurUser"> Inconnue </div>
+      <div class="col-sm"><strong>Description : </strong></div>
+      <div class="col-sm mb-4">{{ tradeObject.description }}</div>
+      <div class="col-sm"><strong>Adresse : </strong></div>
+      <div class="col-sm mb-4" *ngIf="tradeObject.trockeurUser">{{ tradeObject.trockeurUser.address }}</div>
+      <div class="col-sm mb-4" *ngIf="!tradeObject.trockeurUser">Inconnue</div>
     </div>
 
     <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
       <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
     </button>
 
-    <a *ngIf="!authenticatedUser || !getUserLogin() || !loginOfUserOfObject || (getUserLogin() != loginOfUserOfObject)" class="btn btn-warning">
-    <fa-icon icon="handshake" style="color: #000000"></fa-icon>
-    Troker
+    <a
+      *ngIf="!authenticatedUser || !getUserLogin() || !loginOfUserOfObject || getUserLogin() != loginOfUserOfObject"
+      class="btn btn-warning"
+    >
+      <fa-icon icon="handshake" style="color: #000000"></fa-icon>
+      Troker
     </a>
 
     <span *ngIf="getUserLogin() && loginOfUserOfObject && getUserLogin() == loginOfUserOfObject">
-      <button
-      type="submit"
-      [routerLink]="['/trade-object', tradeObject.id, 'edit']"
-      class="btn btn-warning"
-      data-cy="entityEditButton">
-      <fa-icon icon="pencil-alt"></fa-icon>
-      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+      <button type="submit" [routerLink]="['/trade-object', tradeObject.id, 'edit']" class="btn btn-warning" data-cy="entityEditButton">
+        <fa-icon icon="pencil-alt"></fa-icon>
+        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
       </button>
 
       <button type="submit" (click)="delete(tradeObject)" class="btn btn-danger" data-cy="entityDeleteButton">
@@ -67,7 +55,5 @@
         <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
       </button>
     </span>
-
-
   </div>
 </div>

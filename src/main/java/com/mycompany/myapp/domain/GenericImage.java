@@ -28,7 +28,7 @@ public class GenericImage implements Serializable {
     @Column(name = "image_path", nullable = false)
     private String imagePath;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "genericImages", "objectCategories", "trockeurUser", "tradeOffers" }, allowSetters = true)
     private TradeObject tradeObject;
 
