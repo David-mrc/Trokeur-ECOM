@@ -129,7 +129,11 @@ export class TradeOfferService {
   }
 
   refuseTradeOffer(id: number | undefined): Observable<{}> {
-    return this.http.put(this.applicationConfigService.getEndpointFor('api/trade-offers/update/' + id), id);
+    return this.http.put(this.applicationConfigService.getEndpointFor('api/trade-offers/refuse/' + id), id);
+  }
+
+  acceptTradeOffer(id: number | undefined): Observable<boolean | undefined> {
+    return this.http.put<boolean>(this.applicationConfigService.getEndpointFor('api/trade-offers/accept/' + id), id);
   }
 
   protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {

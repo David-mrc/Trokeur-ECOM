@@ -3,6 +3,7 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
 import com.mycompany.myapp.domain.enumeration.TradeOfferState;
+import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.repository.TradeOfferRepository;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
@@ -45,10 +46,12 @@ public class TradeOfferResource {
     private String applicationName;
 
     private final TradeOfferRepository tradeOfferRepository;
+    private final TradeObjectRepository tradeObjectRepository;
     private final TrockeurUserRepository trockeurUserRepository;
 
-    public TradeOfferResource(TradeOfferRepository tradeOfferRepository, TrockeurUserRepository trockeurUserRepository) {
+    public TradeOfferResource(TradeOfferRepository tradeOfferRepository, TradeObjectRepository tradeObjectRepository, TrockeurUserRepository trockeurUserRepository) {
         this.tradeOfferRepository = tradeOfferRepository;
+        this.tradeObjectRepository = tradeObjectRepository;
         this.trockeurUserRepository = trockeurUserRepository;
     }
 
@@ -323,8 +326,6 @@ public class TradeOfferResource {
             .build();
     }
 
-    
-
     /**
      * {@code PUT  /trade-offers/:id} : Updates tradeOffer state from EN_COURS to REFUSE.
      *
@@ -332,7 +333,7 @@ public class TradeOfferResource {
      * @param tradeOffer the tradeOffer to update.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @PutMapping("/trade-offers/update/{id}")
+    @PutMapping("/trade-offers/refuse/{id}")
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public ResponseEntity<Void> refuseTradeOffer(@PathVariable Long id) {
         log.debug("REST request to refuse TradeOffer : {}", id);
@@ -343,5 +344,32 @@ public class TradeOfferResource {
             .build();
     }
 
-
+    /**
+     * {@code PUT  /trade-offers/:id} : Accepts tradeOffer if possible.
+     *
+     * @param id the id of the tradeOffer to save.
+     * @param tradeOffer the tradeOffer to update.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PutMapping("/trade-offers/accept/{id}")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ResponseEntity<Boolean> acceptTradeOffer(@PathVariable Long id) {
+        log.debug("REST request to accept TradeOffer : {}", id);
+        Optional<TradeOffer> optTradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
+        if (optTradeOffer != null) {    // Checking if the trade offer still exists
+            TradeOffer tradeOffer = optTradeOffer.get();
+            for (TradeObject tradeObject : tradeOffer.getTradeObjects()) {  // Checking if all trade objects have at least 1 in stock
+                if (tradeObject.getStock() < 1) {
+                    return ResponseUtil.wrapOrNotFound(Optional.of(false));
+                }
+            }
+            tradeOfferRepository.updateTradeOfferState(id, TradeOfferState.ACCEPTE);    // Changing trade offer state to accepted
+            for (TradeObject tradeObject : tradeOffer.getTradeObjects()) {              // Deleting 1 stock for each trade object
+                tradeObject.setStock(tradeObject.getStock() - 1);
+                tradeObjectRepository.save(tradeObject);
+            }
+            return ResponseUtil.wrapOrNotFound(Optional.of(true));
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.of(false));
+    }
 }

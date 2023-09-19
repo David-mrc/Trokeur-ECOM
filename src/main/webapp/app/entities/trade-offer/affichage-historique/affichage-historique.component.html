@@ -34,11 +34,11 @@
 
     <!-- Transaction Recue de quelqu'un d'autre -->
       <div *ngIf="recues" class="btn-group ml-2 mr-2 " role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary btn-danger text-white" (click)="RefuseTranscation()">
+        <button type="button" class="btn btn-primary btn-danger text-white" (click)="RefuseTransaction()">
           <fa-icon icon="thumbs-down" style="color: #ffffff"></fa-icon>
           Refuser Transaction
         </button>
-        <button type="button" class="btn btn-primary btn-success text-white">
+        <button type="button" class="btn btn-primary btn-success text-white" (click)="AcceptTransaction()">
           <fa-icon icon="thumbs-up" syle="color: #ffffff"></fa-icon>
           Accepter Transaction
         </button>

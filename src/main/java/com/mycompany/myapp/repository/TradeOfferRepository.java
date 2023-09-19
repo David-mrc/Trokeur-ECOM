@@ -1,6 +1,5 @@
 package com.mycompany.myapp.repository;
 
-import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TradeOffer;
 import com.mycompany.myapp.domain.enumeration.TradeOfferState;
 
@@ -61,12 +60,6 @@ public interface TradeOfferRepository extends TradeOfferRepositoryWithBagRelatio
     "and trade_offer.owner_id != :userID",
     nativeQuery = true)
     Optional<Set<Long>> findAllPendingOffersToUser(@Param("userID") Optional<Long> userID);
-
-    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.id = :ownerID")
-    Optional<TradeObject> findProposedTradeObject(@Param("ownerID") Long ownerID);
-
-    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.id != :ownerID")
-    Optional<TradeObject> findWantedTradeObject(@Param("ownerID") Long ownerID);
 
     @Modifying
     @Query("delete from TradeOffer tradeOffer where tradeOffer.id = :id")

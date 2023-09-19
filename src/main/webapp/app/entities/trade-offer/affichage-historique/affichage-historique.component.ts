@@ -105,8 +105,21 @@ export class AffichageHistoriqueComponent implements OnInit {
     });
   }
 
-  RefuseTranscation() {
+  RefuseTransaction() {
     this._tradeOfferService.refuseTradeOffer(this.tradeOffer?.id).subscribe(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/troks-recus']);
+      }); 
+    });
+  }
+
+  AcceptTransaction() {
+    this._tradeOfferService.acceptTradeOffer(this.tradeOffer?.id).subscribe((accepted: boolean | undefined) => {
+      if (accepted) {
+        console.log("ça a marché");
+      } else {
+        console.log("ca a pas marché");
+      }
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/troks-recus']);
       }); 
