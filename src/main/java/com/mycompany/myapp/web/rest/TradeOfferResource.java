@@ -304,10 +304,9 @@ public class TradeOfferResource {
     @GetMapping("/trade-offer-wanted-object/{id}")
     public ResponseEntity<TradeObject> getWantedTradeObject(@PathVariable Long id) {
         log.debug("REST request to get wanted trade object");
-        Optional<TradeOffer> tradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
+        Optional<TradeOffer> tradeOffer = tradeOfferRepository.findById(id);
         if (tradeOffer != null) {
-            Set<TradeObject> tradeObjects = tradeOffer.get().getTradeObjects();
-            for (TradeObject tradeObject : tradeObjects) {
+            for (TradeObject tradeObject : tradeOffer.get().getTradeObjects()) {
                 if (tradeObject.getTrockeurUser().getId() != tradeOffer.get().getOwnerID()) {
                     return ResponseUtil.wrapOrNotFound(Optional.of(tradeObject));
                 }
