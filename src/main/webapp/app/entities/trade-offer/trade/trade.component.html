@@ -1,6 +1,6 @@
 
 <h1>Proposition de Trok</h1>
-<div class="d-flex align-items-center justify-content-center row g-2">
+<div *ngIf="myTradeObjects && myTradeObjects.length > 0" class="d-flex align-items-center justify-content-center row g-2">
   <div class="row justify-content-center align-items-center my-4 p-10 col-12" style="width: 100%;">
     <div class="askedProduct col-4 mr-2" style="max-width: 25rem">
       <div class="card shadow border-warning mb-4" style="max-width: 25rem">
@@ -49,6 +49,16 @@
     </button>
   </div>
 </div>
+
+<div class="" *ngIf="myTradeObjects && myTradeObjects?.length == 0">
+  <p>Vous n'avez aucun produit à échanger.</p>
+  <p>Créez en un dès maintenant !</p>
+  <div class="font-weight-bold">
+    Proposer un objet
+    <a href="/trade-object/new" class="btn btn-warning ml-3"> + </a>
+  </div>
+</div>
+
 
 
 
