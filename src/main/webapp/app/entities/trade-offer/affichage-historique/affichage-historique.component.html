@@ -46,4 +46,24 @@
     </div>
 </div>
 
+<ng-template #modalSuccess>
+  <div class="modal-body">
+      <div>
+        Echange accepté avec succès
+      </div>
+      <button type="button" class="close close-button" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+</ng-template>
 
+<ng-template #modalFail>
+  <div class="modal-body">
+      <div style="padding:inherit">
+        Impossible d'accepter l'échange, l'offre a été annulée ou l'objet n'est plus disponible
+      </div>
+      <button type="button" class="close close-button" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+</ng-template>

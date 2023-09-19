@@ -1,16 +1,21 @@
 import { ITradeObject } from 'app/entities/trade-object/trade-object.model';
 import { ITradeOffer } from 'app/entities/trade-offer/trade-offer.model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TradeOfferService } from '../service/trade-offer.service';
 import { TradeObjectService } from 'app/entities/trade-object/service/trade-object.service';
 import { IUser } from 'app/entities/user/user.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { Router } from '@angular/router';
+import { CommonModule, NgIf } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-affichage-historique',
   templateUrl: './affichage-historique.component.html',
+  standalone: true,
+  imports: [NgIf, FontAwesomeModule, CommonModule, NgbModule],
   styleUrls: ['./affichage-historique.component.scss'],
 })
 
@@ -18,7 +23,8 @@ export class AffichageHistoriqueComponent implements OnInit {
   @Input() tradeOffer: ITradeOffer | undefined;
   @Input() recues: boolean = false;
   @Input() propose: boolean = false;
-  @Input() refresh: (() => void) | undefined;
+  @ViewChild('modalSuccess') modalSuccess: any;
+  @ViewChild('modalFail') modalFail: any;
 
   proposedObject: ITradeObject | undefined;
   wantedObject: ITradeObject | undefined;
@@ -28,8 +34,14 @@ export class AffichageHistoriqueComponent implements OnInit {
   rightObject: ITradeObject | undefined;
   leftUser: IUser | undefined;
   rightUser: IUser | undefined;
+  
+  private modalRef!: NgbModalRef;
 
-  constructor(private router: Router, private _tradeOfferService: TradeOfferService, private _tradeObjectService: TradeObjectService, private _accountService: AccountService) {}
+  constructor(private router: Router, 
+    private _tradeOfferService: TradeOfferService, 
+    private _tradeObjectService: TradeObjectService, 
+    private _accountService: AccountService, 
+    private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.loadObjects();
@@ -115,15 +127,25 @@ export class AffichageHistoriqueComponent implements OnInit {
 
   AcceptTransaction() {
     this._tradeOfferService.acceptTradeOffer(this.tradeOffer?.id).subscribe((accepted: boolean | undefined) => {
-      if (accepted) {
-        console.log("ça a marché");
-      } else {
-        console.log("ca a pas marché");
-      }
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/troks-recus']);
       }); 
+      if (accepted) {
+        this.openModal(this.modalSuccess);
+      } else {
+        this.openModal(this.modalFail);
+      }
     });
+  }
+
+  openModal(content: any): void {
+    if (this.modalService) {
+      this.modalRef = this.modalService.open(content, { centered: true });
+    }
+  }
+
+  closeModal(): void {
+    this.modalRef.close('Cross click');
   }
 }
 

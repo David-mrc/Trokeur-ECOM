@@ -47,10 +47,6 @@ import { TradeDoneComponent } from './components/trade-done/trade-done.component
   ],
   bootstrap: [MainComponent],
   declarations: [
-    AffichageHistoriqueComponent,
-    HistoriqueTransactionsComponent,
-    TransactionProposeComponent,
-    TransactionRecueComponent,
     TradeDoneComponent
   ]
 })

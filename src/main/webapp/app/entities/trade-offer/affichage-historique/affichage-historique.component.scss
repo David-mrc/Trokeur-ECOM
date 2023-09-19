@@ -4,21 +4,40 @@
     border: 1px solid #ccc;
   }
   
-  img {
-    object-fit: cover;
-    width: 15rem;
-    height: 15rem;
-  }
+img {
+  object-fit: cover;
+  width: 15rem;
+  height: 15rem;
+}
 
-  text {
-    text-overflow:ellipsis;
-  }
+text {
+  text-overflow:ellipsis;
+}
 
-  .item-symbol {
-    font-size: 24px;
-  }
-  
-  .item-button {
-    margin-left: auto;
-  }
+.item-symbol {
+  font-size: 24px;
+}
+
+.item-button {
+  margin-left: auto;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  z-index: 9999;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #000;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
   

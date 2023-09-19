@@ -284,7 +284,7 @@ public class TradeOfferResource {
     @GetMapping("/trade-offer-proposed-object/{id}")
     public ResponseEntity<TradeObject> getProposedTradeObject(@PathVariable Long id) {
         log.debug("REST request to get proposed trade object");
-        Optional<TradeOffer> tradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
+        Optional<TradeOffer> tradeOffer = tradeOfferRepository.findById(id);
         if (tradeOffer != null) {
             Set<TradeObject> tradeObjects = tradeOffer.get().getTradeObjects();
             for (TradeObject tradeObject : tradeObjects) {
@@ -361,7 +361,7 @@ public class TradeOfferResource {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public ResponseEntity<Boolean> acceptTradeOffer(@PathVariable Long id) {
         log.debug("REST request to accept TradeOffer : {}", id);
-        Optional<TradeOffer> optTradeOffer = tradeOfferRepository.findOneWithEagerRelationships(id);
+        Optional<TradeOffer> optTradeOffer = tradeOfferRepository.findById(id);
         if (optTradeOffer != null) {    // Checking if the trade offer still exists
             TradeOffer tradeOffer = optTradeOffer.get();
             for (TradeObject tradeObject : tradeOffer.getTradeObjects()) {  // Checking if all trade objects have at least 1 in stock
@@ -393,9 +393,9 @@ public class TradeOfferResource {
         tradeOffer.setOwnerID(ownerID);
 
         Set<TradeObject> tradeObjects = new HashSet<>();
-        TradeObject askedProduct = tradeObjectRepository.findOneWithEagerRelationships(askedProductId).get();
+        TradeObject askedProduct = tradeObjectRepository.findById(askedProductId).get();
         tradeObjects.add(askedProduct);
-        TradeObject selectedProduct = tradeObjectRepository.findOneWithEagerRelationships(selectedProductId).get();
+        TradeObject selectedProduct = tradeObjectRepository.findById(selectedProductId).get();
         tradeObjects.add(selectedProduct);
         tradeOffer.setTradeObjects(tradeObjects);
 

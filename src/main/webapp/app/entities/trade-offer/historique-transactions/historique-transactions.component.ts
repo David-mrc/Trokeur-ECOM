@@ -3,10 +3,13 @@ import { ITradeOffer } from 'app/entities/trade-offer/trade-offer.model';
 import { Component, OnInit } from '@angular/core';
 import { AffichageHistoriqueComponent } from '../affichage-historique/affichage-historique.component';
 import { TradeOfferService } from '../service/trade-offer.service';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'jhi-historique-transactions',
   templateUrl: './historique-transactions.component.html',
+  standalone: true,
+  imports: [NgFor, AffichageHistoriqueComponent],
   styleUrls: ['./historique-transactions.component.scss']
 })
 export class HistoriqueTransactionsComponent implements OnInit {
