@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-md-12">
-    <h1 class="display-2"><span>Bienvenue à toi, jeune trokeur</span></h1>
+  <div class="col-md-6">
+    <h1 class="display-3"><span>Bienvenue à toi, jeune trokeur</span></h1>
     <h2 class="text-muted display-8">La plateforme de troc entre particuliers</h2>
 
     <div [ngSwitch]="account !== null">
@@ -8,23 +8,10 @@
         <div class="alert alert-success">
           <span id="home-logged-message" *ngIf="account"> Vous êtes connecté en tant que "{{ account.login }}". </span>
         </div>
-
-        <div class="font-weight-bold">Parcourir par catégorie</div>
-        <div class="mt-3 mb-3">
-          <a href="#" class="btn btn-warning">Categorie 1</a>
-          <a href="#" class="btn btn-warning ml-3">Categorie 2</a>
-          <a href="#" class="btn btn-warning ml-3">Categorie 3</a>
-          <a href="#" class="btn btn-warning ml-3">Categorie 4</a>
-        </div>
-        <div class="mt-3">Parcourir tous les objets</div>
-        <a href="#" class="btn btn-warning col-2 mt-3" routerLink="/product"> Voir </a>
-
-        <div class="font-weight-bold mt-3">
-          Proposer un objet
-          <a href="/trade-object/new" class="btn btn-warning ml-3"> + </a>
-        </div>
+        <a class="btn btn-warning col-3 mt-1" routerLink="/product"> Voir tout les objets</a>
+        <h3 class = "mt-4">Les objets à la une</h3>
+        <div class="card shadow border-warning col-md-4"></div>
       </div>
-      <!-- Close the ngSwitch div here -->
 
       <div class="alert alert-warning" *ngSwitchCase="false">
         Veuillez vous
@@ -37,4 +24,12 @@
       </div>
     </div>
   </div>
+  <div class="col-md-1"></div>
+  <div class="card shadow border-warning col-md-4" style="max-width: 45rem">
+    <img src="/content/images/kylemcdonald.jpg"/>
+    <div class=" card-body my-4"> <p>Kyle MacDonald est un homme d'origine canadienne, né le 3 octobre 1979 et originaire de Belcarra (Colombie-Britannique), qui s'est rendu célèbre pour être parvenu, par une série de trocs à partir d’un trombone rouge, à obtenir une maison dans la ville de Kipling en Saskatchewan.</p>
+      <a href="https://fr.wikipedia.org/wiki/Kyle_MacDonald">En savoir plus</a>
+  </div>
+  <div class="col-md-1"></div>
 </div>
+
