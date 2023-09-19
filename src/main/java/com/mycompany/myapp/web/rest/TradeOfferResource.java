@@ -1,16 +1,25 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeOffer;
+import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.enumeration.TradeOfferState;
+import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.repository.TradeOfferRepository;
+import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +45,13 @@ public class TradeOfferResource {
     private String applicationName;
 
     private final TradeOfferRepository tradeOfferRepository;
+    private final TrockeurUserRepository trockeurUserRepository;
+    private final TradeObjectRepository tradeObjectRepository;
 
-    public TradeOfferResource(TradeOfferRepository tradeOfferRepository) {
+    public TradeOfferResource(TradeOfferRepository tradeOfferRepository, TrockeurUserRepository trockeurUserRepository, TradeObjectRepository tradeObjectRepository) {
         this.tradeOfferRepository = tradeOfferRepository;
+        this.trockeurUserRepository = trockeurUserRepository;
+        this.tradeObjectRepository = tradeObjectRepository;
     }
 
     /**
@@ -201,5 +214,36 @@ public class TradeOfferResource {
         log.debug("REST request to get current user's TradeOffer");
         Optional<List<TradeOffer>> tradeOffers = tradeOfferRepository.findAllOffersOfUser(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(tradeOffers);
+    }
+
+    /**
+     * {@code GET  /trade-offers/trade} : create tradeOffer.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/trade-offers/trade")
+    public void createTradeOffer(@RequestParam Long askedProductId, @RequestParam Long selectedProductId) {
+        log.debug("REST request to create TradeOffer");
+        TradeOffer tradeOffer = new TradeOffer();
+        tradeOffer.setDate(LocalDate.now());
+        tradeOffer.setState(TradeOfferState.EN_COURS);
+        Long ownerID = trockeurUserRepository.findTrockeurUserIdByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        tradeOffer.setOwnerID(ownerID);
+
+        Set<TradeObject> tradeObjects = new HashSet<>();
+        TradeObject askedProduct = tradeObjectRepository.findOneWithEagerRelationships(askedProductId).get();
+        tradeObjects.add(askedProduct);
+        TradeObject selectedProduct = tradeObjectRepository.findOneWithEagerRelationships(selectedProductId).get();
+        tradeObjects.add(selectedProduct);
+        tradeOffer.setTradeObjects(tradeObjects);
+
+        Set<TrockeurUser> trockeurUsers = new HashSet<>();
+        TrockeurUser owner = trockeurUserRepository.findById(ownerID).get();
+        trockeurUsers.add(owner);
+        TrockeurUser receiver = trockeurUserRepository.findTrockeurUserByTradeObject(askedProduct.getId()).get();
+        trockeurUsers.add(receiver);
+        tradeOffer.setTrockeurUsers(trockeurUsers);
+
+        tradeOfferRepository.save(tradeOffer);
     }
 }
