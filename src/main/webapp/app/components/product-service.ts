@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ApplicationConfigService } from "app/core/config/application-config.service";
 import { TradeObjectState } from "app/entities/enumerations/trade-object-state.model";
+import { ITradeObject } from "app/entities/trade-object/trade-object.model";
 import { TradeObject } from "app/interfaces/TradeObjectInterface";
 import { Observable } from "rxjs";
 
@@ -25,6 +26,10 @@ export class productService {
 
   getMyProducts(): Observable<TradeObject[]> {
     return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
+  }
+
+  getMyTradeObjects(): Observable<ITradeObject[]> {
+    return this.http.get<ITradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
   }
 
   getFilteredProducts(categoryName?: string, state?: TradeObjectState, searchInput?: string, pageNumber?: number): Observable<TradeObject[]> {

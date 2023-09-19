@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TradeObject } from 'app/interfaces/TradeObjectInterface';
 import { StateComponent } from '../state/state.component';
@@ -26,7 +26,8 @@ export class ProductCardComponent {
   urlArray: Observable<SafeUrl>[] = [];
   private modalRef!: NgbModalRef;
 
-  constructor(public modalService: NgbModal, private config: S3serviceService, private sanitizer: DomSanitizer) {}
+
+  constructor(public modalService: NgbModal, private config: S3serviceService, private router: Router, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     // eslint-disable-next-line no-console
@@ -85,5 +86,13 @@ export class ProductCardComponent {
 
   closeModal(): void {
     this.modalRef.close('Cross click');
+  }
+
+  trade(): void {
+    this.router.navigate(['/trade'], {
+      queryParams: {
+        askedProductId: this.tradeObject?.id
+      },
+    });
   }
 }

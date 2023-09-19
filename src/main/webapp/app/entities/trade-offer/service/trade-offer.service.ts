@@ -1,5 +1,6 @@
+import { ITradeObject } from 'app/entities/trade-object/trade-object.model';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
@@ -97,6 +98,48 @@ export class TradeOfferService {
       return [...tradeOffersToAdd, ...tradeOfferCollection];
     }
     return tradeOfferCollection;
+  }
+
+  getProposedTradeObject(id: number): Observable<ITradeObject> {
+    return this.http.get<ITradeObject>(`${this.applicationConfigService.getEndpointFor('api/trade-offer-proposed-object')}/${id}`);
+  }
+
+  getWantedTradeObject(id: number): Observable<ITradeObject> {
+    return this.http.get<ITradeObject>(`${this.applicationConfigService.getEndpointFor('api/trade-offer-wanted-object')}/${id}`);
+  }
+
+  getAllOffersOfUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-offers'));
+  }
+
+  getAllNonPendingOffersOfUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/non-pending-of-user'));
+  }
+
+  getAllPendingOffersFromUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/pending-offered-by-user'));
+  }
+
+  getAllPendingOffersToUser(): Observable<ITradeOffer[]> {
+    return this.http.get<ITradeOffer[]>(this.applicationConfigService.getEndpointFor('api/trade-offer/pending-received-by-user'));
+  }
+
+  cancelTradeOffer(id: number | undefined): Observable<{}> {
+    return this.http.delete(this.applicationConfigService.getEndpointFor('api/trade-offers/cancel/' + id));
+  }
+
+  refuseTradeOffer(id: number | undefined): Observable<{}> {
+    return this.http.put(this.applicationConfigService.getEndpointFor('api/trade-offers/refuse/' + id), id);
+  }
+
+  acceptTradeOffer(id: number | undefined): Observable<boolean | undefined> {
+    return this.http.put<boolean>(this.applicationConfigService.getEndpointFor('api/trade-offers/accept/' + id), id);
+
+  createTradeOffer(askedProductId: number, selectedProductId: number): Observable<{}> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('api/trade-offers/trade'),
+    {params: new HttpParams()
+      .set("askedProductId", askedProductId)
+      .set("selectedProductId", selectedProductId)});
   }
 
   protected convertDateFromClient<T extends ITradeOffer | NewTradeOffer | PartialUpdateTradeOffer>(tradeOffer: T): RestOf<T> {
