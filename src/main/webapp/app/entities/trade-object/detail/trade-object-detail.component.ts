@@ -24,7 +24,6 @@ import { DataUtils } from 'app/core/util/data-util.service';
 export class TradeObjectDetailComponent implements OnInit {
   // TODO 1 : afficher les vraies images de l'objet dans l'html
   // TODO 2 : afficher le composant state pour l'état au lieu de l'afficher textuellement
-  // TODO 3 : mapper le bouton "Troker"
   @Input() tradeObject: ITradeObject | null = null;
   images = this.tradeObject?.genericImages;
   authenticatedUser: Account | undefined;

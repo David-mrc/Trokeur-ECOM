@@ -1,6 +1,8 @@
 <div class="historiqueTransactions">
     <div class="historiqueTransactionsContent">
-     <h1>Historique</h1>
-     <app-affichage-historique></app-affichage-historique>
+      <h1>Historique</h1>
+      <div *ngFor="let tradeOffer of tradeOffers">
+        <app-affichage-historique [tradeOffer]="tradeOffer"></app-affichage-historique>
+      </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TradeObject;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 
 import java.util.List;
@@ -52,6 +53,25 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select count(tradeObject) from TradeObject tradeObject")
     Optional<Integer> countAllObjects();
 
+
+    @Query(
+        value = "select tro.id " +
+        "from trade_object tro " +
+        "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
+        "join object_category obc on rel.object_category_id = obc.id " +
+        "where obc.name = :categoryName",
+        countQuery = "select count(tro.id) " +
+        "from trade_object tro " +
+        "join rel_trade_object__object_category rel on tro.id = rel.trade_object_id " +
+        "join object_category obc on rel.object_category_id = obc.id " +
+        "where obc.name = :categoryName",
+        nativeQuery = true)
+    Page<Long> findIdOfObjectsOfCategoryFromPage(@Param("categoryName") Optional<String> categoryName, Pageable pageable);
+
+    @Query("select tradeObject.trockeurUser.user from TradeObject tradeObject where tradeObject.id = :id")
+    Optional<User> findUsernameOfTradeObject(@Param ("id") Long id);
+
     @Query(value = "select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
     Page<TradeObject> findAllObjectsFromPage(@Param("pageable") Pageable page, @Param("login") Optional<String> login);
+
 }
