@@ -315,7 +315,7 @@ public class TradeObjectResource {
     @GetMapping("/trade-objects/count")
     public ResponseEntity<Integer> countObjects() {
         log.debug("REST request to get TradeObject of state");
-        Optional<Integer> numberOfObjects = tradeObjectRepository.countAllObjects();
+        Optional<Integer> numberOfObjects = tradeObjectRepository.countAllObjects(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(numberOfObjects);
     }
 

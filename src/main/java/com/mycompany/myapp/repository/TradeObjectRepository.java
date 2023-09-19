@@ -50,8 +50,8 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
     Set<TradeObject> findAllObjects(@Param("login") Optional<String> login);
 
-    @Query("select count(tradeObject) from TradeObject tradeObject")
-    Optional<Integer> countAllObjects();
+    @Query("select count(tradeObject) from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
+    Optional<Integer> countAllObjects(@Param("login") Optional<String> login);
 
 
     @Query(
