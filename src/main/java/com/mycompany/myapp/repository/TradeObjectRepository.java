@@ -46,9 +46,12 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
     @Query("select tradeObject from TradeObject tradeObject where LOWER(tradeObject.name) LIKE %:searchInput%")
     Optional<Set<TradeObject>> findObjectsOfSearchInput(@Param("searchInput") String searchInput);
 
-    @Query("select tradeObject from TradeObject tradeObject")
-    Set<TradeObject> findAllObjects();
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
+    Set<TradeObject> findAllObjects(@Param("login") Optional<String> login);
 
     @Query("select count(tradeObject) from TradeObject tradeObject")
     Optional<Integer> countAllObjects();
+
+    @Query(value = "select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
+    Page<TradeObject> findAllObjectsFromPage(@Param("pageable") Pageable page, @Param("login") Optional<String> login);
 }
