@@ -10,8 +10,10 @@
         </div>
         <a class="btn btn-warning col-3 mt-1" routerLink="/product"> Voir tout les objets</a>
         <h3 class = "mt-4">Les objets à la une</h3>
-        <div class="card shadow border-warning col-md-4">
-          <div class=" card-body my-4"> iPhone </div>
+        <div class="d-flex" style="overflow-x: scroll;">
+          <div *ngFor="let tradeObject of getTradeObjectList()" class="col-md-4 m-4 mb-0">
+            <jhi-product-card [tradeObject]="tradeObject" [isPublic]="true"></jhi-product-card>
+          </div>
         </div>
       </div>
 
