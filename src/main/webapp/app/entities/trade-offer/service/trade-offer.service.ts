@@ -134,7 +134,8 @@ export class TradeOfferService {
 
   acceptTradeOffer(id: number | undefined): Observable<boolean | undefined> {
     return this.http.put<boolean>(this.applicationConfigService.getEndpointFor('api/trade-offers/accept/' + id), id);
-
+  }
+  
   createTradeOffer(askedProductId: number, selectedProductId: number): Observable<{}> {
     return this.http.get(this.applicationConfigService.getEndpointFor('api/trade-offers/trade'),
     {params: new HttpParams()

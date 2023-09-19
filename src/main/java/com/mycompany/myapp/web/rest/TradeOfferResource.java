@@ -379,7 +379,7 @@ public class TradeOfferResource {
         }
         return ResponseUtil.wrapOrNotFound(Optional.of(false));
     }
-}
+    /*
      * {@code GET  /trade-offers/trade} : create tradeOffer.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tradeOffer, or with status {@code 404 (Not Found)}.
