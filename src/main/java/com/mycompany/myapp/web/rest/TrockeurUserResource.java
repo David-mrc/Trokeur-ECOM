@@ -219,5 +219,18 @@ public class TrockeurUserResource {
        return ResponseUtil.wrapOrNotFound(user);
    }
 
+    /**
+     * {@code GET  /trockeur-user-by-login/:login} : get the trockeurUser by login.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the trockeurUser, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/trockeur-user-by-login/{login}")
+    public ResponseEntity<TrockeurUser> getTrockeurUserByLogin(@PathVariable String login) {
+        log.debug("REST request to get the trockeurUser by login : ", login);
+        Optional<Long> trockeurUserId = trockeurUserRepository.findTrockeurUserIdByLogin(Optional.of(login));
+        Optional<TrockeurUser> trockeurUser = trockeurUserRepository.findById(trockeurUserId.get());
+        return ResponseUtil.wrapOrNotFound(trockeurUser);
+    }
+
 
 }

@@ -43,6 +43,10 @@ export class TrockeurUserService {
     return this.http.get<IUser>(this.applicationConfigService.getEndpointFor('api/user-of-trockeur-user-id/' + id.toString()));
   }
 
+  findTrockeurUserByLogin(login: string): Observable<ITrockeurUser | undefined> {
+    return this.http.get<ITrockeurUser | undefined>(this.applicationConfigService.getEndpointFor('api/trockeur-user-by-login/' + login));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ITrockeurUser[]>(this.resourceUrl, { params: options, observe: 'response' });
