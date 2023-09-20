@@ -14,8 +14,13 @@
         <h6 class="card-title text-truncate mb-0" style="max-width: 90%">{{ tradeObject?.name }}</h6>
         <jhi-state [state]="tradeObject ? (tradeObject.state ? tradeObject.state : '') : ''" />
       </div>
-      <div class="text-truncate" style="width: 100%">
-        <span style="display: contents; font-style:italic; font-size:15px;">Proposé par : </span><span class="text-warning" style="display: contents; font-weight: bold; font-style:italic; font-size:15px;">{{ tradeObjectName?.login }}</span>
+      <div class="d-flex" style="align-items: center;width: 100%;justify-content: space-between;">
+        <div class="text-truncate" style="width: 70%">
+          <span style="display: contents; font-style:italic; font-size:15px;">Proposé par : </span><span class="text-warning" style="display: contents; font-weight: bold; font-style:italic; font-size:15px;">{{ tradeObjectName?.login }}</span>
+        </div>
+        <div *ngIf="!isPublic">
+          <span class="card-title text-truncate mb-0" style="display: contents;">Stock : {{ tradeObject?.stock }}</span>
+        </div>
       </div>
     </div>
   </div>
