@@ -7,6 +7,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ITrockeurUser, NewTrockeurUser } from '../trockeur-user.model';
+import { User } from 'app/interfaces/UserInterface';
 
 export type PartialUpdateTrockeurUser = Partial<ITrockeurUser> & Pick<ITrockeurUser, 'id'>;
 
@@ -43,8 +44,8 @@ export class TrockeurUserService {
     return this.http.get<IUser>(this.applicationConfigService.getEndpointFor('api/user-of-trockeur-user-id/' + id.toString()));
   }
 
-  findTrockeurUserByLogin(login: string): Observable<ITrockeurUser | undefined> {
-    return this.http.get<ITrockeurUser | undefined>(this.applicationConfigService.getEndpointFor('api/trockeur-user-by-login/' + login));
+  findUserByLogin(login: string | undefined): Observable<User | undefined> {
+    return this.http.get<User | undefined>(this.applicationConfigService.getEndpointFor('api/user-by-login/' + login));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

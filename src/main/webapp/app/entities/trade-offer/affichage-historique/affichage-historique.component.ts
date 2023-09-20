@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TradeOfferState } from 'app/entities/enumerations/trade-offer-state.model';
+import { TrockeurUserService } from 'app/entities/trockeur-user/service/trockeur-user.service';
+import { User } from 'app/interfaces/UserInterface';
 
 @Component({
   selector: 'app-affichage-historique',
@@ -34,17 +37,20 @@ export class AffichageHistoriqueComponent implements OnInit {
   rightObject: ITradeObject | undefined;
   leftUser: IUser | undefined;
   rightUser: IUser | undefined;
+  contactEmail: string | undefined;
   
   private modalRef!: NgbModalRef;
 
   constructor(private router: Router, 
     private _tradeOfferService: TradeOfferService, 
-    private _tradeObjectService: TradeObjectService, 
+    private _tradeObjectService: TradeObjectService,
+    private _trockeruUserService: TrockeurUserService, 
     private _accountService: AccountService, 
     private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.loadObjects();
+    console.log(this.recues, this.propose)
   }
 
   loadObjects(): void {
@@ -105,6 +111,9 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.rightObject = this.proposedObject;
           this.rightUser = this.proposingUser;
         }
+        this._trockeruUserService.findUserByLogin(this.rightUser?.login).subscribe((user) => {
+          this.contactEmail = user?.email;
+        });
       }
     })
   }
@@ -147,6 +156,17 @@ export class AffichageHistoriqueComponent implements OnInit {
   closeModal(): void {
     this.modalRef.close('Cross click');
   }
+
+  getClassMap() {
+    return {
+      'background-with-opacity-vert' : this.tradeOffer?.state == TradeOfferState.ACCEPTE,
+      'background-with-opacity-rouge' : this.tradeOffer?.state == TradeOfferState.REFUSE,
+      'background-with-opacity-jaune' : this.tradeOffer?.state == TradeOfferState.EN_COURS,
+    }
+  }
+
+
+
 }
 
 
