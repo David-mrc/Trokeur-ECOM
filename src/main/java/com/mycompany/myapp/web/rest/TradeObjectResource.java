@@ -2,11 +2,14 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TradeObject;
 import com.mycompany.myapp.domain.TrockeurUser;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.domain.enumeration.TradeObjectState;
 import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
+
+import jakarta.persistence.LockModeType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -23,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -218,10 +222,22 @@ public class TradeObjectResource {
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @GetMapping("/current-trockeur-user-trade-objects")
-    public ResponseEntity<List<TradeObject>> getMyTradeObjects() {
+    @GetMapping("/trade-objets/active-objects")
+    public ResponseEntity<List<TradeObject>> getMyActiveTradeObjects() {
         log.debug("REST request to get my TradeObject");
-        Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findAllObjectsOfUser(SecurityUtils.getCurrentUserLogin());
+        Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findAllActiveObjectsOfUser(SecurityUtils.getCurrentUserLogin());
+        return ResponseUtil.wrapOrNotFound(allUserObjects);
+    }
+
+    /**
+     * {@code GET  /current-trockeur-user-trade-objects : get the trade objects of the current user
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/current-trockeur-user-trade-objects-available")
+    public ResponseEntity<List<TradeObject>> getMyTradeObjectsAvailable() {
+        log.debug("REST request to get my TradeObject");
+        Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findMyAvailableProduct(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(allUserObjects);
     }
 
@@ -249,6 +265,7 @@ public class TradeObjectResource {
         return ResponseUtil.wrapOrNotFound(objectsOfState);
     }
 
+
     /**
      * {@code GET  /trade-objects/filter} : get the trade objects filtered
      *
@@ -256,73 +273,8 @@ public class TradeObjectResource {
      */
     @GetMapping("/trade-objects/filter")
     public ResponseEntity<Set<TradeObject>> getObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput, @RequestParam Optional<Integer> pageNumber) {
-        log.debug("REST request to get TradeObject filtered");
-        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
-        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
-
-
-        if (categoryName.isPresent() && categoryName.get() != "") {
-            Page<Long> page = tradeObjectRepository.findIdOfObjectsOfCategoryFromPage(categoryName, pageable);
-            Optional<Set<Long>> idOfObjectsFilteredByCategory = Optional.of(new HashSet<Long>(page.getContent()));
-            Set<TradeObject> objectsFilteredByCategory = new HashSet<>();
-            for(Long idObject : idOfObjectsFilteredByCategory.get()) {
-                objectsFilteredByCategory.add(tradeObjectRepository.findById(idObject).get());
-            }
-            objectsFiltered.retainAll(objectsFilteredByCategory);
-        }
-
-        if (state.isPresent() && state.get().toString() != "") {
-            Optional<Set<TradeObject>> objectsFilteredByState = tradeObjectRepository.findObjectsOfState(state);
-            if (objectsFilteredByState.isPresent()) {
-                objectsFiltered.retainAll(objectsFilteredByState.get());
-            }
-        }
-
-        if (searchInput.isPresent() && searchInput.get() != "") {
-            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput.get().toLowerCase());
-            if (objectsFilteredBySearchInput.isPresent()) {
-                objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
-            }
-        }
-
-        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered));
-    }
-
-    /**
-     * {@code GET  /trade-objects/page/:pageNumber} : get the trade objects of state
-     *
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @GetMapping("/trade-objects/page{pageNumber}")
-    public ResponseEntity<Set<TradeObject>> getObjectsFromPage(@RequestParam  Optional<Integer> pageNumber) {
-        log.debug("REST request to get TradeObject of state");
-        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
-        Page<TradeObject> page = tradeObjectRepository.findAllWithEagerRelationships(pageable);
-        Optional<Set<TradeObject>> objectsOfState = Optional.of(new HashSet<TradeObject>(page.getContent()));
-        return ResponseUtil.wrapOrNotFound(objectsOfState);
-    }
-
-    /**
-     * {@code GET  /trade-objects/count} : count the trade objects
-     *
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @GetMapping("/trade-objects/count")
-    public ResponseEntity<Integer> countObjects() {
-        log.debug("REST request to get TradeObject of state");
-        Optional<Integer> numberOfObjects = tradeObjectRepository.countAllObjects();
-        return ResponseUtil.wrapOrNotFound(numberOfObjects);
-    }
-
-    /**
-     * {@code GET  /trade-objects/filter/count} : count the trade objects filtered
-     *
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @GetMapping("/trade-objects/filter/count")
-    public ResponseEntity<Integer> countObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
-        log.debug("REST request to get TradeObject filtered");
-        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects();
+        log.debug("REST request to count TradeObject filtered");
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects(SecurityUtils.getCurrentUserLogin());
 
         if (categoryName.isPresent() && categoryName.get() != "") {
             Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
@@ -344,10 +296,105 @@ public class TradeObjectResource {
                 objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
             }
         }
+        Set<TradeObject> result = new HashSet<>();
+        int i = 0;
+        for (TradeObject tradeObject: objectsFiltered) {
+            if (i >= (pageNumber.get() * 8) && i < (pageNumber.get() * 8) + 8) {
+                result.add(tradeObject);
+            }
+            i++;
+        }
 
-        return ResponseUtil.wrapOrNotFound(Optional.of(objectsFiltered.size()));
+        return ResponseUtil.wrapOrNotFound(Optional.of(result));
     }
 
+    /**
+     * {@code GET  /trade-objects/page/:pageNumber} : get the trade objects of state
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/page{pageNumber}")
+    public ResponseEntity<Set<TradeObject>> getObjectsFromPage(@RequestParam  Optional<Integer> pageNumber) {
+        log.debug("REST request to get TradeObject of state");
+        Pageable pageable = PageRequest.of(pageNumber.get(), 8);
+        Page<TradeObject> page = tradeObjectRepository.findAllObjectsFromPage(pageable, SecurityUtils.getCurrentUserLogin());
+        Optional<Set<TradeObject>> objectsOfState = Optional.of(new HashSet<TradeObject>(page.getContent()));
+        return ResponseUtil.wrapOrNotFound(objectsOfState);
+    }
 
+    /**
+     * {@code GET  /trade-objects/count} : count the trade objects
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/count")
+    public ResponseEntity<Integer> countObjects() {
+        log.debug("REST request to get TradeObject of state");
+        Optional<Integer> numberOfObjects = tradeObjectRepository.countAllObjects(SecurityUtils.getCurrentUserLogin());
+        return ResponseUtil.wrapOrNotFound(numberOfObjects);
+    }
+
+    /**
+     * {@code GET  /trade-objects/filter/count} : count the trade objects filtered
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("/trade-objects/filter/count")
+    public ResponseEntity<Integer> countObjectsFiltered(@RequestParam Optional<String> categoryName, @RequestParam Optional<TradeObjectState> state, @RequestParam Optional<String> searchInput) {
+        log.debug("REST request to count TradeObject filtered");
+        Set<TradeObject> objectsFiltered = tradeObjectRepository.findAllObjects(SecurityUtils.getCurrentUserLogin());
+
+        if (categoryName.isPresent() && categoryName.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByCategory = tradeObjectRepository.findObjectsOfCategory(categoryName);
+            if (objectsFilteredByCategory.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByCategory.get());
+            }
+        }
+
+        if (state.isPresent() && state.get().toString() != "") {
+            Optional<Set<TradeObject>> objectsFilteredByState = tradeObjectRepository.findObjectsOfState(state);
+            if (objectsFilteredByState.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredByState.get());
+            }
+        }
+
+        if (searchInput.isPresent() && searchInput.get() != "") {
+            Optional<Set<TradeObject>> objectsFilteredBySearchInput = tradeObjectRepository.findObjectsOfSearchInput(searchInput.get().toLowerCase());
+            if (objectsFilteredBySearchInput.isPresent()) {
+                objectsFiltered.retainAll(objectsFilteredBySearchInput.get());
+            }
+        }
+        Optional<Integer> numberOfObjects = Optional.of(objectsFiltered.size());
+
+        return ResponseUtil.wrapOrNotFound(numberOfObjects);
+    }
+
+    /**
+     * {@code GET  /username-of-trade-object/:id} : get the username of the trade object
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @GetMapping("username-of-trade-object/{id}")
+    public ResponseEntity<User> getUsernameOfTradeObject(@PathVariable Long id) {
+        log.debug("REST request to get username of TradeObject");
+        Optional<User> username = tradeObjectRepository.findUsernameOfTradeObject(id);
+        return ResponseUtil.wrapOrNotFound(username);
+    }
+
+    /**
+     * {@code PUT  /trade-objects/disable/:id} : Disable tradeObject.
+     *
+     * @param id the id of the tradeObject to udpate.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PutMapping("/trade-objects/disable/{id}")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ResponseEntity<Void> disableTradeObject(@PathVariable Long id) {
+        this.tradeObjectRepository.disableTradeObject(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
 
 }

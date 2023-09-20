@@ -1,6 +1,5 @@
 img {
-  object-fit: cover;
-  height: 15rem;
+  object-fit: contain;
   cursor: pointer;
 }
 
@@ -50,3 +49,17 @@ img {
 .close-button:hover {
   opacity: 1;
 }
+
+.selected {
+  border: 0.5rem solid;
+}
+
+.division-fixe {
+  height: 650px; /* Remplacez 200px par la taille de votre choix */
+}
+
+.my-products {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+

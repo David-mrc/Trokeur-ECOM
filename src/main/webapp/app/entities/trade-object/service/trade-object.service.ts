@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ITradeObject, NewTradeObject } from '../trade-object.model';
+import { IUser } from 'app/entities/user/user.model';
 
 export type PartialUpdateTradeObject = Partial<ITradeObject> & Pick<ITradeObject, 'id'>;
 
@@ -53,6 +54,14 @@ export class TradeObjectService {
 
   compareTradeObject(o1: Pick<ITradeObject, 'id'> | null, o2: Pick<ITradeObject, 'id'> | null): boolean {
     return o1 && o2 ? this.getTradeObjectIdentifier(o1) === this.getTradeObjectIdentifier(o2) : o1 === o2;
+  }
+
+  getUsernameOfTradeObject(id: number): Observable<IUser | undefined> {
+    return this.http.get<IUser>(this.applicationConfigService.getEndpointFor('api/username-of-trade-object/' + id));
+  }
+
+  disableTradeObject(id: number): Observable<{}> {
+    return this.http.put(this.applicationConfigService.getEndpointFor('api/trade-objects/disable/' + id), id);
   }
 
   addTradeObjectToCollectionIfMissing<Type extends Pick<ITradeObject, 'id'>>(

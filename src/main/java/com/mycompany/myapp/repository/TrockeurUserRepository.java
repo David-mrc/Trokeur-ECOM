@@ -28,10 +28,7 @@ public interface TrockeurUserRepository extends JpaRepository<TrockeurUser, Long
         return this.findAllWithToOneRelationships(pageable);
     }
 
-    @Query(
-        value = "select trockeurUser from TrockeurUser trockeurUser left join fetch trockeurUser.user",
-        countQuery = "select count(trockeurUser) from TrockeurUser trockeurUser"
-    )
+    @Query(value = "select trockeurUser from TrockeurUser trockeurUser left join fetch trockeurUser.user", countQuery = "select count(trockeurUser) from TrockeurUser trockeurUser")
     Page<TrockeurUser> findAllWithToOneRelationships(Pageable pageable);
 
     @Query("select trockeurUser from TrockeurUser trockeurUser left join fetch trockeurUser.user")
@@ -43,6 +40,12 @@ public interface TrockeurUserRepository extends JpaRepository<TrockeurUser, Long
     @Query("select trockeurUser.id from TrockeurUser trockeurUser where trockeurUser.user.login =:login")
     Optional<Long> findTrockeurUserIdByLogin(@Param("login") Optional<String> login);
 
+    @Query("select user from User user where user.login =:login")
+    Optional<User> findUserBylogin(@Param("login") Optional<String> login);
+
     @Query("select trockeurUser.user from TrockeurUser trockeurUser where trockeurUser.id = :id")
     Optional<User> findUserByTrockeurUserId(@Param("id") Long id);
+
+    @Query("select tradeObject.trockeurUser from TradeObject tradeObject where tradeObject.id = :tradeObjectId")
+    Optional<TrockeurUser> findTrockeurUserByTradeObject(@Param("tradeObjectId") Long tradeObjectId);
 }

@@ -18,6 +18,8 @@ import { HistoriqueTransactionsComponent } from './entities/trade-offer/historiq
 import { TransactionProposeComponent } from './entities/trade-offer/transaction-propose/transaction-propose.component';
 import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
 import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-historique/affichage-historique.component';
+import { TradeComponent } from './entities/trade-offer/trade/trade.component';
+import { TradeDoneComponent } from './components/trade-done/trade-done.component';
 
 @NgModule({
   imports: [
@@ -61,7 +63,6 @@ import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-h
         {
           path: 'account/my-products',
           component: MyProductsComponent,
-          title: 'MyProductsComponent.title',
         },
         {
           path: 'historique',
@@ -74,6 +75,14 @@ import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-h
         {
           path: 'troks-recus',
           component: TransactionRecueComponent,
+        },
+        {
+          path: 'trade',
+          component: TradeComponent,
+        },
+        {
+          path: 'trade-done',
+          component: TradeDoneComponent,
         },
         ...errorRoute,
       ],

@@ -24,6 +24,7 @@ import { AffichageHistoriqueComponent } from './entities/trade-offer/affichage-h
 import { HistoriqueTransactionsComponent } from './entities/trade-offer/historique-transactions/historique-transactions.component';
 import { TransactionProposeComponent } from './entities/trade-offer/transaction-propose/transaction-propose.component';
 import { TransactionRecueComponent } from './entities/trade-offer/transaction-recue/transaction-recue.component';
+import { TradeDoneComponent } from './components/trade-done/trade-done.component';
 
 @NgModule({
   imports: [
@@ -46,10 +47,7 @@ import { TransactionRecueComponent } from './entities/trade-offer/transaction-re
   ],
   bootstrap: [MainComponent],
   declarations: [
-    AffichageHistoriqueComponent,
-    HistoriqueTransactionsComponent,
-    TransactionProposeComponent,
-    TransactionRecueComponent
+    TradeDoneComponent
   ]
 })
 export class AppModule {

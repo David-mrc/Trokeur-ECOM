@@ -1,48 +1,104 @@
-<div class="transactions-item horizontal-item card border-white mb-4 p-10 col-12">
-  <div class="row justify-content-center align-items-center my-4">
+<div [ngClass]="getClassMap()" class="transactions-item horizontal-item card border-white mb-4 colored-div">
+  <div class="row justify-content-center align-items-center my-4" style="width: 100%">
     <!-- Objet de gauche -->
-    <div class="card shadow border-warning mb-4" style="padding:0.5em;max-width: 20rem;align-items: center;display: flex;">
-      <img src="/content/images/oiseau.png" class="card-img-top" alt="Image du produit"/>
-      <h5 class="card-title text-truncate" style="max-width: 19rem;"> Premier Titre que je choisi et je le fais très long pour voir ce que cela donne</h5>
-      <h6 class="mr-10 text-truncate rows-4" style="max-width: 19rem; max-height: 10rem;">Ici je décris mon premier objet et je met pleins de détails pour prendre de la place et voir ce que ca donne Ici je décris mon premier objet et je met pleins de détails pour prendre de la place et voir ce que ca donne Ici je décris mon premier objet et je met pleins de détails pour prendre de la place et voir ce que ca donne</h6>
+
+    <div class="card shadow border-warning col-md-10 mb-4 mr-4" style="padding:0.5em;max-width: 20rem;align-items: center;display: flex;">
+      <h6 class="mr-10">Mon objet</h6>
+
+      <div *ngIf="imageLeft | async as safeImageUrl; else loadingImage">
+        <img [src]="safeImageUrl" class="card-img-top" alt="Image du produit" />
+      </div>
+
+      <ng-template #loadingImage>
+        <div>Loading image...</div>
+      </ng-template>
+
+      <h5 class="card-title text-truncate" style="max-width: 19rem">{{ leftObject?.name }}</h5>
+      <h6 class="mr-10 text-truncate rows-4" style="max-width: 19rem; max-height: 10rem">{{ leftObject?.description }}</h6>
+
     </div>
 
+    <div class="col-md-1"></div>
     <!-- Symbole au milieu -->
-    <img src="/content/images/swap.png" alt="Image"style="width:3rem; height:3rem;padding:0px;margin:0.3em"   class="item-image col-md-10 mr-2">
 
-    
+    <img *ngIf="recues || propose" src="/content/images/swap.png" alt="Image"style="width:7rem; height:7rem;padding:0px;margin:0.3em"   class="item-image col-md-10 mr-2">
+    <img *ngIf="tradeOffer?.state=='REFUSE'" src="/content/images/swap-red.png" alt="Image"style="width:7rem; height:7rem;padding:0px;margin:0.3em"   class="item-image col-md-10 mr-2">
+    <img *ngIf="tradeOffer?.state=='ACCEPTE'" src="/content/images/swap-green.png" alt="Image"style="width:7rem; height:7rem;padding:0px;margin:0.3em"   class="item-image col-md-10 mr-2">
+
+    <div class="col-md-1"></div>
     <!-- Objet de droite -->
-    <div class="card border-warning mb-4" style="padding:0.5em;max-width: 20rem;align-items: center;display: flex;">
-      <img src="/content/images/miroir.png" class="card-img-top " alt="Image du produit"/>
-      <h5 class="card-title text-truncate" style="max-width: 19rem;">Titre que je veux</h5>
-      <h6 class="mr-10 text-truncate" style="max-width: 19rem; max-height: 10rem;">Ici je décris mon objet et je met pleins de détails pour prendre de la place et voir ce que ca donne</h6>
 
+    <div class="card border-warning col-md-10 mb-4 ml-4" style="padding:0.5em;max-width: 20rem;align-items: center;display: flex;">
+      <h6 class="mr-10"> Objet de : {{rightUser?.login}}</h6>
+      <div *ngIf="imageRight | async as safeImageUrl; else loadingImage">
+        <img [src]="safeImageUrl" class="card-img-top" alt="Image du produit" />
+      </div>
+
+      <ng-template #loadingImage>
+        <div>Loading image...</div>
+      </ng-template>
+
+      <h5 class="card-title text-truncate" style="max-width: 19rem">{{ rightObject?.name }}</h5>
+      <h6 class="mr-10 text-truncate" style="max-width: 19rem; max-height: 10rem">{{ rightObject?.description }}</h6>
     </div>
-
   </div>
 
 
-    <div class="row justify-content-center my-4">
-    <!-- Transaction Proposée à quelqu'un d'autre -->
-      <button *ngIf="propose" class="btn btn-danger text-white ml-2 mr-2" type="submit"> 
-        <fa-icon icon="handshake-alt-slash" style="color: #ffffff"></fa-icon> 
-        <span class="icon-text" style="margin-left: 4px">Annuler Proposition</span>
-      </button>
-
-      
-    <!-- Transaction Recue de quelqu'un d'autre -->
-      <div *ngIf="recues" class="btn-group ml-2 mr-2 " role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary btn-danger text-white"> 
-          <fa-icon icon="thumbs-down" style="color: #ffffff"></fa-icon> 
-          Refuser Transaction
-        </button>
-        <button type="button" class="btn btn-primary btn-success text-white">
-          <fa-icon icon="thumbs-up" syle="color: #ffffff"></fa-icon> 
-          Accepter Transaction
-        </button>
-      </div>
+  <!-- état de la transaction, acceptée ou non -->
+  <div class="row justify-content-center my-4">
+    <div *ngIf="tradeOffer?.state=='REFUSE'" style="width: auto;">
+      <h1><div class="badge rounded-pill bg-danger">Refusé</div></h1>
     </div>
-</div>
-  
+    <div *ngIf="tradeOffer?.state=='ACCEPTE'" style="width: auto;">
+      <h1><div class="badge rounded-pill bg-success">Accepté</div></h1>
+    </div>
+  </div>
 
-  
+  <!-- moyen de contact de l'autre utilisateur -->
+  <div class="row justify-content-center my-4" *ngIf="tradeOffer?.state=='ACCEPTE'">
+    <h5>Contactez le détenteur de l'objet pour organiser l'échange via l'adresse mail suivante : {{contactEmail}}</h5>
+  </div>
+
+  <div class="row justify-content-center my-4" style="width: 50%;">
+  <!-- Transaction Proposée à quelqu'un d'autre -->
+    <button *ngIf="propose" class="btn row btn-danger text-white ml-2 mr-2" type="submit" (click)="CancelTransaction()">
+
+      <fa-icon icon="handshake-alt-slash" style="color: #ffffff"></fa-icon>
+      <span class="icon-text" style="margin-left: 4px">Annuler Proposition</span>
+    </button>
+
+  <!-- Transaction Recue de quelqu'un d'autre -->
+    <div *ngIf="recues" class="btn-group ml-2 mr-2 " role="group" aria-label="Basic example">
+
+      <button type="button" class="btn btn-primary btn-danger text-white" (click)="RefuseTransaction()">
+        <fa-icon icon="thumbs-down" style="color: #ffffff"></fa-icon>
+        Refuser Transaction
+      </button>
+      <button type="button" class="btn btn-primary btn-success text-white" (click)="AcceptTransaction()">
+        <fa-icon icon="thumbs-up" syle="color: #ffffff"></fa-icon>
+        Accepter Transaction
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalSuccess>
+  <div class="modal-body" style="font-weight: bold; background-color: #8edea3; border-radius: inherit">
+    <div>Echange accepté avec succès</div>
+    <button type="button" class="close close-button" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #modalFail>
+  <div class="modal-body" style="font-weight: bold; background-color: #de8e8e; border-radius: inherit">
+    <div style="padding: inherit">Impossible d'accepter l'échange, l'offre a été annulée ou l'objet n'est plus disponible</div>
+    <button type="button" class="close close-button" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+
+<hr />
+

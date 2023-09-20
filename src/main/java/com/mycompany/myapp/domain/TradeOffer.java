@@ -37,6 +37,7 @@ public class TradeOffer implements Serializable {
     @Column(name = "state", nullable = false)
     private TradeOfferState state;
 
+    //  TrockeurUser id of the creator of the offer
     @Column(name = "owner_id")
     private Long ownerID;
 
