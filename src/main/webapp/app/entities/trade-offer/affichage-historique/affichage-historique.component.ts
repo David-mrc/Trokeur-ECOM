@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TradeOfferState } from 'app/entities/enumerations/trade-offer-state.model';
+import { TrockeurUserService } from 'app/entities/trockeur-user/service/trockeur-user.service';
+import { User } from 'app/interfaces/UserInterface';
 
 import { S3serviceService } from 'app/fileservice/s3service.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -38,8 +41,10 @@ export class AffichageHistoriqueComponent implements OnInit {
   rightObject: ITradeObject | undefined;
   leftUser: IUser | undefined;
   rightUser: IUser | undefined;
+
   imageRight: Observable<SafeUrl> | undefined;
   imageLeft: Observable<SafeUrl> | undefined;
+  contactEmail: string | undefined;
 
   private modalRef!: NgbModalRef;
 
@@ -53,8 +58,10 @@ export class AffichageHistoriqueComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
+
   ngOnInit(): void {
     this.loadObjects();
+    console.log(this.recues, this.propose)
   }
 
   getPathToFirstImageLeft(): Observable<SafeUrl> {
@@ -147,6 +154,9 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.rightObject = this.proposedObject;
           this.rightUser = this.proposingUser;
         }
+        this._trockeruUserService.findUserByLogin(this.rightUser?.login).subscribe((user) => {
+          this.contactEmail = user?.email;
+        });
       }
       this.imageLeft = this.getPathToFirstImageLeft();
       this.imageRight = this.getPathToFirstImageRight();
@@ -191,4 +201,15 @@ export class AffichageHistoriqueComponent implements OnInit {
   closeModal(): void {
     this.modalRef.close('Cross click');
   }
+
+  getClassMap() {
+    return {
+      'background-with-opacity-vert' : this.tradeOffer?.state == TradeOfferState.ACCEPTE,
+      'background-with-opacity-rouge' : this.tradeOffer?.state == TradeOfferState.REFUSE,
+      'background-with-opacity-jaune' : this.tradeOffer?.state == TradeOfferState.EN_COURS,
+    }
+  }
+
+
+
 }

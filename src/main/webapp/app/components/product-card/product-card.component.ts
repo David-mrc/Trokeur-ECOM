@@ -10,6 +10,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { GenericImage } from 'app/interfaces/GenericImageInterface';
+import { TradeObjectService } from '../../entities/trade-object/service/trade-object.service';
+import { IUser } from 'app/entities/user/user.model';
 
 @Component({
   selector: 'jhi-product-card',
@@ -24,10 +26,12 @@ export class ProductCardComponent {
   images: GenericImage[] = [];
   imageUrl: Observable<SafeUrl> | undefined;
   urlArray: Observable<SafeUrl>[] = [];
+  tradeObjectName : IUser | undefined;
   private modalRef!: NgbModalRef;
 
 
-  constructor(public modalService: NgbModal, private config: S3serviceService, private router: Router, private sanitizer: DomSanitizer) {}
+  constructor(public modalService: NgbModal, private config: S3serviceService, private router: Router, private sanitizer: DomSanitizer, private tradeObjectService : TradeObjectService) {
+  }
 
   ngOnInit(): void {
     this.imageUrl = this.getPathToFirstImage();
@@ -35,6 +39,11 @@ export class ProductCardComponent {
       for (const img of this.tradeObject.genericImages ?? []) {
         this.images.push(img);
       }
+      this.tradeObjectService.getUsernameOfTradeObject(this.tradeObject.id).subscribe((user : IUser | undefined ) => {
+        if(user){
+          this.tradeObjectName = user;
+        }
+      });
     }
 
     this.initUrlArray();
