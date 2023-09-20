@@ -22,7 +22,7 @@ export class MyProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this._accountService.isAuthenticated();
-    this._productService.getMyProducts().subscribe((tradeObjects) => {
+    this._productService.getMyActiveProducts().subscribe((tradeObjects) => {
       tradeObjects.map((tradeObject: TradeObject) => {
         this.myTradeObjects.push(tradeObject);
       })

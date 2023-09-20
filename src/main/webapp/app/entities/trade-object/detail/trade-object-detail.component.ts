@@ -115,10 +115,11 @@ export class TradeObjectDetailComponent implements OnInit {
     }
   }
 
-  delete(tradeObject: ITradeObject): void {
-    console.log(tradeObject);
-    this.previousState();
-    //TODO : Corriger la suppression (ineffective pour l'instant)
-    this._tradeObjectService.delete(tradeObject.id);
+  delete(): void {
+    if(this.tradeObject) {
+      this._tradeObjectService.disableTradeObject(this.tradeObject.id).subscribe(() => {
+        this.previousState();
+      });
+    }
   }
 }

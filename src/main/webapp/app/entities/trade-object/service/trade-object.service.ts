@@ -60,6 +60,11 @@ export class TradeObjectService {
     return this.http.get<IUser>(this.applicationConfigService.getEndpointFor('api/username-of-trade-object/' + id));
   }
 
+  disableTradeObject(id: number): Observable<{}> {
+    console.log("on va supprimer : " + id.toString());
+    return this.http.put(this.applicationConfigService.getEndpointFor('api/trade-objects/disable/' + id), id);
+  }
+
   addTradeObjectToCollectionIfMissing<Type extends Pick<ITradeObject, 'id'>>(
     tradeObjectCollection: Type[],
     ...tradeObjectsToCheck: (Type | null | undefined)[]

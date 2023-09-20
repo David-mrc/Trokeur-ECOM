@@ -30,8 +30,6 @@ export class ProductCardComponent {
   constructor(public modalService: NgbModal, private config: S3serviceService, private router: Router, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    // eslint-disable-next-line no-console
-    console.log(this.tradeObject?.trockeurUser?.user);
     this.imageUrl = this.getPathToFirstImage();
     if (this.tradeObject) {
       for (const img of this.tradeObject.genericImages ?? []) {

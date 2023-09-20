@@ -8,6 +8,8 @@ import com.mycompany.myapp.repository.TradeObjectRepository;
 import com.mycompany.myapp.repository.TrockeurUserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
+
+import jakarta.persistence.LockModeType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -219,10 +222,10 @@ public class TradeObjectResource {
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @GetMapping("/current-trockeur-user-trade-objects")
-    public ResponseEntity<List<TradeObject>> getMyTradeObjects() {
+    @GetMapping("/trade-objets/active-objects")
+    public ResponseEntity<List<TradeObject>> getMyActiveTradeObjects() {
         log.debug("REST request to get my TradeObject");
-        Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findAllObjectsOfUser(SecurityUtils.getCurrentUserLogin());
+        Optional<List<TradeObject>> allUserObjects = tradeObjectRepository.findAllActiveObjectsOfUser(SecurityUtils.getCurrentUserLogin());
         return ResponseUtil.wrapOrNotFound(allUserObjects);
     }
 
@@ -366,8 +369,6 @@ public class TradeObjectResource {
         return ResponseUtil.wrapOrNotFound(numberOfObjects);
     }
 
-
-
     /**
      * {@code GET  /username-of-trade-object/:id} : get the username of the trade object
      *
@@ -378,6 +379,22 @@ public class TradeObjectResource {
         log.debug("REST request to get username of TradeObject");
         Optional<User> username = tradeObjectRepository.findUsernameOfTradeObject(id);
         return ResponseUtil.wrapOrNotFound(username);
+    }
+
+    /**
+     * {@code PUT  /trade-objects/disable/:id} : Disable tradeObject.
+     *
+     * @param id the id of the tradeObject to udpate.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PutMapping("/trade-objects/disable/{id}")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ResponseEntity<Void> disableTradeObject(@PathVariable Long id) {
+        this.tradeObjectRepository.disableTradeObject(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
 }

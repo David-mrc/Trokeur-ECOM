@@ -24,12 +24,8 @@ export class productService {
     return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/trade-objects'));
   }
 
-  getMyProducts(): Observable<TradeObject[]> {
-    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
-  }
-
-  getMyTradeObjects(): Observable<ITradeObject[]> {
-    return this.http.get<ITradeObject[]>(this.applicationConfigService.getEndpointFor('api/current-trockeur-user-trade-objects'));
+  getMyActiveProducts(): Observable<TradeObject[]> {
+    return this.http.get<TradeObject[]>(this.applicationConfigService.getEndpointFor('api/trade-objets/active-objects'));
   }
 
   getMyTradeObjectsAvailable(): Observable<ITradeObject[]> {

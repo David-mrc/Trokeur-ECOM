@@ -34,9 +34,8 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
-    //TODO : trier la liste d'objets...
-    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login")
-    Optional<List<TradeObject>> findAllObjectsOfUser(@Param("login") Optional<String> login);
+    @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login and tradeObject.stock >= 0")
+    Optional<List<TradeObject>> findAllActiveObjectsOfUser(@Param("login") Optional<String> login);
 
     @Query("select tradeObject from TradeObject tradeObject where tradeObject.trockeurUser.user.login = :login and tradeObject.stock >= 1")
     Optional<List<TradeObject>> findMyAvailableProduct(@Param("login") Optional<String> login);
@@ -76,5 +75,9 @@ public interface TradeObjectRepository extends TradeObjectRepositoryWithBagRelat
 
     @Query(value = "select tradeObject from TradeObject tradeObject where tradeObject.stock > 0 and tradeObject.trockeurUser.user.login != :login")
     Page<TradeObject> findAllObjectsFromPage(@Param("pageable") Pageable page, @Param("login") Optional<String> login);
+
+    @Modifying
+    @Query("update TradeObject tradeObject set tradeObject.stock = -1 where tradeObject.id = :id")
+    void disableTradeObject(@Param("id") Long id);
 
 }
