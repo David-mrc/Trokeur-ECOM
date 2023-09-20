@@ -2,9 +2,8 @@
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
-      <span class="navbar-version">{{ version }}</span>
     </a>
-    <a href="/trade-object/new" class="btn btn-warning" style="margin-left: 40px !important"> <fa-icon icon="plus" style="color : black;"></fa-icon> Proposer un objet </a>
+    <a href="/trade-object/new" class="btn btn-warning" style="margin-left: 100px !important"> <fa-icon icon="plus" style="color : black;"></fa-icon> Proposer un objet </a>
     <div class="navbar-collapse collapse bg-black" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
@@ -30,7 +29,7 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
 
-    <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black">
+    <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md shadow-sm bg-black" style="margin-right: 100px;">
       <div class="container-fluid">
         <form class="d-flex mx-auto">
           <input class="form-control me-2" style="width: 400px" type="search" placeholder="Rechercher..." aria-label="Rechercher" [(ngModel)]="searchInput" name="searchInput">
@@ -43,7 +42,7 @@
     <div class="navbar-collapse collapse bg-black" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" style="margin-left: 100px;" routerLink="/" (click)="collapseNavbar()">
+          <a class="nav-link" style="margin-left: 50px;" routerLink="/" (click)="collapseNavbar()">
             <span>
               <fa-icon icon="home" style="color : #ffffff"></fa-icon>
               <span jhiTranslate="global.menu.home" style="color : #ffffff">Accueil</span>
@@ -190,7 +189,7 @@
           </ul>
         </li>
         <li ngbDropdown class="dropdown dropdown pointer" display="dynamic">
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" style="margin-left: 25px;">
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" style="margin-left: 50px;">
             <span>
               <fa-icon icon="handshake" style="color : #ffffff"></fa-icon>
               <span style="color : #ffffff" >Mes Troks</span>
@@ -239,7 +238,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu" style="margin-left: 30px;">
             <span *ngIf="!account?.imageUrl">
               <fa-icon icon="user" style="color : #ffffff"></fa-icon>
               <span jhiTranslate="global.menu.account.main" style="color : #ffffff">Compte</span>
