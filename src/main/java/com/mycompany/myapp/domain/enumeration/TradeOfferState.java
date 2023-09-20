@@ -7,5 +7,5 @@ public enum TradeOfferState {
     EN_COURS,
     ACCEPTE,
     REFUSE,
-    FINALISE,
+    FINALISE, // Solution temporaire : Etat utilisé pour répertorier les tradeOffer qui ont échoué
 }

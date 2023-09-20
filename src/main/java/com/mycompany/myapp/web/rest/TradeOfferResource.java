@@ -366,6 +366,7 @@ public class TradeOfferResource {
             TradeOffer tradeOffer = optTradeOffer.get();
             for (TradeObject tradeObject : tradeOffer.getTradeObjects()) {  // Checking if all trade objects have at least 1 in stock
                 if (tradeObject.getStock() < 1) {
+                    tradeOfferRepository.updateTradeOfferState(id, TradeOfferState.FINALISE);
                     return ResponseUtil.wrapOrNotFound(Optional.of(false));
                 }
             }

@@ -39,7 +39,7 @@ public interface TradeOfferRepository extends TradeOfferRepositoryWithBagRelatio
     @Query(value = "select trade_offer.id from rel_trade_offer__trockeur_user trade_trockeur " +
     "join trade_offer on trade_trockeur.trade_offer_id = trade_offer.id " +
     "join trockeur_user on trade_trockeur.trockeur_user_id = trockeur_user.id " +
-    "where trade_offer.state != 'EN_COURS' " +
+    "where trade_offer.state != 'EN_COURS' and trade_offer.state != 'FINALISE'" +
     "and trockeur_user.id = :userID",
     nativeQuery = true)
     Optional<Set<Long>> findAllNonPendingOffersOfUser(@Param("userID") Optional<Long> userID);
