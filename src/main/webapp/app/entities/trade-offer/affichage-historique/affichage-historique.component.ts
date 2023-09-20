@@ -52,6 +52,7 @@ export class AffichageHistoriqueComponent implements OnInit {
     private router: Router,
     private _tradeOfferService: TradeOfferService,
     private _tradeObjectService: TradeObjectService,
+    private _trockeurUserService: TrockeurUserService,
     private _accountService: AccountService,
     private modalService: NgbModal,
     private config: S3serviceService,
@@ -154,7 +155,7 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.rightObject = this.proposedObject;
           this.rightUser = this.proposingUser;
         }
-        this._trockeruUserService.findUserByLogin(this.rightUser?.login).subscribe((user) => {
+        this._trockeurUserService.findUserByLogin(this.rightUser?.login).subscribe((user) => {
           this.contactEmail = user?.email;
         });
       }
