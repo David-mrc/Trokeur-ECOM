@@ -1,7 +1,8 @@
 <h1>Proposition de Trok</h1>
 <div *ngIf="myTradeObjects && myTradeObjects.length > 0" class="d-flex align-items-center justify-content-center row g-2">
   <div class="row justify-content-center align-items-center my-4 p-10 col-12" style="width: 100%">
-    <div class="askedProduct col-4 mr-2" style="max-width: 25rem">
+    <div class="askedProduct col-4 mr-2" style="max-width: 25rem; max-height: 25rem;">
+      <h2>Objet souhaité</h2>
       <div class="card shadow border-warning mb-4" style="max-width: 25rem">
         <div *ngIf="objectImageUrl | async as safeImageUrl; else loadingImage">
           <img [src]="safeImageUrl" class="card-img-top" alt="Image du produit" />
@@ -25,6 +26,7 @@
     />
 
     <div *ngIf="myTradeObjects && myTradeObjects.length > 0" class="my-products col ml-2 text-center division-fixe">
+      <h2>Objet à proposer</h2>
       <div
         class="tradeObject m-4 d-inline-block"
         ngbDropdown
@@ -34,10 +36,10 @@
         <div
           *ngIf="this.selectedTradeObject?.id === tradeObject.id"
           class="selected card shadow border-warning mb-4"
-          style="max-width: 20rem"
+          style="max-width: 20rem;height:100%"
         >
           <div *ngIf="myObjectsUrlArray[i] | async as mySafeImageUrl; else loadingImage">
-            <img [src]="mySafeImageUrl" class="card-img-top" alt="Image du produit" />
+            <img [src]="mySafeImageUrl" class="card-img-top" alt="Image du produit" style="padding:1rem;width: 20rem;height: 20rem;align-items: center;display: flex;"/>
           </div>
           <ng-template #loadingImage>
             <div>Loading image...</div>
@@ -55,10 +57,10 @@
         <div
           *ngIf="this.selectedTradeObject?.id !== tradeObject.id"
           class="unselected card shadow border-warning mb-4"
-          style="max-width: 20rem"
+          style="max-width: 20rem;height:100%"
         >
           <div *ngIf="myObjectsUrlArray[i] | async as mySafeImageUrl; else loadingImage">
-            <img [src]="mySafeImageUrl" class="card-img-top" alt="Image du produit" />
+            <img [src]="mySafeImageUrl" class="card-img-top" alt="Image du produit" style="padding:1rem;width: 20rem;height: 20rem;align-items: center;display: flex;"/>
           </div>
           <ng-template #loadingImage>
             <div>Loading image...</div>
