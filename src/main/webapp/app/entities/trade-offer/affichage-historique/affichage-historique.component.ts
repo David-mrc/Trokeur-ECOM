@@ -14,6 +14,11 @@ import { TradeOfferState } from 'app/entities/enumerations/trade-offer-state.mod
 import { TrockeurUserService } from 'app/entities/trockeur-user/service/trockeur-user.service';
 import { User } from 'app/interfaces/UserInterface';
 
+import { S3serviceService } from 'app/fileservice/s3service.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Observable, map } from 'rxjs';
+import { GenericImage } from 'app/interfaces/GenericImageInterface';
+
 @Component({
   selector: 'app-affichage-historique',
   templateUrl: './affichage-historique.component.html',
@@ -21,7 +26,6 @@ import { User } from 'app/interfaces/UserInterface';
   imports: [NgIf, FontAwesomeModule, CommonModule, NgbModule],
   styleUrls: ['./affichage-historique.component.scss'],
 })
-
 export class AffichageHistoriqueComponent implements OnInit {
   @Input() tradeOffer: ITradeOffer | undefined;
   @Input() recues: boolean = false;
@@ -37,20 +41,59 @@ export class AffichageHistoriqueComponent implements OnInit {
   rightObject: ITradeObject | undefined;
   leftUser: IUser | undefined;
   rightUser: IUser | undefined;
+
+  imageRight: Observable<SafeUrl> | undefined;
+  imageLeft: Observable<SafeUrl> | undefined;
   contactEmail: string | undefined;
-  
+
   private modalRef!: NgbModalRef;
 
-  constructor(private router: Router, 
-    private _tradeOfferService: TradeOfferService, 
+  constructor(
+    private router: Router,
+    private _tradeOfferService: TradeOfferService,
     private _tradeObjectService: TradeObjectService,
-    private _trockeruUserService: TrockeurUserService, 
-    private _accountService: AccountService, 
-    private modalService: NgbModal) {}
+    private _accountService: AccountService,
+    private modalService: NgbModal,
+    private config: S3serviceService,
+    private sanitizer: DomSanitizer
+  ) {}
+
 
   ngOnInit(): void {
     this.loadObjects();
     console.log(this.recues, this.propose)
+  }
+
+  getPathToFirstImageLeft(): Observable<SafeUrl> {
+    let url: string;
+    const img = this.leftObject?.genericImages?.values().next().value;
+    if (img) {
+      url = img.imagePath;
+    } else {
+      url = 'default.png';
+    }
+    return this.config.getImage(url).pipe(
+      map((blob: any) => {
+        const objectURL = URL.createObjectURL(blob);
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      })
+    );
+  }
+
+  getPathToFirstImageRight(): Observable<SafeUrl> {
+    let url: string;
+    const img = this.rightObject?.genericImages?.values().next().value;
+    if (img) {
+      url = img.imagePath;
+    } else {
+      url = 'default.png';
+    }
+    return this.config.getImage(url).pipe(
+      map((blob: any) => {
+        const objectURL = URL.createObjectURL(blob);
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      })
+    );
   }
 
   loadObjects(): void {
@@ -60,7 +103,7 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.proposedObject = tradeObject;
           this.loadProposingUser();
         }
-      })
+      });
     }
   }
 
@@ -71,7 +114,7 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.proposingUser = user;
         }
         this.loadWantedObject();
-      })
+      });
     }
   }
 
@@ -82,7 +125,7 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.wantedObject = tradeObject;
           this.loadOfferingUser();
         }
-      })
+      });
     }
   }
 
@@ -93,7 +136,7 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.offeringUser = user;
         }
         this.loadLeftAndRight();
-      })
+      });
     }
   }
 
@@ -115,14 +158,16 @@ export class AffichageHistoriqueComponent implements OnInit {
           this.contactEmail = user?.email;
         });
       }
-    })
+      this.imageLeft = this.getPathToFirstImageLeft();
+      this.imageRight = this.getPathToFirstImageRight();
+    });
   }
 
   CancelTransaction() {
     this._tradeOfferService.cancelTradeOffer(this.tradeOffer?.id).subscribe(() => {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/troks-proposes']);
-      }); 
+      });
     });
   }
 
@@ -130,7 +175,7 @@ export class AffichageHistoriqueComponent implements OnInit {
     this._tradeOfferService.refuseTradeOffer(this.tradeOffer?.id).subscribe(() => {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/troks-recus']);
-      }); 
+      });
     });
   }
 
@@ -138,7 +183,7 @@ export class AffichageHistoriqueComponent implements OnInit {
     this._tradeOfferService.acceptTradeOffer(this.tradeOffer?.id).subscribe((accepted: boolean | undefined) => {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/troks-recus']);
-      }); 
+      });
       if (accepted) {
         this.openModal(this.modalSuccess);
       } else {
@@ -168,5 +213,3 @@ export class AffichageHistoriqueComponent implements OnInit {
 
 
 }
-
-
