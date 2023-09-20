@@ -8,8 +8,7 @@
         <div class="alert alert-success">
           <span id="home-logged-message" *ngIf="account"> Vous êtes connecté en tant que "{{ account.login }}". </span>
         </div>
-        <a class="btn btn-warning col-3 mt-1" routerLink="/product"> Voir tout les objets</a>
-        <h3 class = "mt-4">Les objets à la une</h3>
+        <h3 class = "mt-5">Les objets à la une</h3>
         <div class="d-flex" style="overflow-x: scroll;">
           <div *ngFor="let tradeObject of getTradeObjectList()" class="col-md-4 m-4 mb-0">
             <jhi-product-card [tradeObject]="tradeObject" [isPublic]="true"></jhi-product-card>
