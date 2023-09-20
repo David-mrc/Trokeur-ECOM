@@ -63,7 +63,6 @@ import { TradeDoneComponent } from './components/trade-done/trade-done.component
         {
           path: 'account/my-products',
           component: MyProductsComponent,
-          title: 'MyProductsComponent.title',
         },
         {
           path: 'historique',
