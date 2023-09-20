@@ -61,7 +61,6 @@ export class TradeObjectService {
   }
 
   disableTradeObject(id: number): Observable<{}> {
-    console.log("on va supprimer : " + id.toString());
     return this.http.put(this.applicationConfigService.getEndpointFor('api/trade-objects/disable/' + id), id);
   }
 
