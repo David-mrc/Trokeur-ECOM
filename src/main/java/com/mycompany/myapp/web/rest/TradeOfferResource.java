@@ -288,7 +288,7 @@ public class TradeOfferResource {
         if (tradeOffer != null) {
             Set<TradeObject> tradeObjects = tradeOffer.get().getTradeObjects();
             for (TradeObject tradeObject : tradeObjects) {
-                if (tradeObject.getTrockeurUser().getId() == tradeOffer.get().getOwnerID()) {
+                if (tradeObject.getTrockeurUser().getId().equals(tradeOffer.get().getOwnerID())) {
                     return ResponseUtil.wrapOrNotFound(Optional.of(tradeObject));
                 }
             }
@@ -307,7 +307,7 @@ public class TradeOfferResource {
         Optional<TradeOffer> tradeOffer = tradeOfferRepository.findById(id);
         if (tradeOffer != null) {
             for (TradeObject tradeObject : tradeOffer.get().getTradeObjects()) {
-                if (tradeObject.getTrockeurUser().getId() != tradeOffer.get().getOwnerID()) {
+                if (!tradeObject.getTrockeurUser().getId().equals(tradeOffer.get().getOwnerID())) {
                     return ResponseUtil.wrapOrNotFound(Optional.of(tradeObject));
                 }
             }
