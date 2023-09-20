@@ -53,10 +53,8 @@ export class TradeComponent implements OnInit {
     this._productService.getMyTradeObjectsAvailable().subscribe(myTradeObject => {
       this.myTradeObjects = myTradeObject;
       if (this.myTradeObjects) {
-        let i = 0;
         for (const obj of this.myTradeObjects) {
-          this.myObjectsUrlArray[i] = this.getPathToFirstImage(obj);
-          i = +1;
+          this.myObjectsUrlArray.push(this.getPathToFirstImage(obj));
         }
       }
     });
